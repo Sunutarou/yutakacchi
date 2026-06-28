@@ -1,0 +1,2040 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ゆたかっち 〜シンジュクコイ物語〜</title>
+    <style>
+        body { margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #333; }
+        
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            aspect-ratio: 9 / 19;
+            background-image: url('Yutakamain11.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+
+        .btn { position: absolute; cursor: pointer; border: none; background: transparent; padding: 0; outline: none; }
+
+        /* ボタン座標 */
+        .btn-work { top: 45.4232%; left: 7.11134%; width: 27.3356%; height: 6.68577%; }
+        .btn-gym { top: 45.2653%; left: 37.0012%; width: 26.4466%; height: 6.896%; }
+        .btn-private { top: 45.4232%; left: 65.4466%; width: 27.0015%; height: 6.6322%; }
+        .btn-book { top: 52.6867%; left: 7.11134%; width: 27.3356%; height: 6.79073%; }
+        .btn-save { top: 52.8972%; left: 36.4456%; width: 26.8924%; height: 6.47555%; }
+        .btn-settings { top: 53.0025%; left: 65.7799%; width: 26.446%; height: 6.26376%; }
+        .btn-back { top: 83.4901%; left: 24.0008%; width: 12.1128%; height: 6.42198%; border-radius: 50%; }
+        .btn-next { top: 83.648%; left: 44.0014%; width: 12.4475%; height: 6.12278%; border-radius: 50%; }
+        .btn-ok { top: 83.227%; left: 63.6688%; width: 13.2253%; height: 6.52756%; border-radius: 50%; }
+
+        /* ステータス位置 */
+        .stat-row { position: absolute; font-weight: bold; color: #5d4037; pointer-events: none; white-space: nowrap; box-sizing: border-box; }
+       #stat-week { top: 20.53%; left: 63.33%; width: 25.33%; height: 8.95%; font-size: 13px; line-height: 1.8; text-align: center; }
+.energy-row { top: 28.95%; left: 68.00%; font-size: 14px; }
+.stress-row { top: 34.84%; left: 66.67%; font-size: 14px; }
+.money-row { top: 40.53%; left: 68.00%; font-size: 14px; }
+.weight-row { top: 43.26%; left: 32.44%; width: 12.22%; height: 2.21%; font-size: 13px; text-align: center; }
+        
+        /* 画像制御 */
+       #event-image { position: absolute; top: 18.53%; left: 4.00%; width: 90.89%; height: 26.95%; object-fit: contain; pointer-events: none; display: none; }
+        #char-image {
+            position: absolute;
+            top: 19.7353%;
+            left: 3.67206%;
+            width: 92.7861%;
+            height: 25.6303%;
+            object-fit: contain;
+            pointer-events: none;
+            display: none;
+            z-index: 10;
+        }
+#trophy-image {
+    position: absolute;
+    top: 24%;
+    left: 25%;
+    width: 50%;
+    display: none;
+    z-index: 50;
+    pointer-events: none;
+    animation: trophyPop 0.9s ease-out;
+}
+#silver-trophy-image,
+#gold-trophy-image,
+#character-trophy-image,
+#allcomplete-image {   
+ position: absolute;
+    top: 18%;
+    left: 15%;
+    width: 70%;
+    display: none;
+    z-index: 60;
+    pointer-events: none;
+    animation: trophyPop 1.8s ease-out;
+}
+@keyframes trophyPop {
+    0% {
+        transform: scale(0.4);
+        opacity: 0;
+    }
+    30% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+    70% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+        /* テキスト表示エリア */
+        #message-content {
+  position: absolute; top: 62.42%; left: 6.44%; width: 85.11%; height: 18.32%;
+  font-size: 18px; line-height: 1.45; font-weight: bold; color: #ffffff; text-align: center;
+  text-shadow: 1px 1px 0 #5d4037, -1px 1px 0 #5d4037, 1px -1px 0 #5d4037, -1px -1px 0 #5d4037;
+  pointer-events: none;
+}
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div class="stat-row" id="stat-week"></div>
+    <div class="stat-row energy-row" id="stat-energy"></div>
+    <div class="stat-row stress-row" id="stat-stress"></div>
+    <div class="stat-row money-row" id="stat-money"></div>
+    <div class="stat-row weight-row" id="stat-weight"></div>
+    
+    <img id="event-image" alt="">
+    <img id="char-image" alt="">
+    <img id="trophy-image" src="images/Yutaka.trophy.jpg" alt="">
+    <img id="silver-trophy-image" src="images/Yutaka.trophy2.jpg" alt="">
+    <img id="gold-trophy-image" src="images/Yutaka.trophy3.jpg" alt="">
+    <img id="character-trophy-image" src="images/Yutaka.trophyc.png" alt="">
+    <img id="allcomplete-image" src="images/Yutaka.goal.png" alt="">
+
+    <div id="message-content"></div>
+
+    <button class="btn btn-work" onclick="action('仕事')"></button>
+    <button class="btn btn-gym" onclick="action('ジム')"></button>
+    <button class="btn btn-private" onclick="action('プライベート')"></button>
+    <button class="btn btn-book" onclick="action('図鑑')"></button>
+    <button class="btn btn-save" onclick="action('セーブ')"></button>
+    <button class="btn btn-settings" onclick="action('設定')"></button>
+    <button class="btn btn-back" onclick="action('戻る')"></button>
+    <button class="btn btn-next" onclick="action('進む')"></button>
+    <button class="btn btn-ok" onclick="action('決定')"></button>
+</div>
+
+<script src="characters.js"></script>
+<script src="events.js"></script>
+<script>
+    const openingEvent = {
+        id: "OPENING_001",
+        steps: [
+            { image: "Yutaka.39bd.png", text: "ここは新宿二丁目の第三福原ビルの2Fにある<br>ミックスバーのニコニコ。" },
+            { speaker: "聖奈", text: "「ゆたかママ、誕生日おめでとー！😊」" },
+            { speaker: "なお", text: "「ゆたかママ、誕生日おめでとー！😊」" },
+            { speaker: "こころ", text: "「ゆたかママ、誕生日おめでと😈」" },
+            { speaker: "ゆたかママ", text: "「ありがとーーー！🤣」" },
+            { text: "シャンパンで乾杯する常連とゆたかママ。" },
+            { speaker: "青リンゴ", text: "「ママ、おめでとーー！😝」" },
+            { speaker: "青リンゴ", text: "「乾杯―！🍾」" },
+            { speaker: "ゆたかママ", text: "「ありがとー！っておい！」" },
+            { speaker: "ゆたかママ", text: "「あんたは従業員なんだから、<br>手を動かして、皿洗って。」" },
+            { text: "今日は、バーニコニコの雇われ店長で<br>あるゆたかママの39回目の誕生日。<br>バースデーイベントは大好評に終わった。<br>Barニコニコの常連みんなから祝われて39歳になったゆたかママ。" },
+            { text: "幸せそうに見えるけど、<br>お金もない。<br>恋人もいない。<br>髪の毛もいない。<br>そして体重は78kg。<br>60kg台前半だった若いころの面影はない。。" },
+            { text: "でも夢はある。<br>いつか自分の店を持ちたい。" },
+            { text: "20歳になる前から新宿二丁目のゲイバーで<br>働きだし、途中でゲイバーを飛んで、<br>昼の職業いわゆる昼職へ。<br>OLやアバレルを転々とした。" },
+            { text: "丸の内OLだってやったんだからね！<br>でもまた数年前に新宿二丁目に<br>舞い戻ってきた。" },
+            { text: "いつしか自分の店をという意気込みは、<br>忙しい毎日で忘れつつあった。<br>しかし、もう39歳。<br>40代を目前に、わたしは決意を新たにした。" },
+            { speaker: "ゆたかママ", text: "「わたしは、独立する！<br>自分のお店を持つ！」" },
+            { text: "これが新宿版ゆたかの独立宣言。<br>Jeffersonに対抗したわけじゃないわよ。" },
+            { text: "これは、ゆたかママの2年間の<br>シンジュクコイ物語である。" },
+            { text: "1ターン1週間、2年間で独立資金を貯めるのが目標です。<br>500万円以上で埼玉にて独立、1000万円以上でシンジュクにて独立です。<br>1ターンに仕事、ジム、プライベートをこなし、充実した2年間を過ごしましょう😊<br>もちろん恋愛も♥️" },
+{ text: "下の丸ボタンは<br>🔵 左：戻る<br>🔴 中央：進む<br>🟢 右：決定<br>だからね♥️" }        ],
+        effects: { money: 0, energy: 0, stress: 0, weight: 0 }
+    };
+
+    const naturalWeightSystemEvent = {
+        id: "SYS_NaturalWeight_001",
+        steps: [
+            { speaker: "ゆたかママ", text: "「あれ？」" },
+            { speaker: "ゆたかママ", text: "「なんかあたし毎週勝手に太ってない？🤣」" },
+            { speaker: "ゆたかママ", text: "「そんなに食べてないわよ？」" },
+            { speaker: "ゆたかママ", text: "「・・・」" },
+            { speaker: "ゆたかママ", text: "「いや、待って。」" },
+            { speaker: "ゆたかママ", text: "「営業終わりにコンビニ寄ってるわ🤣」" },
+            { speaker: "ゆたかママ", text: "「ファミチキ^^」" },
+            { speaker: "ゆたかママ", text: "「カップラーメン^^」" },
+            { speaker: "ゆたかママ", text: "「アイス^^」" },
+            { speaker: "ゆたかママ", text: "「しかも帰宅してから全部食べる気もする、、🤣」" },
+            { speaker: "ゆたかママ", text: "「この前、シュークリームに練乳注入して食べた気がしてきた。。。」" },
+            { image: "Yutaka.ichigomiruku.png", speaker: "ゆたかママ", text: "「そりゃ太るわね🤣」" },
+            { text: "【システム説明】<br>ゆたかママは毎週少しずつ太ります。<br><br>毎週終了時<br>体重 +0.2kg<br><br>ストレス70以上<br>体重 +0.7kg<br><br>ストレス90以上<br>体重 +1.4kg" },
+            { speaker: "ゆたかママ", text: "「やっぱりジム行かなきゃダメか🤣」" },
+            { speaker: "ゆたかママ", text: "「人生甘くないわね」" }
+        ]
+    };
+
+    const pkSuccessEvent = {
+        id: "pkSuccess",
+        title: "PKセーブ成功",
+        steps: [
+            { text: "🧤 ナイスセーブ！" },
+            { speaker: "スヌタロウ", text: "「止められたーーー🤣」" },
+            { speaker: "ゆたかママ", text: "「当然よ🤣」" },
+            { speaker: "スヌタロウ", text: "「じゃあ生ビールおごる🍺」" },
+            { speaker: "青リンゴ", text: "「ブッフォンばりね！」" },
+            { speaker: "青リンゴ", text: "「イタリア代表GKね！⚽」" },
+            { speaker: "青リンゴ", text: "「レイソルファンとしては南って言おうとしたけど、あまり知られてないからブッフォンにしたんだけど、知らないのね😅」" },
+            { text: "図鑑登録" },
+            { text: "🧤 ブッフォン賞ゲット" }
+        ],
+        effects: { money: 15000, energy: 10, stress: -10, weight: 0 }
+    };
+
+    const pkFailEvent = {
+        id: "pkFail",
+        title: "PK失点",
+        steps: [
+            { text: "⚽ ゴーーーーール！" },
+            { speaker: "スヌタロウ", text: "「勝ったーーー🤣」" },
+            { speaker: "スヌタロウ", text: "「アーセナル優勝ユニフォーム買って⚽」" },
+            { speaker: "ゆたかママ", text: "「なんでよ🤣」" },
+            { speaker: "スヌタロウ", text: "「PKのルールだから🤣」" },
+            { speaker: "スヌタロウ", text: "「だって22年ぶりだよ、優勝！」" },
+            { speaker: "ゆたかママ", text: "「ほな、22年ならしょうがないかーｗ」" },
+            { speaker: "スヌタロウ", text: "「イケメンいるから！」" },
+            { speaker: "ゆたかママ", text: "「あら、デクランライスちゃん、ありかもｗ」" }
+        ],
+        effects: { money: -30000, energy: 10, stress: 0, weight: 0 }
+    };
+
+    let gameState = {
+age: 39, month: 7, weekOfMonth: 3, totalWeek: 0,
+energy: 50, stress: 55, money: 10000, weight: 78,
+hasSeenNaturalWeightEvent: false,
+hasSeenOpening: false,
+hasSeen95kgWarning: false,
+gymInjuryWeeks: 0,
+loveTarget: null,
+loveStage: 0,
+loveSuccessCount: 0,
+isDating: false,
+canMarry: false,
+loveChoiceMode: false,
+confessionChoiceMode: false,
+kotaniBroken: false,
+ootaniBroken: false,
+nakataniBroken: false,
+kotaniHoldUsed: false,
+dateStreak: 0,
+ukareChoiceMode: false,
+};
+
+    const weeklyActions = { '仕事': false, 'ジム': false, 'プライベート': false };
+    const weeksInMonth = { 1: 5, 2: 4, 3: 4, 4: 4, 5: 5, 6: 4, 7: 4, 8: 5, 9: 4, 10: 4, 11: 4, 12: 5 };
+
+    let currentEvent = null;
+    let currentStepIndex = -1;
+    let isShowingResult = false;
+    let isReadyToAdvanceWeek = false;
+    let isTitleScreen = true;
+    let isNewGameConfirm = false;
+    let titleCursorIndex = 0;
+    let isPkChoiceMode = false;   
+    let isGymMenu = false;
+    let isPrivateMenu = false;
+    let isBaitoMenu = false;
+　  let isLoveMenu = false;
+    let isRacuneChoiceMode = false;
+    let isRacuneJankenMode = false;
+    let isRacuneAmidaMode = false;
+    let isDevilChoiceMode = false; 
+    let isDevilEscapeMode = false;
+    let devilEscapeCount = 0;
+    let devilEscapeTimer = null;
+    let isDevilEscapeStarted = false;
+    let isDevilEscapeFinished = false;
+    let isMuscleTrainingMode = false;
+    let muscleTrainingCount = 0;
+    let muscleTrainingTimer = null;
+    let isMuscleTrainingStarted = false;
+    let isMuscleTrainingFinished = false;
+    let bonusMoney = 0;
+    let isGameFinished = false;
+    let isTrophyShowing = false;
+    let isZukanMode = false;
+    let zukanPage = 0;
+    const ZUKAN_PER_PAGE = 10;
+let zukanType = "event";
+let characterZukanPage = 0;
+let characterCursorIndex = 0;
+let isCharacterDetailMode = false;
+const CHARACTER_ZUKAN_PER_PAGE = 10;
+const characterBookList = [
+
+{ name: "ゆたかママ", profile: "バーニコニコの雇われ店長。この物語の主人公。埼玉県出身だけどシンジュクに帰化し、自称「シンジュクの女」。彼氏とお店の独立が夢。ずっとダイエット中といっている。玉の裏が臭いらしい。ジムでてちてちが日課。", likes: "ケンタッキーと背が大きい短髪ガッチリ男性", phrase: "いつまでもあると思うな髪の毛とニコニコ" },
+{ name: "聖奈", profile: "バーニコニコの常連。貧乏OLなのに、ゆたかママが痩せちゃわないように優しさでよくお菓子や食べ物を差し入れしてくる。", likes: "スヌーピー、Tiffany", phrase: "おいしいもの食べいこー" },
+{ name: "なお", profile: "みらいラウンジとアシェランテの敏腕オーナー。沖縄との2拠点生活。シンジュクにいる時は、バーニコニコによく来る。", likes: "ベルサーチ", phrase: "毛を抜きなさい" },
+{ name: "こころ", profile: "ラキュンのオーナー。オーナーなので偉いから平日は部下を働かせ、自分はバーニコニコで飲んでいる。それが部下の反感を買っているとかいないとか。たまにコスプレしている。", likes: "Dior", phrase: "ご馳走様でーす！" },
+{ name: "ゆかりママ", profile: "パーピュアのオーナー。ゆたかママの「シンジュクのお母さん」。暖かくゆたかママを見守っている。お店が休みの日はバーニコニコへよく飲みに来る。", likes: "ガチムチ髭マッチョ", phrase: "あら、いらっしゃい" },
+{ name: "青リンゴ", profile: "ダンディー風なバーニコニコの土曜スタッフ。ゆたかママの両親世代なのに、「しゃべってないで皿洗って！」「手を動かして！」とよく怒られている。陰でゆたかママの悪口を言ってストレス発散している。でもたまに客としてお店に現れる。結婚は数回して子供もたくさんいるとかいないとか。現在の妻、ナツコとは不仲説があり、新しい恋を探しているもよう。", likes: "女と柏レイソル", phrase: "おじさんさ～" },
+{ name: "むぎ", profile: "みらいラウンジ常連。名前の由来はビール🍺。たまにバーニコニコにも遊びにくる。DJイベントにもたくさん参加している人気DJ。", likes: "ビール、DJ", phrase: "ビール下さい" },
+{ name: "スヌタロウ", profile: "バーニコニコのお客さんで聖奈のいとこ。いとこだけあって、ゆたかママの健康を心配して（？）差し入れもってくる。たまにゆたかママとシンバシに飲みに行く。", likes: "サッカー、アーセナル", phrase: "PKやろう！" },
+{ name: "よしみ姉さん", profile: "以前ゆたかママとバーニコニコで働いていたが、独立。現在は、四谷三丁目よしみ座のオーナーママ。もとダンサーであり、キレキレダンスが得意。", likes: "キラキラ✨", phrase: "それそれ、あらっ" },
+{ name: "くさみ", profile: "バーニコニコのイベント時のみ現れる人気キャスト。なぜかその時はゆたかママがどこかに行ってしまう。", likes: "男とお金", phrase: "玉の裏が臭み～" },
+{ name: "青リンゴママ", profile: "ゆたかママの逃亡によりバーニコニコを継承。シンジュクの名物ママへ。新人スタッフ福原へ今までの恨みを晴らすかのように厳しい当たり。", likes: "新人福原いじめ", phrase: "ほら、手を動かす！" },
+{ name: "新人スタッフ福原くん", profile: "バーニコニコをしばらく休んだが、心機一転、新人からやり直し。青リンゴと立場逆転してしまう。こき使われて痩せはじめたらしい。", likes: "ビール", phrase: "心機一転がんばります" },
+{ name: "コタニ", profile: "ガチムチ？ぽっちゃり？なゲイ。いいやつ。サラリーマンのため、ワイシャツ姿がよく似合う。しゃべるとオネエ。シンバシでよく飲んでいる。", likes: "お酒、ジュノス", phrase: "せいやちゃん" },
+{ name: "オオタニ", profile: "長身、イケメン、かっちり体型でゆたかママの理想。お金も1000億ほど持っており、文句なし。ただし相手にも最低限の努力、体型維持を求める。", likes: "野球、筋トレ", phrase: "憧れるのはやめましょう" },
+{ name: "ナカタニ", profile: "あいのりのヒデばりに中田に憧れている。サッカートークに幼稚園時代サッカーやっていたゆたかママはなんとかついていく。が、オフサイドはまだわからない。", likes: "ファッション、日本酒", phrase: "旅とは人生であり、人生とは旅である" }
+];
+    function startNewGame() {
+        localStorage.removeItem("yutakatch_save");
+        gameState.age = 39; gameState.month = 7; gameState.weekOfMonth = 3; gameState.totalWeek = 0;
+        gameState.energy = 50; gameState.stress = 55; gameState.money = 10000; gameState.weight = 78;
+        gameState.hasSeenNaturalWeightEvent = false;
+gameState.hasSeenOpening = false;
+gameState.hasSeen95kgWarning = false;
+gameState.gymInjuryWeeks = 0;
+gameState.loveTarget = null;
+gameState.loveStage = 0;
+gameState.loveSuccessCount = 0;
+gameState.isDating = false;
+gameState.canMarry = false;
+gameState.loveChoiceMode = false;
+gameState.confessionChoiceMode = false;
+gameState.kotaniBroken = false;
+gameState.ootaniBroken = false;
+gameState.nakataniBroken = false;
+gameState.kotaniHoldUsed = false;
+gameState.dateStreak = 0;
+gameState.ukareChoiceMode = false;
+
+        Object.assign(weeklyActions, { '仕事': false, 'ジム': false, 'プライベート': false });
+        currentEvent = null; currentStepIndex = -1; isShowingResult = false; isReadyToAdvanceWeek = false;
+        isGameFinished = false;
+        gameState.hasSeenOpening = true;
+        currentEvent = openingEvent;
+        currentStepIndex = 0;
+        bonusMoney = 0;
+        applyStep(currentEvent, currentStepIndex);
+        isTitleScreen = false;
+        isNewGameConfirm = false;
+    }
+
+    function showTitle() {
+        isTitleScreen = true;
+        titleCursorIndex = 0;
+        renderTitle();
+    }
+
+    function renderTitle() {
+        const savedData = localStorage.getItem("yutakatch_save");
+        let html = "<br>";
+        html += (titleCursorIndex === 0) ? "▶ 💖 はじめから<br>" : " 💖 はじめから<br>";
+        if (savedData) {
+            html += (titleCursorIndex === 1) ? "▶ 💋 つづきから" : " 💋 つづきから";
+        } else {
+            html += "<br>セーブデータがありません";
+        }
+        document.getElementById('message-content').innerHTML = html;
+    }
+
+    function pickRandomEvent(events) {
+        const totalRate = events.reduce((sum, e) => sum + e.rate, 0);
+        let rand = Math.random() * totalRate;
+        for (const event of events) {
+            rand -= event.rate;
+            if (rand <= 0) return event;
+        }
+        return events[0];
+    }
+
+    function saveGame() {
+        localStorage.setItem("yutakatch_save", JSON.stringify(gameState));
+        document.getElementById('message-content').innerText = "セーブしました。";
+    }
+
+    function loadGame() {
+        const savedData = localStorage.getItem("yutakatch_save");
+        if (!savedData) return;
+        const loadedState = JSON.parse(savedData);
+        Object.assign(gameState, loadedState);
+        updateStatus();
+        currentEvent = null; currentStepIndex = -1; isShowingResult = false; isReadyToAdvanceWeek = false;
+        isGameFinished = (gameState.totalWeek >= 104);
+        document.getElementById('event-image').style.display = 'none';
+        document.getElementById('char-image').style.display = 'none';
+        document.getElementById('message-content').innerText = "コンテニューしました。";
+        isTitleScreen = false;
+    }
+
+    function getWeeklyNaturalWeightGain() {
+        if (gameState.stress >= 90) return 1.4;
+        if (gameState.stress >= 70) return 0.7;
+        return 0.2;
+    }
+
+    function applyWeeklyNaturalWeightGain() {
+        const gain = getWeeklyNaturalWeightGain();
+        gameState.weight += gain;
+        return gain;
+    }
+
+    function advanceWeek() {
+        gameState.totalWeek += 1;
+        gameState.weekOfMonth += 1;
+        if (gameState.weekOfMonth > weeksInMonth[gameState.month]) {
+            gameState.weekOfMonth = 1;
+            gameState.month += 1;
+            if (gameState.month > 12) gameState.month = 1;
+        }
+
+        if (gameState.totalWeek === 52) {
+            gameState.age = 40;
+        } else if (gameState.totalWeek === 104) {
+            gameState.age = 41;
+        }
+
+        const gain = applyWeeklyNaturalWeightGain();
+        updateStatus();
+if (gameState.totalWeek >= 104) {
+    startEnding();
+    return;
+}
+        weeklyActions['仕事'] = false; weeklyActions['ジム'] = false; weeklyActions['プライベート'] = false;
+        isReadyToAdvanceWeek = false;
+
+        if (gameState.totalWeek >= 4 && !gameState.hasSeenNaturalWeightEvent) {
+            gameState.hasSeenNaturalWeightEvent = true;
+            currentEvent = naturalWeightSystemEvent;
+            currentStepIndex = 0;
+            applyStep(currentEvent, currentStepIndex);
+        } else {
+            document.getElementById('message-content').innerText = `次の週になりました。
+自然増加で体重が${gain.toFixed(1)}kg増えました。`;
+        }
+    }
+function startEnding() {
+    let endingId = "E10";
+
+    if (gameState.money >= 10000000) {
+        if (gameState.canMarry && gameState.loveTarget === "コタニ") {
+            endingId = "E3";
+        } else if (gameState.canMarry && gameState.loveTarget === "オオタニ" && gameState.weight < 70) {
+            endingId = "E5";
+        } else if (gameState.canMarry && gameState.loveTarget === "ナカタニ") {
+            endingId = "E7";
+        } else {
+            endingId = "E1";
+        }
+    } else if (gameState.money >= 5000000) {
+        if (gameState.canMarry && gameState.loveTarget === "コタニ") {
+            endingId = "E4";
+        } else if (gameState.canMarry && gameState.loveTarget === "オオタニ" && gameState.weight < 70) {
+            endingId = "E6";
+        } else if (gameState.canMarry && gameState.loveTarget === "ナカタニ") {
+            endingId = "E8";
+        } else {
+            endingId = "E2";
+        }
+    }
+
+    currentEvent = workEvents.find(e => e.id === endingId);
+    currentStepIndex = 0;
+    bonusMoney = 0;
+    applyStep(currentEvent, currentStepIndex);
+}
+    function checkWeeklyActionsComplete() {
+        if (weeklyActions['仕事'] && weeklyActions['ジム'] && weeklyActions['プライベート']) {
+            isReadyToAdvanceWeek = true;
+            document.getElementById('message-content').innerText = "全ての行動が完了しました。決定で次の週へ進みます。";
+        }
+    }
+
+    function applyStep(event, index) {
+        if (index >= event.steps.length) {
+            if (event.id === "OPENING_001") {
+                currentEvent = null; document.getElementById('message-content').innerText = "仕事、ジム、プライベートを各1回ずつ完了してください。";
+            } else if (event.id === "L5a") {
+    currentEvent = workEvents.find(e => e.id === "L5");
+    currentStepIndex = 0;
+    applyStep(currentEvent, currentStepIndex);
+} else if (event.id && event.id.startsWith("E")) {
+    showEndingClearScreen();
+} else if (event.id !== "SYS_NaturalWeight_001") {
+    showResult();
+} else {
+                currentEvent = null; document.getElementById('message-content').innerText = "行動を選択してください";
+            }
+            return;
+        }
+
+        const step = event.steps[index];
+if (step.text === "図鑑登録") {
+    currentStepIndex++;
+    applyStep(event, currentStepIndex);
+
+    const trophyKey = "trophy_seen_" + event.id;
+
+    if (!localStorage.getItem(trophyKey)) {
+        localStorage.setItem(trophyKey, "true");
+
+        const count = getZukanCount();
+
+       if (count >= 50 && !localStorage.getItem("silver_trophy_unlocked")) {
+            localStorage.setItem("silver_trophy_unlocked", "true");
+            setTimeout(() => {
+                showSpecialTrophy("silver", "🏆 図鑑 " + count + " / " + TOTAL_ZUKAN_COUNT + "<br><br>シルバーゆたかトロフィー獲得！");
+            }, 300);
+       } else if (count >= 100 && !localStorage.getItem("gold_trophy_unlocked")) {
+    localStorage.setItem("gold_trophy_unlocked", "true");
+
+    setTimeout(() => {
+        showSpecialTrophy(
+            "gold",
+            "🎉 イベント図鑑 COMPLETE！<br><br>" +
+            "ゆたかは<br><br>" +
+            "『図鑑マスター』の称号を<br>" +
+            "手に入れた！"
+        );
+    }, 300);
+
+    if (
+        localStorage.getItem("character_trophy_unlocked") &&
+        !localStorage.getItem("all_complete_unlocked")
+    ) {
+        localStorage.setItem("all_complete_unlocked", "true");
+
+        setTimeout(() => {
+            showAllCompleteTrophy();
+        }, 2200);
+    }
+}else {
+            setTimeout(showTrophy, 300);
+        }
+    }
+
+    return;
+}let displaySpeaker = step.speaker;
+let displayText = step.text;
+if (step.text && step.text.includes("ゲット")) {
+    const trophyKey = "trophy_seen_" + event.id;
+
+    if (localStorage.getItem(trophyKey)) {
+        displayText = "🆕 " + step.text;
+    }
+}
+if (displaySpeaker === "恋人") {
+    displaySpeaker = gameState.loveTarget;
+}
+
+if (gameState.loveTarget === "ナカタニ" && event.id && event.id.startsWith("L1")) {
+    if (displaySpeaker === "コタニ") displaySpeaker = "ナカタニ";
+    if (displayText) displayText = displayText.replaceAll("コタニ", "ナカタニ");
+}
+
+        if (step.type === "bonusCheck") {
+            if (event.bonusCondition && event.bonusCondition.id === step.bonusId) {
+                const isSuccess = (event.bonusCondition.condition === "weight <= 70" && gameState.weight <= 70);
+                if (isSuccess) {
+                    if (event.bonusCondition.bonusEffects && event.bonusCondition.bonusEffects.money) {
+                        bonusMoney = event.bonusCondition.bonusEffects.money;
+                    }
+                    currentStepIndex++;
+                    applyStep(event, currentStepIndex);
+                } else {
+                    showResult();
+                }
+            } else {
+                currentStepIndex++;
+                applyStep(event, currentStepIndex);
+            }
+            return;
+        }
+
+        if (step.type === "pkChoice") {
+            document.getElementById('event-image').style.display = 'none';
+            document.getElementById('char-image').style.display = 'none';
+            document.getElementById('message-content').innerHTML = step.text;
+            isPkChoiceMode = true;
+            return;
+        }
+
+        if (step.type === "racuneChoice") {
+            document.getElementById('event-image').style.display = 'none';
+            document.getElementById('char-image').style.display = 'none';
+            document.getElementById('message-content').innerHTML = step.text;
+            isRacuneChoiceMode = true;
+            return;
+        }
+
+        if (step.type === "racuneJanken") {
+            document.getElementById('event-image').style.display = 'none';
+            document.getElementById('char-image').style.display = 'none';
+            document.getElementById('message-content').innerHTML = step.text;
+            isRacuneJankenMode = true;
+            return;
+        }
+
+        if (step.type === "racuneAmida") {
+            document.getElementById('event-image').style.display = 'none';
+            document.getElementById('char-image').style.display = 'none';
+            document.getElementById('message-content').innerHTML = step.text;
+            isRacuneAmidaMode = true;
+            return;
+        }
+        if (step.type === "devilChoice") {
+            document.getElementById('event-image').style.display = 'none';
+            document.getElementById('char-image').style.display = 'none';
+            document.getElementById('message-content').innerHTML = step.text;
+            isDevilChoiceMode = true;
+            return;
+        }
+        if (step.type === "loveChoice") {
+            document.getElementById('event-image').style.display = 'none';
+            document.getElementById('char-image').style.display = 'none';
+            document.getElementById('message-content').innerHTML = step.text;
+            gameState.loveChoiceMode = true;
+            return;
+        }
+if (step.type === "confessionChoice") {
+    document.getElementById('event-image').style.display = 'none';
+    document.getElementById('char-image').style.display = 'none';
+    document.getElementById('message-content').innerHTML = step.text;
+    gameState.confessionChoiceMode = true;
+    return;
+}
+if (step.type === "ukareChoice") {
+    document.getElementById('event-image').style.display = 'none';
+    document.getElementById('char-image').style.display = 'none';
+    document.getElementById('message-content').innerHTML = step.text;
+    gameState.ukareChoiceMode = true;
+    return;
+}
+        const img = document.getElementById('event-image');
+        const charImg = document.getElementById('char-image');
+        const textDisplay = document.getElementById('message-content');
+
+        if (step.image || step.speaker) {
+    img.style.display = 'none';
+    charImg.style.display = 'none';
+}
+
+        if (displaySpeaker) {
+    unlockCharacter(displaySpeaker);
+}
+
+if (step.image) {
+    img.src = "images/" + step.image;
+    img.style.display = 'block';
+} else if (displaySpeaker) {
+const dotFile = characterDotMap[displaySpeaker];
+if (dotFile) {
+    charImg.src = "images/" + dotFile;
+    charImg.style.display = 'block';
+}
+}
+
+       if (displaySpeaker) {
+    const emoji = characterEmojiMap[displaySpeaker] || "";
+    textDisplay.innerHTML = `<b>${emoji} ${displaySpeaker}</b><br>${displayText}`;
+} else {
+    textDisplay.innerHTML = displayText || "";
+}
+    }
+function showEndingClearScreen() {
+    document.getElementById('char-image').style.display = 'none';
+
+    const img = document.getElementById('event-image');
+    img.src = "images/Yutaka.end.png";
+    img.style.display = 'block';
+
+    document.getElementById('message-content').innerHTML =
+        "クリアおめでとう！<br><br>" +
+        "エンディングは10個あるので<br>" +
+        "全部コンプリート目指してね！<br>" +
+        "イベント図鑑とキャラ図鑑の<br>" +
+        "コンプリートも目指してね！";
+
+    isGameFinished = true;
+    currentEvent = null;
+    currentStepIndex = -1;
+    isShowingResult = false;
+}
+
+    function showResult() {
+        document.getElementById('event-image').style.display = 'none';
+        document.getElementById('char-image').style.display = 'none';
+        const res = currentEvent.effects;
+        const totalMoney = res.money + bonusMoney;
+        let resultHtml = `結果<br>お金: ${totalMoney > 0 ? '+' : ''}${totalMoney.toLocaleString()}<br>元気: ${res.energy > 0 ? '+' : ''}${res.energy}<br>ストレス: ${res.stress > 0 ? '+' : ''}${res.stress}`;
+
+if (res.beauty !== undefined) {
+    resultHtml += `<br>美容: ${res.beauty > 0 ? '+' : ''}${res.beauty}`;
+}
+
+document.getElementById('message-content').innerHTML = resultHtml;
+        gameState.money += totalMoney;
+gameState.energy += res.energy;
+gameState.stress += res.stress;
+gameState.weight += res.weight;
+gameState.beauty = (gameState.beauty || 0) + (res.beauty || 0);
+        
+        gameState.energy = Math.max(0, Math.min(100, gameState.energy));
+        gameState.stress = Math.max(0, Math.min(100, gameState.stress));
+        
+        updateStatus();
+        isShowingResult = true;
+        
+if (currentEvent.id === "O3") {
+gameState.hasSeen95kgWarning = true;
+}
+
+if (currentEvent.id === "G1c") {
+    gameState.gymInjuryWeeks = 2;
+}
+if (currentEvent.id === "B2c") {
+    gameState.gymInjuryWeeks = 4;
+}
+       
+ if (
+    currentEvent.id === "W23" ||
+    currentEvent.id === "E9" ||
+    currentEvent.id === "L9" ||
+    currentEvent.id.startsWith("E")
+) {
+    isGameFinished = true;
+} 
+        
+        currentEvent = null; currentStepIndex = -1;
+        bonusMoney = 0;
+    }
+function showTrophy() {
+    isTrophyShowing = true;
+
+    const trophy = document.getElementById("trophy-image");
+    trophy.style.display = "block";
+
+    trophy.style.animation = "none";
+    trophy.offsetHeight;
+    trophy.style.animation = "trophyPop 0.9s ease-out";
+
+    setTimeout(() => {
+        trophy.style.display = "none";
+        isTrophyShowing = false;
+    }, 900);
+}   
+function showSpecialTrophy(type, text) {
+    isTrophyShowing = true;
+
+    const trophyId = type === "gold" ? "gold-trophy-image" : "silver-trophy-image";
+    const trophy = document.getElementById(trophyId);
+
+    trophy.style.display = "block";
+    trophy.style.animation = "none";
+    trophy.offsetHeight;
+    trophy.style.animation = "trophyPop 1.8s ease-out";
+
+    document.getElementById("message-content").innerHTML = text;
+
+    setTimeout(() => {
+        trophy.style.display = "none";
+        isTrophyShowing = false;
+    }, 1800);
+}
+function showCharacterTrophy() {
+    isTrophyShowing = true;
+
+    const trophy = document.getElementById("character-trophy-image");
+    trophy.style.display = "block";
+    trophy.style.animation = "none";
+    trophy.offsetHeight;
+    trophy.style.animation = "trophyPop 1.8s ease-out";
+
+    document.getElementById("message-content").innerHTML =
+    "🎉 キャラ図鑑 COMPLETE！<br><br>" +
+    "ゆたかは<br><br>" +
+    "『キャラマスター』の称号を<br>" +
+    "手に入れた！";
+
+    setTimeout(() => {
+        trophy.style.display = "none";
+        isTrophyShowing = false;
+    }, 1800);
+}
+
+function showAllCompleteTrophy() {
+    isTrophyShowing = true;
+
+    const trophy = document.getElementById("allcomplete-image");
+    trophy.style.display = "block";
+    trophy.style.animation = "none";
+    trophy.offsetHeight;
+    trophy.style.animation = "trophyPop 2.0s ease-out";
+
+    document.getElementById("message-content").innerHTML =
+        "👑 ALL COMPLETE！<br><br>" +
+        "ゆたかは<br><br>" +
+        "『ゆたかっちマスター』の称号を<br>" +
+        "手に入れた！<br><br>" +
+        "あなたはゆたかのすべてを<br>" +
+        "もう知っている！";
+
+    setTimeout(() => {
+        trophy.style.display = "none";
+        isTrophyShowing = false;
+    }, 2000);
+}
+
+function getZukanCount() {
+    let count = 0;
+
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith("trophy_seen_")) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+const TOTAL_ZUKAN_COUNT = 101;
+function getZukanNameById(id) {
+    const extraZukan = {
+        pkSuccess: "🧤 ブッフォン賞ゲット",
+        F15_BUY: "😈 悪魔こころゲット",
+        F15_ESCAPE_SUCCESS: "😈 悪魔こころゲット",
+        F15_ESCAPE_FAIL: "😈 悪魔こころゲット"
+    };
+
+    if (extraZukan[id]) return extraZukan[id];
+
+    const event = workEvents.find(e => e.id === id);
+    if (!event || !event.steps) return id;
+
+    const index = event.steps.findIndex(s => s.text === "図鑑登録");
+    if (index >= 0 && event.steps[index + 1]) {
+        return event.steps[index + 1].text.replace("ゲット！", "").replace("ゲット", "");
+    }
+
+    return id;
+}
+
+function isCharacterUnlocked(name) {
+    return localStorage.getItem("character_seen_" + name) === "true";
+}
+
+function unlockCharacter(name) {
+    if (!characterBookList.some(chara => chara.name === name)) return false;
+    const key = "character_seen_" + name;
+    if (localStorage.getItem(key)) return false;
+    localStorage.setItem(key, "true");
+
+    const characterCount = characterBookList.filter(chara => isCharacterUnlocked(chara.name)).length;
+    if (characterCount >= characterBookList.length && !localStorage.getItem("character_trophy_unlocked")) {
+        localStorage.setItem("character_trophy_unlocked", "true");
+        setTimeout(() => {
+            showCharacterTrophy();
+
+if (
+    localStorage.getItem("gold_trophy_unlocked") &&
+    !localStorage.getItem("all_complete_unlocked")
+) {
+    localStorage.setItem("all_complete_unlocked", "true");
+
+    setTimeout(() => {
+        showAllCompleteTrophy();
+    }, 2200);
+}
+        }, 300);
+    }
+
+    return true;
+}
+
+function showZukan() {
+    isZukanMode = true;
+
+    const zukanOrder = [];
+
+    workEvents.forEach(event => {
+        if (event.steps && event.steps.some(s => s.text === "図鑑登録")) {
+            zukanOrder.push(event.id);
+        }
+    });
+
+    ["pkSuccess", "F15_BUY", "F15_ESCAPE_SUCCESS", "F15_ESCAPE_FAIL"].forEach(id => {
+        zukanOrder.push(id);
+    });
+
+    const uniqueOrder = [...new Set(zukanOrder)];
+
+    while (uniqueOrder.length < TOTAL_ZUKAN_COUNT) {
+        uniqueOrder.push(null);
+    }
+
+    const totalPages = Math.max(1, Math.ceil(TOTAL_ZUKAN_COUNT / ZUKAN_PER_PAGE));
+    if (zukanPage < 0) zukanPage = 0;
+    if (zukanPage >= totalPages) zukanPage = totalPages - 1;
+
+    const start = zukanPage * ZUKAN_PER_PAGE;
+    const pageIds = uniqueOrder.slice(start, start + ZUKAN_PER_PAGE);
+
+    const gotCount = getZukanCount();
+
+    let html = "📖 図鑑：" + gotCount + " / " + TOTAL_ZUKAN_COUNT + "ゲット";
+    html += "　　Page " + (zukanPage + 1) + " / " + totalPages + "<br><br>";
+
+    html += pageIds.map((id, i) => {
+        const no = start + i + 1;
+
+        if (!id) {
+            return no + ".？？？？？";
+        }
+
+        const trophyKey = "trophy_seen_" + id;
+
+        if (localStorage.getItem(trophyKey)) {
+            return no + "." + getZukanNameById(id);
+        } else {
+            return no + ".？？？？？";
+        }
+    }).join("<br>");
+
+    html += "<br>🔵前　🔴次　🟢閉";
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "11px";
+    msg.style.lineHeight = "1.12";
+    msg.style.textAlign = "left";
+    msg.style.overflowY = "hidden";
+    msg.style.pointerEvents = "none";
+
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+    msg.innerHTML = html;
+} 
+function showCharacterZukan() {
+    isZukanMode = true;
+    isCharacterDetailMode = false;
+
+    characterZukanPage = Math.floor(characterCursorIndex / CHARACTER_ZUKAN_PER_PAGE);
+
+    const totalPages = Math.max(1, Math.ceil(characterBookList.length / CHARACTER_ZUKAN_PER_PAGE));
+    if (characterZukanPage < 0) characterZukanPage = 0;
+    if (characterZukanPage >= totalPages) characterZukanPage = totalPages - 1;
+
+    const start = characterZukanPage * CHARACTER_ZUKAN_PER_PAGE;
+    const pageCharacters = characterBookList.slice(start, start + CHARACTER_ZUKAN_PER_PAGE);
+
+    let html = "👤 キャラ図鑑";
+    html += "　　Page " + (characterZukanPage + 1) + " / " + totalPages + "<br><br>";
+
+    if (characterZukanPage === 0) {
+        html += "🏆 トロフィー<br>";
+        html += localStorage.getItem("silver_trophy_unlocked") ? "🥈 シルバーゆたか<br>" : "🥈 ？？？？？<br>";
+        html += localStorage.getItem("gold_trophy_unlocked") ? "🥇 ゴールドゆたか<br><br>" : "🥇 ？？？？？<br><br>";
+    }
+
+    html += pageCharacters.map((chara, i) => {
+        const realIndex = start + i;
+        const no = realIndex + 1;
+        const cursor = realIndex === characterCursorIndex ? "▶" : "　";
+        const displayName = isCharacterUnlocked(chara.name) ? chara.name : "？？？？？";
+return cursor + no + ". " + displayName;
+    }).join("<br>");
+
+    html += "<br>🔵前　🔴次　🟢詳細<br>図鑑ボタン：イベント図鑑へ";
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "11px";
+    msg.style.lineHeight = "1.12";
+    msg.style.textAlign = "left";
+    msg.style.overflowY = "hidden";
+    msg.style.pointerEvents = "none";
+
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+    msg.innerHTML = html;
+}
+
+ function showCharacterDetail() {
+    isCharacterDetailMode = true;
+
+    const chara = characterBookList[characterCursorIndex];
+
+if (!isCharacterUnlocked(chara.name)) {
+    showCharacterZukan();
+    return;
+}
+
+const dotFile = characterDotMap[chara.name];
+
+    const charImg = document.getElementById("char-image");
+    document.getElementById("event-image").style.display = "none";
+
+    if (dotFile) {
+        charImg.src = "images/" + dotFile;
+        charImg.style.display = "block";
+    } else {
+        charImg.style.display = "none";
+    }
+
+    let html = "👤 " + chara.name + "<br><br>";
+    html += chara.profile + "<br><br>";
+    html += "♥️好きなもの<br>" + chara.likes + "<br><br>";
+    html += "🤐口癖<br>" + chara.phrase + "<br><br>";
+    html += "🟢戻る";
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "10px";
+    msg.style.lineHeight = "1.18";
+    msg.style.textAlign = "left";
+    msg.style.overflowY = "hidden";
+    msg.style.pointerEvents = "none";
+    msg.innerHTML = html;
+}
+
+ function updateStatus() {
+        document.getElementById('stat-week').innerHTML = `${gameState.age}歳<br>${gameState.month}月 第${gameState.weekOfMonth}週`;
+        document.getElementById('stat-energy').innerText = `元気 ${gameState.energy}`;
+        document.getElementById('stat-stress').innerText = `ストレス ${gameState.stress}`;
+        document.getElementById('stat-money').innerText = gameState.money.toLocaleString();
+        document.getElementById('stat-weight').innerText = gameState.weight.toFixed(1) + 'kg';
+    }
+
+    function action(name) {
+if (isTrophyShowing) {
+    return;
+}
+if (isZukanMode) {
+
+    if (name === "図鑑") {
+        isCharacterDetailMode = false;
+
+        if (zukanType === "event") {
+            zukanType = "character";
+            characterCursorIndex = 0;
+            showCharacterZukan();
+        } else {
+            zukanType = "event";
+            zukanPage = 0;
+            showZukan();
+        }
+        return;
+    }
+
+    if (zukanType === "character") {
+        if (isCharacterDetailMode) {
+            if (name === "決定" || name === "戻る") {
+                showCharacterZukan();
+            }
+            return;
+        }
+
+        if (name === "戻る") {
+            characterCursorIndex--;
+            if (characterCursorIndex < 0) characterCursorIndex = characterBookList.length - 1;
+            showCharacterZukan();
+            return;
+        }
+
+        if (name === "進む") {
+            characterCursorIndex++;
+            if (characterCursorIndex >= characterBookList.length) characterCursorIndex = 0;
+            showCharacterZukan();
+            return;
+        }
+
+        if (name === "決定") {
+            showCharacterDetail();
+            return;
+        }
+    }
+
+    if (name === "戻る") {
+        zukanPage--;
+        showZukan();
+        return;
+    }
+
+    if (name === "進む") {
+        zukanPage++;
+        showZukan();
+        return;
+    }
+
+    if (name === "決定") {
+        isZukanMode = false;
+        zukanType = "event";
+        isCharacterDetailMode = false;
+
+        const msg = document.getElementById("message-content");
+        msg.style.fontSize = "18px";
+        msg.style.lineHeight = "1.45";
+        msg.style.textAlign = "center";
+        msg.style.overflowY = "hidden";
+        msg.style.pointerEvents = "none";
+
+        document.getElementById("char-image").style.display = "none";
+        msg.innerHTML = "行動を選択してください";
+        return;
+    }
+}        if (isTitleScreen) {
+            if (isNewGameConfirm) {
+                if (name === '決定') startNewGame();
+                else if (name === '戻る') { isNewGameConfirm = false; renderTitle(); }
+            } else {
+                if (name === '進む') {
+                    if (localStorage.getItem("yutakatch_save")) {
+                        titleCursorIndex = (titleCursorIndex === 0) ? 1 : 0;
+                        renderTitle();
+                    }
+                } else if (name === '決定') {
+                    if (titleCursorIndex === 0) {
+                        if (localStorage.getItem("yutakatch_save")) {
+                            isNewGameConfirm = true;
+                            document.getElementById('message-content').innerHTML = "💋 本当に最初から始める？<br>今のセーブデータは<br>消えちゃうわよ？🤣<br><br>▶ はじめる<br> やめておく";
+                        } else {
+                            startNewGame();
+                        }
+                    } else {
+                        loadGame();
+                    }
+                }
+            }
+            return;
+        }
+
+       if (isGameFinished) {
+    if (name === "セーブ") {
+        saveGame();
+        return;
+    }
+
+    
+    }
+if (gameState.ukareChoiceMode) {
+    if (name !== '戻る' && name !== '進む') return;
+
+    gameState.ukareChoiceMode = false;
+
+    if (name === '戻る') {
+        currentEvent = workEvents.find(e => e.id === "L9");
+    } else {
+        currentEvent = {
+            id: "L8_NG",
+            steps: [
+                { speaker: "ゆたかママ", text: "「浮かれてない🤣」" },
+                { speaker: "青リンゴ", text: "「ならいいけど。」" },
+                { speaker: "青リンゴ", text: "「次の休みは少し落ち着きなさいよ。」" },
+                { text: "⚠️ 次週デートを選択すると<br>恋愛依存イベント発生" },
+                { text: "図鑑登録" },
+                { text: "🏆 浮かれゆたかゲット！" }
+            ],
+            effects: currentEvent.effects
+        };
+    }
+
+    weeklyActions['プライベート'] = true;
+    currentStepIndex = 0;
+    bonusMoney = 0;
+    applyStep(currentEvent, currentStepIndex);
+    return;
+}
+if (gameState.confessionChoiceMode) {
+   if (name !== '戻る' && name !== '進む' && name !== '決定') return;
+
+    gameState.confessionChoiceMode = false;
+
+    if (name === '戻る') {
+        gameState.isDating = true;
+        gameState.loveStage = 4;
+
+        currentEvent = {
+            id: "CONFESSION_OK",
+            steps: currentEvent.confessionOkSteps || [
+    { speaker: gameState.loveTarget, text: "「ありがとう。うれしいよ。」" },
+    { text: "彼氏ができた！<br>うふふふ♡" }
+],
+            effects: currentEvent.effects
+        };
+    } else {
+
+ if (gameState.loveTarget === "コタニ") {
+    gameState.kotaniBroken = true;
+}
+if (gameState.loveTarget === "ナカタニ") {
+    gameState.nakataniBroken = true;
+}
+
+        currentEvent = {
+            id: "CONFESSION_NG",
+           steps: currentEvent.confessionNgSteps || [
+    { speaker: gameState.loveTarget, text: "「そっか。まあ、まだ3回しかデートしてないもんね」" },
+    { speaker: gameState.loveTarget, text: "「また遊ぼうね。」" },
+    { speaker: gameState.loveTarget, text: "「またケンタでも行こうよ。」" },
+    { speaker: "ゆたかママ", text: "「ケンタなら行く！ｗ」" },
+    { speaker: gameState.loveTarget, text: "「そこは即答なんだ🤣」" },
+    { text: "彼氏にはしなかったけど、まだ友達は継続にしたｗ" },
+{
+    text: gameState.loveTarget === "ナカタニ"
+        ? "だってなんかナカタに似てるんだもん🤣"
+        : "だってなんかコテツに似てるんだもん🤣"
+},   
+    { text: "またケンタ友達ね🤣" }
+],
+            effects: {
+                money: 0,
+                energy: 0,
+                stress: 5,
+                weight: 0
+            }
+        };
+    }
+
+    weeklyActions['プライベート'] = true;
+    currentStepIndex = 0;
+    applyStep(currentEvent, currentStepIndex);
+    return;
+}
+     if (gameState.loveChoiceMode) {
+    if (name !== '戻る' && name !== '進む' && name !== '決定') return;
+
+    gameState.loveChoiceMode = false;
+
+    const loveEventId = currentEvent.id;
+    const correctChoice = currentEvent.correctChoice || "戻る";
+    const isCorrect = (name === correctChoice);
+
+    if (isCorrect) {
+        gameState.loveStage += 1;
+if (loveEventId === "L1f" || loveEventId === "L2f") {
+    gameState.canMarry = true;
+}
+        let successText = currentEvent.successText || "「気が合うね😊」";
+
+        currentEvent = {
+            id: "LOVE_SUCCESS",
+            steps: [
+                { speaker: gameState.loveTarget, text: successText },
+                { text: "デートは成功したみたい😊うふふ♥️" }
+            ],
+                       effects: currentEvent.effects
+        };
+    } else {
+        if (gameState.loveTarget === "コタニ") {
+            gameState.kotaniBroken = true;
+        }
+if (gameState.loveTarget === "ナカタニ") {
+    gameState.nakataniBroken = true;
+}
+        
+if (["L1a", "L1b", "L1c", "L2a", "L2b", "L2c"].includes(loveEventId)) {
+    currentEvent = workEvents.find(e => e.id === "L4");
+    weeklyActions["プライベート"] = true;
+    currentStepIndex = 0;
+    applyStep(currentEvent, currentStepIndex);
+    return;
+}
+currentEvent = {
+            id: "LOVE_FAIL",
+           steps: (currentEvent.failStepsByChoice && currentEvent.failStepsByChoice[name]) || currentEvent.failSteps || [
+    { speaker: gameState.loveTarget, text: "「なんでやねん！」" },
+    { text: "今後" + gameState.loveTarget + "からのナイモン連絡がくることはなかった。。" },
+    { text: "デート失敗💩" }
+],
+            effects: {
+                money: 0,
+                energy: -10,
+                stress: 20,
+                weight: 2
+            }
+        };
+    }
+
+    weeklyActions['プライベート'] = true;
+ 
+currentStepIndex = 0;
+    applyStep(currentEvent, currentStepIndex);
+    return;
+}
+
+        if (isPkChoiceMode) {
+            let playerChoice = null;
+            if (name === '戻る') playerChoice = 'left';
+            if (name === '進む') playerChoice = 'center';
+            if (name === '決定') playerChoice = 'right';
+
+            if (!playerChoice) return;
+
+            const directions = ['left', 'center', 'right'];
+            const shot = directions[Math.floor(Math.random() * directions.length)];
+
+            currentEvent = (playerChoice === shot) ? pkSuccessEvent : pkFailEvent;
+            isPkChoiceMode = false;
+            currentStepIndex = 0;
+            applyStep(currentEvent, currentStepIndex);
+            return;
+        }
+        if (isRacuneChoiceMode) {
+            isRacuneChoiceMode = false;
+
+            if (name === '戻る') {
+                currentEvent = {
+                    id: "F5_BATTLE",
+                    steps: [
+                        { speaker: "ゆたかママ", text: "「勝負よ！🤣」" },
+                        { speaker: "こころ", text: "「じゃんけんね🤣」" },
+                        { type: "racuneJanken", text: "🍾 じゃんけんイベント<br><br>どれを出す？<br><br>🔵 戻る → ✊ グー<br>🔴 進む → ✌️ チョキ<br>🟢 決定 → ✋ パー" }
+                    ],
+                    effects: { money: 0, energy: 0, stress: 0, weight: 0 }
+                };
+            } else if (name === '進む') {
+                currentEvent = {
+                    id: "F5_ESCAPE",
+                    steps: [
+                        { speaker: "ゆたかママ", text: "「今日は帰るわ🤣」" },
+                        { speaker: "こころ", text: "「逃がさないわよ🤣」" },
+                        { text: "💥<br>こころ の パンチ！<br>10のダメージ！" },
+                        { speaker: "ゆたかママ", text: "「痛っ🤣」" },
+                        { speaker: "こころ", text: "「じゃんけんね🤣」" },
+                        { type: "racuneJanken", text: "🍾 じゃんけんイベント<br><br>どれを出す？<br><br>🔵 戻る → ✊ グー<br>🔴 進む → ✌️ チョキ<br>🟢 決定 → ✋ パー" }
+                    ],
+                    effects: { money: 0, energy: -10, stress: 0, weight: 0 }
+                };
+                gameState.energy -= 10;
+                gameState.energy = Math.max(0, gameState.energy);
+                updateStatus();
+            } else if (name === '決定') {
+                currentEvent = {
+                    id: "F5_DRINK",
+                    steps: [
+                        { speaker: "ゆたかママ", text: "「とりあえず1杯🤣」" },
+                        { speaker: "こころ", text: "「ありがとー🤣」" },
+                        { speaker: "ゆたかママ", text: "「ごくごく」<br>「じゃあ帰るわ🤣」" },
+                        { speaker: "こころ", text: "「何言ってるの🤣」" },
+                        { speaker: "こころ", text: "「じゃんけんね🤣」" },
+                        { type: "racuneJanken", text: "🍾 じゃんけんイベント<br><br>どれを出す？<br><br>🔵 戻る → ✊ グー<br>🔴 進む → ✌️ チョキ<br>🟢 決定 → ✋ パー" }
+                    ],
+                    effects: { money: 0, energy: 0, stress: 0, weight: 0 }
+                };
+            } else {
+                return;
+            }
+
+            currentStepIndex = 0;
+            applyStep(currentEvent, currentStepIndex);
+            return;
+        }
+
+        if (isRacuneJankenMode) {
+            if (name !== '戻る' && name !== '進む' && name !== '決定') return;
+
+            isRacuneJankenMode = false;
+
+            const isLose = Math.random() < 0.5;
+
+            if (isLose) {
+                currentEvent = {
+                    id: "F5_LOSE",
+                    steps: [
+                        { speaker: "こころ", text: "「勝ったーーー🤣」" },
+                        { speaker: "こころ", text: "「シャンパンお願いしまーす🍾🤣」" },
+                        { image: "Kokoro.kanpai.jpg", speaker: "こころ", text: "「ごちそーさまでーす」" },
+                        { speaker: "ゆたかママ", text: "「やっぱりそうなるのね🤣」" },
+                        { speaker: "ゆたかママ", text: "「ぼ、ぼったくりバー。。。」" },
+                        { speaker: "こころ", text: "「はーーー？」" },
+                        { text: "図鑑登録" },
+                        { text: "🍾 シャンパンについてたこころキーホルダーゲット" }
+                    ],
+                    effects: { money: -2000, energy: 10, stress: 0, weight: 0.5 }
+                };
+            } else {
+                currentEvent = {
+                    id: "F5_WIN",
+                    steps: [
+                        { speaker: "こころ", text: "「えー、負けたんですけど💢」" },
+                        { speaker: "こころ", text: "「つまんなーい🤣」" },
+                        { speaker: "こころ", text: "「もう1回違うゲームやろ🤣」" },
+                        { speaker: "ゆたかママ", text: "「まだあるの！？🤣」" },
+                        { speaker: "こころ", text: "「あみだくじー🤣」" },
+                        { type: "racuneAmida", text: "あみだくじ<br><br>どれを選ぶ？<br><br>🔵 戻る → A<br>🔴 進む → B<br>🟢 決定 → C" }
+                    ],
+                    effects: { money: 0, energy: 0, stress: 0, weight: 0 }
+                };
+            }
+
+            currentStepIndex = 0;
+            applyStep(currentEvent, currentStepIndex);
+            return;
+        }
+
+        if (isRacuneAmidaMode) {
+            if (name !== '戻る' && name !== '進む' && name !== '決定') return;
+
+            isRacuneAmidaMode = false;
+
+            let moneyCost = -3000;
+            let drinkText = "🍺 1杯おごる";
+
+            if (name === '進む') {
+                moneyCost = -4000;
+                drinkText = "🍺🍺 2杯おごる";
+            }
+
+            if (name === '決定') {
+                moneyCost = -5000;
+                drinkText = "🍺🍺🍺 3杯おごる";
+            }
+
+            currentEvent = {
+                id: "F5_AMIDA_RESULT",
+                steps: [
+                    { text: drinkText },
+                    { speaker: "こころ", text: "「ごちそーさまでーす🤣」" }
+                ],
+                effects: { money: moneyCost, energy: 10, stress: 0, weight: 0.5 }
+            };
+
+            currentStepIndex = 0;
+            applyStep(currentEvent, currentStepIndex);
+            return;
+        }
+
+
+        if (isDevilChoiceMode) {
+
+            if (name !== '戻る' && name !== '進む' && name !== '決定') return;
+
+            isDevilChoiceMode = false;
+
+            if (name === '戻る') {
+
+                currentEvent = {
+                    id: "F15_BUY",
+                    steps: [
+                        { speaker: "こころ", text: "「やったー😊」" },
+                        { speaker: "こころ", text: "「ゆたかママ大好き😍」" },
+                        { speaker: "ゆたかママ", text: "「来年のこの時期は電話でないようにしなきゃ。」" },
+                        { speaker: "こころ", text: "「なんか言った？」" },
+                        { speaker: "ゆたかママ", text: "「言ってません😅」" },
+                        { text: "図鑑登録" },
+                        { text: "😈 悪魔こころゲット" }
+                    ],
+                    effects: {
+                        money: -70000,
+                        energy: 10,
+                        stress: 10,
+                        weight: 0
+                    }
+                };
+
+                weeklyActions['プライベート'] = true;
+                currentStepIndex = 0;
+                applyStep(currentEvent, currentStepIndex);
+                return;
+            }
+
+            isDevilEscapeMode = true;
+            isDevilEscapeStarted = false;
+            isDevilEscapeFinished = false;
+            devilEscapeCount = 0;
+
+                        document.getElementById('message-content').innerHTML =
+                "🏃 悪魔こころから逃げろ！<br><br>READY...";
+
+            setTimeout(() => {
+                document.getElementById('message-content').innerHTML = "3";
+            }, 700);
+
+            setTimeout(() => {
+                document.getElementById('message-content').innerHTML = "2";
+            }, 1200);
+
+            setTimeout(() => {
+                document.getElementById('message-content').innerHTML = "1";
+            }, 1700);
+
+            setTimeout(() => {
+                document.getElementById('message-content').innerHTML =
+                    "💨 GO!!<br><br>" +
+                    "8秒以内に55回連打せよ！<br><br>" +
+                    "🔵 戻るボタンを連打！";
+            }, 2200);
+
+            return;
+        }
+
+        if (isDevilEscapeFinished && name === '決定') {
+            isDevilEscapeFinished = false;
+
+            if (devilEscapeCount >= 55) {
+                currentEvent = {
+                    id: "F15_ESCAPE_SUCCESS",
+                    steps: [
+                        { speaker: "ゆたかママ", text: "「逃げ切ったーーー！」" },
+                        { speaker: "こころ", text: "「チッ💢」" },
+                        { text: "数日後。" },
+                        { text: "🍾 ラキュン" },
+                        { image: "Kokoro.kanpai.jpg", speaker: "こころ", text: "「誕生日シャンパンありがとう♡」" },
+                        { speaker: "ゆたかママ", text: "「逃げ切ったはずなのに🤣」" },
+                        { speaker: "こころ", text: "「逃がさない♡」" },
+　　　　　　　　　　　 { speaker: "こころ", text: "「ご馳走様でーす！」" },
+                        { text: "図鑑登録" },
+                        { text: "😈 悪魔こころゲット" }
+                    ],
+                    effects: {
+                        money: -20000,
+                        energy: -30,
+                        stress: 5,
+                        weight: 0
+                    }
+                };
+            } else {
+                currentEvent = {
+                    id: "F15_ESCAPE_FAIL",
+                    steps: [
+                        { speaker: "こころ", text: "「捕まえた♡」" },
+                        { speaker: "ゆたかママ", text: "「終わった😱」" },
+                        { speaker: "こころ", text: "「ネックレス買おうね♡」" },
+                        { speaker: "ゆたかママ", text: "「・・・はい。」" },
+                        { speaker: "こころ", text: "「逃げたからシャンパンもね。」" },
+                        { speaker: "ゆたかママ", text: "「・・・はい。」" },
+                        { text: "図鑑登録" },
+                        { text: "😈 悪魔こころゲット" }
+                    ],
+                    effects: {
+                        money: -90000,
+                        energy: -30,
+                        stress: 10,
+                        weight: 0
+                    }
+                };
+            }
+
+            weeklyActions['プライベート'] = true;
+            currentStepIndex = 0;
+            applyStep(currentEvent, currentStepIndex);
+            return;
+        }
+
+        if (isDevilEscapeMode) {
+            if (name === '戻る') {
+if (document.getElementById('message-content').innerHTML.indexOf("GO!!") === -1) {
+    return;
+}
+                if (!isDevilEscapeStarted) {
+                    isDevilEscapeStarted = true;
+                    devilEscapeCount = 1;
+
+                    devilEscapeTimer = setTimeout(() => {
+                        isDevilEscapeMode = false;
+                        isDevilEscapeFinished = true;
+
+                        document.getElementById('message-content').innerHTML =
+                            "逃走終了！<br><br>" +
+                            devilEscapeCount +
+                            "回でした。<br><br>" +
+                            "決定で結果";
+                    }, 8000);
+                } else {
+                    devilEscapeCount++;
+                }
+
+                document.getElementById('message-content').innerHTML =
+                    "逃走中！<br><br>" +
+                    devilEscapeCount + "回";
+
+                return;
+            }
+
+            return;
+        }
+
+        if (isMuscleTrainingFinished && name === '決定') {
+            isMuscleTrainingFinished = false;
+
+            if (muscleTrainingCount <= 29) {
+                currentEvent = workEvents.find(e => e.id === "G2a");
+            } else if (muscleTrainingCount <= 49) {
+                currentEvent = workEvents.find(e => e.id === "G2b");
+            } else if (muscleTrainingCount <= 69) {
+                currentEvent = workEvents.find(e => e.id === "G2c");
+            } else if (muscleTrainingCount <= 89) {
+                currentEvent = workEvents.find(e => e.id === "G2d");
+            } else {
+                currentEvent = workEvents.find(e => e.id === "G2e");
+            }
+
+            weeklyActions['ジム'] = true;
+            currentStepIndex = 0;
+            applyStep(currentEvent, currentStepIndex);
+            return;
+        }
+
+        if (isMuscleTrainingMode) {
+            if (name === '戻る') {
+                if (!isMuscleTrainingStarted) {
+                    isMuscleTrainingStarted = true;
+                    muscleTrainingCount = 1;
+
+                    muscleTrainingTimer = setTimeout(() => {
+                        isMuscleTrainingMode = false;
+                        isMuscleTrainingFinished = true;
+
+                        document.getElementById('message-content').innerHTML =
+                            "筋トレ終了！<br><br>" +
+                            "今日の筋トレは " +
+                            muscleTrainingCount +
+                            "回でした。<br><br>" +
+                            "決定で次へ";
+                    }, 7000);
+                } else {
+                    muscleTrainingCount++;
+                }
+
+                document.getElementById('message-content').innerHTML =
+                    "筋トレ連打中！<br><br>" +
+                    muscleTrainingCount + "回";
+
+                return;
+            }
+
+            return;
+        }
+        if (isLoveMenu) {
+            if (name !== '戻る' && name !== '進む' && name !== '決定') return;
+
+            isLoveMenu = false;
+
+            let target = null;
+
+            if (name === '戻る' && !gameState.kotaniBroken) {
+                target = "コタニ";
+            }
+
+            if (name === '進む' && !gameState.ootaniBroken) {
+                target = "オオタニ";
+            }
+
+            if (name === '決定' && gameState.kotaniBroken && !gameState.nakataniBroken) {
+                target = "ナカタニ";
+            }
+
+           if (!target) {
+    isLoveMenu = true;
+    document.getElementById('message-content').innerHTML =
+        "その相手とはデートできません。<br>連絡先消したしｗ<br>別の相手を選んでね。<br><br>" +
+        "🔵 戻る → コタニ" + (gameState.kotaniBroken ? "（終了）" : "") + "<br>" +
+        "🔴 進む → オオタニ" + (gameState.ootaniBroken ? "（終了）" : "") + "<br>" +
+        "🟢 決定 → " + (gameState.kotaniBroken && !gameState.nakataniBroken ? "ナカタニ" : "まだ選べません");
+    return;
+}
+if (gameState.isDating && target !== gameState.loveTarget) {
+    if (gameState.loveTarget === "コタニ") gameState.kotaniBroken = true;
+    if (gameState.loveTarget === "オオタニ") gameState.ootaniBroken = true;
+    if (gameState.loveTarget === "ナカタニ") gameState.nakataniBroken = true;
+
+    gameState.isDating = false;
+    gameState.canMarry = false;
+    gameState.loveStage = 0;
+
+    currentEvent = workEvents.find(e => e.id === "L5a");
+    weeklyActions['プライベート'] = true;
+    currentStepIndex = 0;
+    bonusMoney = 0;
+    applyStep(currentEvent, currentStepIndex);
+    return;
+}
+                       gameState.loveTarget = target;
+
+if (target === "コタニ") {
+
+    let eventId = "L1a";
+
+    if (gameState.loveStage === 1) eventId = "L1b";
+    if (gameState.loveStage === 2) eventId = "L1c";
+    if (gameState.loveStage === 3) eventId = "L1d";
+    if (gameState.loveStage === 4) eventId = "L1e";
+    if (gameState.loveStage === 5) eventId = "L1f";
+
+    currentEvent = workEvents.find(e => e.id === eventId);
+    currentStepIndex = 0;
+    bonusMoney = 0;
+    applyStep(currentEvent, currentStepIndex);
+    return;
+}     
+if (target === "オオタニ") {
+
+    let eventId = "L2a";
+
+    if (gameState.loveStage === 1) eventId = "L2b";
+    if (gameState.loveStage === 2) eventId = "L2c";
+    if (gameState.loveStage === 3) eventId = "L2d";
+    if (gameState.loveStage === 4) eventId = "L2e";
+    if (gameState.loveStage === 5) eventId = "L2f";
+
+    currentEvent = workEvents.find(e => e.id === eventId);
+    currentStepIndex = 0;
+    bonusMoney = 0;
+    applyStep(currentEvent, currentStepIndex);
+    return;
+}    
+  
+if (target === "ナカタニ") {
+
+    let eventId = "L1a";
+
+    if (gameState.loveStage === 1) eventId = "L1b";
+    if (gameState.loveStage === 2) eventId = "L1c";
+    if (gameState.loveStage === 3) eventId = "L1d";
+    if (gameState.loveStage === 4) eventId = "L1e";
+    if (gameState.loveStage === 5) eventId = "L1f";
+
+    currentEvent = workEvents.find(e => e.id === eventId);
+    currentStepIndex = 0;
+    bonusMoney = 0;
+    applyStep(currentEvent, currentStepIndex);
+    return;
+}
+            weeklyActions['プライベート'] = true;
+            document.getElementById('message-content').innerHTML =
+                target + "とのデートイベントは次に実装します🤣";
+
+            checkWeeklyActionsComplete();
+            return;        }
+        if (isBaitoMenu) {
+            if (name !== '戻る' && name !== '進む' && name !== '決定') return;
+
+            isBaitoMenu = false;
+
+            let baitoPrefix = "B1";
+
+            if (name === '戻る') {
+                baitoPrefix = "B1";
+            }
+
+            if (name === '進む') {
+                baitoPrefix = "B2";
+            }
+
+            if (name === '決定') {
+                baitoPrefix = "B3";
+            }
+
+            const baitoCandidates = workEvents.filter(e =>
+                e.id && e.id.startsWith(baitoPrefix)
+            );
+
+            if (baitoCandidates.length === 0) {
+                weeklyActions['プライベート'] = true;
+                document.getElementById('message-content').innerHTML =
+                    "このバイトイベントはまだ登録されていません🤣";
+                checkWeeklyActionsComplete();
+                return;
+            }
+
+            currentEvent = pickRandomEvent(baitoCandidates);
+            weeklyActions['プライベート'] = true;
+            currentStepIndex = 0;
+            bonusMoney = 0;
+            applyStep(currentEvent, currentStepIndex);
+            return;
+        }
+
+        if (isGymMenu) {
+            if (name === '戻る') {
+                isGymMenu = false;
+                currentEvent = pickRandomEvent(
+                    workEvents.filter(e =>
+                        e.id === "G1a" ||
+                        e.id === "G1b" ||
+                        e.id === "G1c" ||
+                        e.id === "G1d"
+                    )
+                );
+                weeklyActions['ジム'] = true;
+                currentStepIndex = 0;
+                applyStep(currentEvent, currentStepIndex);
+                return;
+            }
+
+          if (name === '進む') {
+    isGymMenu = false;
+
+    const muscleEvent = pickRandomEvent([
+        { id: "NORMAL", rate: 95 },
+        { id: "G2f", rate: 5 }
+    ]);
+
+    if (muscleEvent.id === "G2f") {
+
+        currentEvent = workEvents.find(e => e.id === "G2f");
+
+        weeklyActions['ジム'] = true;
+        currentStepIndex = 0;
+        applyStep(currentEvent, currentStepIndex);
+        return;
+    }
+
+    isMuscleTrainingMode = true;
+    isMuscleTrainingStarted = false;
+    isMuscleTrainingFinished = false;
+
+    muscleTrainingCount = 0;
+
+    document.getElementById('message-content').innerHTML =
+        "筋トレ開始！<br><br>" +
+        "左はじの戻るボタンを押してスタート！";
+
+    return;
+}
+
+            if (name === '決定') {
+                isGymMenu = false;
+                currentEvent = pickRandomEvent(
+                    workEvents.filter(e =>
+                        e.id === "G3a" ||
+                        e.id === "G3b" ||
+                        e.id === "G3c"
+                    )
+                );
+                weeklyActions['ジム'] = true;
+                currentStepIndex = 0;
+                applyStep(currentEvent, currentStepIndex);
+                return;
+            }
+            return;
+        }
+        if (isPrivateMenu) {
+                        if (name === '戻る') {
+    isPrivateMenu = false;
+
+    if (gameState.canMarry) {
+        gameState.dateStreak += 1;
+
+        if (gameState.dateStreak >= 3) {
+            currentEvent = workEvents.find(e => e.id === "L9");
+        } else if (gameState.dateStreak === 2) {
+            currentEvent = workEvents.find(e => e.id === "L8");
+        } else {
+            const eventId = Math.random() < 0.5 ? "L6" : "L7";
+            currentEvent = workEvents.find(e => e.id === eventId);
+        }
+
+        weeklyActions["プライベート"] = true;
+        currentStepIndex = 0;
+        bonusMoney = 0;
+        applyStep(currentEvent, currentStepIndex);
+        return;
+    }
+
+    isLoveMenu = true;
+
+                let loveMenuText =
+                    "デートする相手を選んでください<br><br>" +
+                    "🔵 戻る → コタニ<br>" +
+                    "🔴 進む → オオタニ";
+
+                if (gameState.kotaniBroken) {
+                    loveMenuText += "<br>🟢 決定 → ナカタニ";
+                } else {
+                    loveMenuText += "<br>🟢 決定 → まだ選べません";
+                }
+
+                document.getElementById('message-content').innerHTML = loveMenuText;
+                return;
+            }
+
+            if (name === '進む') {
+                isPrivateMenu = false;
+gameState.dateStreak = 0;
+                const privateSpecialChances = {
+                    F13: 50,
+                    F14: 50,
+                    F15: 25,
+                    F16: 50,
+                    F17: 50
+                };
+
+                const privateSpecialEvent = workEvents.find(e =>
+                    e.id &&
+                    privateSpecialChances[e.id] !== undefined &&
+                    e.triggerWeeks &&
+                    e.triggerWeeks.includes(gameState.totalWeek) &&
+                    Math.random() * 100 < privateSpecialChances[e.id]
+                );
+
+                if (privateSpecialEvent) {
+                    currentEvent = privateSpecialEvent;
+                    weeklyActions['プライベート'] = true;
+                    currentStepIndex = 0;
+                    bonusMoney = 0;
+                    applyStep(currentEvent, currentStepIndex);
+                    return;
+                }
+                const friendCandidates = workEvents.filter(e =>
+                    e.id && e.id.startsWith("F") && !e.triggerWeeks
+                );
+
+                if (friendCandidates.length === 0) {
+                    weeklyActions['プライベート'] = true;
+                    document.getElementById('message-content').innerText =
+                        "仲間と遊ぶイベントがまだありません。";
+                    checkWeeklyActionsComplete();
+                    return;
+                }
+
+                currentEvent = pickRandomEvent(friendCandidates);
+                weeklyActions['プライベート'] = true;
+                currentStepIndex = 0;
+                bonusMoney = 0;
+                applyStep(currentEvent, currentStepIndex);
+                return;
+            }
+
+                                 if (name === '決定') {
+                isPrivateMenu = false;
+                isBaitoMenu = true;
+gameState.dateStreak = 0;
+
+
+                document.getElementById('message-content').innerHTML =
+                    "バイトメニュー<br><br>" +
+                    "🔵 戻る → ケーキ屋<br>" +
+                    "🔴 進む → 引っ越し<br>" +
+                    "🟢 決定 → タイミー";
+
+                return;
+            }
+            return;
+        }
+if (name === '図鑑') {
+    if (currentEvent || isReadyToAdvanceWeek || isShowingResult) return;
+    zukanType = "event";
+    zukanPage = 0;
+    showZukan();
+    return;
+}     
+ if (name === 'セーブ') {
+            if (currentEvent || isReadyToAdvanceWeek || isShowingResult) return;
+            saveGame();
+        } else if (name === '設定') {
+            if (currentEvent || isReadyToAdvanceWeek || isShowingResult) return;
+            loadGame();
+        } else if (name === '仕事') {
+            if (weeklyActions['仕事'] || currentEvent || isReadyToAdvanceWeek) return;
+
+            currentEvent = workEvents.find(e => e.id === "E9" && gameState.weight >= 100);
+
+            if (!currentEvent) {
+                currentEvent = workEvents.find(e =>
+                    e.id === "O3" &&
+                    gameState.weight >= 95 &&
+                    !gameState.hasSeen95kgWarning
+                );
+            }
+
+            if (!currentEvent) {
+                currentEvent = workEvents.find(e => e.id === "O1" && gameState.stress >= 100);
+            }
+
+            if (!currentEvent) {
+                currentEvent = workEvents.find(e => e.id === "O2" && gameState.energy <= 0);
+            }
+
+            if (!currentEvent) {
+                currentEvent = workEvents.find(e =>
+    e.id &&
+    e.id.startsWith("W") &&
+    e.triggerWeeks &&
+    e.triggerWeeks.includes(gameState.totalWeek)
+);
+            }
+
+            if (!currentEvent) {
+    currentEvent = pickRandomEvent(
+        workEvents.filter(e =>
+            e.id.startsWith("W") &&
+            !e.triggerWeeks
+        )
+    );
+}
+
+            if (!currentEvent) {
+                document.getElementById('message-content').innerText = "仕事イベントが登録されていません。";
+                return;
+            }
+
+            weeklyActions['仕事'] = true;
+            currentStepIndex = 0;
+            bonusMoney = 0;
+            applyStep(currentEvent, currentStepIndex);
+        } else if (name === 'ジム') {
+            if (weeklyActions['ジム'] || currentEvent || isReadyToAdvanceWeek) return;
+            if (gameState.gymInjuryWeeks > 0) {
+                gameState.gymInjuryWeeks -= 1;
+                weeklyActions['ジム'] = true;
+                document.getElementById('message-content').innerText =
+                    "負傷中なので、今日はジム行かず安静にします🤕";
+                checkWeeklyActionsComplete();
+                updateStatus();
+                return;
+            }
+
+            isPrivateMenu = false;
+            isGymMenu = true;
+
+            document.getElementById('message-content').innerHTML =
+                "ジムメニュー<br><br>" +
+                "🔵 戻る → てちてち<br>" +
+                "🔴 進む → 筋トレ<br>" +
+                "🟢 決定 → 今日はさぼっちゃう";
+               } else if (name === 'プライベート') {
+            if (weeklyActions['プライベート'] || currentEvent || isReadyToAdvanceWeek) return;
+            isGymMenu = false;
+            isPrivateMenu = true;
+
+            document.getElementById('message-content').innerHTML =
+                "プライベートメニュー<br><br>" +
+                "🔵 戻る → デートする<br>" +
+                "🔴 進む → 仲間と遊ぶ<br>" +
+                "🟢 決定 → バイトする";
+        } else if (name === '決定' || name === '進む') {
+            if (currentEvent) {
+                currentStepIndex++;
+                applyStep(currentEvent, currentStepIndex);
+            } else if (isReadyToAdvanceWeek) {
+                advanceWeek();
+            } else if (isShowingResult) {
+                isShowingResult = false;
+                if (isGameFinished) {
+    startEnding();
+    return;
+} else if (weeklyActions['仕事'] && weeklyActions['ジム'] && weeklyActions['プライベート']) {
+                    isReadyToAdvanceWeek = true;
+                    document.getElementById('message-content').innerText = "全ての行動が完了しました。決定で次の週へ進みます。";
+                } else {
+                    document.getElementById('message-content').innerText = "行動を選択してください";
+                }
+            }
+        }
+    }
+    updateStatus();
+    showTitle();
+</script>
+</body>
+</html>
