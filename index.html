@@ -4,19 +4,26 @@
     <meta charset="UTF-8">
     <title>ゆたかっち 〜シンジュクコイ物語〜</title>
     <style>
-        body { margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #333; }
+       body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #333;
+}
         
         #game-container {
-            position: relative;
-            width: 100%;
-            max-width: 450px;
-            aspect-ratio: 9 / 19;
-            background-image: url('Yutakamain11.png');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            overflow: hidden;
-        }
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    aspect-ratio: auto;
+    background-image: url('Yutakamain11.png');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
 
         .btn { position: absolute; cursor: pointer; border: none; background: transparent; padding: 0; outline: none; }
 
