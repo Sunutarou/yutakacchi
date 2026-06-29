@@ -2048,6 +2048,22 @@ if (name === '図鑑') {
     }
     updateStatus();
     showTitle();
+
+function fitGameToScreen() {
+    const game = document.getElementById("game-container");
+    const baseW = 450;
+    const baseH = 950;
+    const scale = Math.min(window.innerWidth / baseW, window.innerHeight / baseH);
+
+    game.style.width = baseW + "px";
+    game.style.height = baseH + "px";
+    game.style.transformOrigin = "top center";
+    game.style.transform = "scale(" + scale + ")";
+}
+
+window.addEventListener("load", fitGameToScreen);
+window.addEventListener("resize", fitGameToScreen);
+
 </script>
 </body>
 </html>
