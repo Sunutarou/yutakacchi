@@ -335,9 +335,21 @@ let isSettingsMode = false;
 let isButtonHelpMode = false;
 let isCreditsMode = false;
 let isPlayRecordMode = false;
+let playRecordPage = 0;
+let isDataManageMode = false;
+let dataManageCursor = 0;
+let isDataDeleteConfirmMode = false;
+let dataDeleteConfirmCursor = 0;
+let dataDeleteTarget = "";
+
+let isSaveCompleteMode = false;
+let saveCompleteCursor = 0;
+
 let creditScrollTimer = null;
 let settingsCursor = 0;
 let beforeSettingsState = null;
+let openedFromTitleScreen = false;
+
 
 
 const settingsMenu = [
@@ -348,7 +360,12 @@ const settingsMenu = [
     "💾 データ管理",
     "📖 クレジット"
 ];
-
+const dataManageMenu = [
+    "📊 プレイ記録リセット",
+    "📖 図鑑リセット",
+    "💥 全データ初期化",
+    "↩ 戻る"
+];
 const endingList = [
     "E1",
     "E2",
@@ -453,9 +470,18 @@ function renderNewGameConfirm() {
     }
 
     function saveGame() {
-        localStorage.setItem("yutakatch_save", JSON.stringify(gameState));
-        document.getElementById('message-content').innerText = "セーブしました。";
-    }
+    localStorage.setItem("yutakatch_save", JSON.stringify(gameState));
+    saveBeforeSettingsState();
+    isSaveCompleteMode = true;
+    saveCompleteCursor = 0;
+
+    let html = "セーブしました！<br><br>";
+    html += "▶ ゲームを続ける<br><br>";
+    html += "　タイトルへ戻る<br><br>";
+    html += "🔵/🔴選択　🟢決定";
+
+    document.getElementById('message-content').innerHTML = html;
+}
 
     function loadGame() {
         const savedData = localStorage.getItem("yutakatch_save");
@@ -1122,6 +1148,30 @@ function restoreBeforeSettingsState() {
 
     beforeSettingsState = null;
 }
+function returnToTitleFromMenu() {
+    isSettingsMode = false;
+    isZukanMode = false;
+    isEndingListMode = false;
+    isButtonHelpMode = false;
+    isCreditsMode = false;
+    isPlayRecordMode = false;
+    isCharacterDetailMode = false;
+    zukanType = "event";
+    openedFromTitleScreen = false;
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "18px";
+    msg.style.lineHeight = "1.45";
+    msg.style.textAlign = "center";
+    msg.style.overflowY = "hidden";
+    msg.style.pointerEvents = "none";
+
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+
+    showTitle();
+}
+
 function showSettings() {
     isSettingsMode = true;
     
@@ -1163,10 +1213,62 @@ function updatePlayRecord() {
 
     record.maxMoney = Math.max(record.maxMoney || 0, gameState.money);
     record.minWeight = Math.min(record.minWeight || gameState.weight, gameState.weight);
+    record.maxWeight = Math.max(record.maxWeight || gameState.weight, gameState.weight);
+    record.maxWeek = Math.max(record.maxWeek || 0, gameState.totalWeek);
+    record.maxStress = Math.max(record.maxStress || 0, gameState.stress);
+
+    if (gameState.money >= 5000000) {
+        record.independenceReadyCount = Math.max(record.independenceReadyCount || 0, 1);
+    }
 
     savePlayRecord(record);
 }
 
+function showDataManage() {
+    isSettingsMode = false;
+    isDataManageMode = true;
+
+    let html = "💾 データ管理<br><br>";
+
+    dataManageMenu.forEach((item, index) => {
+        html += (index === dataManageCursor ? "▶ " : "　");
+        html += item + "<br><br>";
+    });
+
+    html += "🔵戻る　🔴進む　🟢決定";
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "12px";
+    msg.style.lineHeight = "1.15";
+    msg.style.textAlign = "left";
+    msg.style.overflowY = "hidden";
+    msg.style.pointerEvents = "none";
+
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+
+    msg.innerHTML = html;
+}
+function showDataDeleteConfirm() {
+    isDataManageMode = false;
+    isDataDeleteConfirmMode = true;
+
+    let html = "⚠ 本当にリセットしますか？<br><br>";
+
+    html += (dataDeleteConfirmCursor === 0 ? "▶ やめる" : "　やめる");
+    html += "<br><br>";
+    html += (dataDeleteConfirmCursor === 1 ? "▶ リセットする" : "　リセットする");
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "12px";
+    msg.style.lineHeight = "1.2";
+    msg.style.textAlign = "left";
+
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+
+    msg.innerHTML = html;
+}
 function showPlayRecord() {
     isSettingsMode = false;
     isPlayRecordMode = true;
@@ -1178,14 +1280,24 @@ function showPlayRecord() {
     const characterCount = characterBookList.filter(chara => isCharacterUnlocked(chara.name)).length;
     const endingCount = endingList.filter(id => localStorage.getItem("ending_seen_" + id) === "true").length;
 
-    let html = "📊 プレイ記録<br><br>";
-    html += "プレイ回数　" + (record.playCount || 0) + "回<br>";
-    html += "クリア回数　" + (record.clearCount || 0) + "回<br><br>";
-    html += "最高貯金　" + (record.maxMoney || 0).toLocaleString() + "円<br>";
-    html += "最低体重　" + ((record.minWeight || gameState.weight).toFixed(1)) + "kg<br><br>";
-    html += "イベント図鑑　" + getZukanCount() + " / " + TOTAL_ZUKAN_COUNT + "<br>";
-    html += "キャラ図鑑　" + characterCount + " / " + characterBookList.length + "<br>";
-    html += "エンディング　" + endingCount + " / " + endingList.length;
+    let html = "📊 プレイ記録　Page " + (playRecordPage + 1) + " / 2<br><br>";
+
+    if (playRecordPage === 0) {
+        html += "プレイ回数　" + (record.playCount || 0) + "回<br>";
+        html += "クリア回数　" + (record.clearCount || 0) + "回<br><br>";
+        html += "最高貯金　" + (record.maxMoney || 0).toLocaleString() + "円<br>";
+        html += "最高週数　" + (record.maxWeek || 0) + "週<br>";
+        html += "独立達成　" + ((record.independenceReadyCount || 0) > 0 ? "達成" : "未達") + "<br><br>";
+        html += "🔵戻る　🔴次　🟢戻る";
+    } else {
+        html += "最低体重　" + ((record.minWeight || gameState.weight).toFixed(1)) + "kg<br>";
+        html += "最高体重　" + ((record.maxWeight || gameState.weight).toFixed(1)) + "kg<br>";
+        html += "最高ストレス　" + (record.maxStress || 0) + "<br><br>";
+        html += "イベント図鑑　" + getZukanCount() + " / " + TOTAL_ZUKAN_COUNT + "<br>";
+        html += "キャラ図鑑　" + characterCount + " / " + characterBookList.length + "<br>";
+        html += "エンディング　" + endingCount + " / " + endingList.length + "<br><br>";
+        html += "🔵前　🔴戻る　🟢戻る";
+    }
 
     const msg = document.getElementById("message-content");
     msg.style.fontSize = "12px";
@@ -1198,8 +1310,7 @@ function showPlayRecord() {
     document.getElementById("char-image").style.display = "none";
 
     msg.innerHTML = html;
-}
-function showButtonHelp() {
+}function showButtonHelp() {
     isSettingsMode = false;
     isButtonHelpMode = true;
 
@@ -1370,12 +1481,56 @@ const dotFile = characterDotMap[chara.name];
         document.getElementById('stat-money').innerText = gameState.money.toLocaleString();
         document.getElementById('stat-weight').innerText = gameState.weight.toFixed(1) + 'kg';
     }
+function action(name) {
+    if (isSaveCompleteMode) {
 
-   function action(name) {
-if (isTrophyShowing) {
+        if (name === "戻る" || name === "進む") {
+            saveCompleteCursor = saveCompleteCursor === 0 ? 1 : 0;
+
+            let html = "セーブしました！<br><br>";
+            html += (saveCompleteCursor === 0 ? "▶ ゲームを続ける" : "　ゲームを続ける");
+            html += "<br><br>";
+            html += (saveCompleteCursor === 1 ? "▶ タイトルへ戻る" : "　タイトルへ戻る");
+            html += "<br><br>";
+            html += "🔵/🔴選択　🟢決定";
+
+            document.getElementById("message-content").innerHTML = html;
+            return;
+        }
+
+        if (name === "決定") {
+            if (saveCompleteCursor === 0) {
+    isSaveCompleteMode = false;
+
+    if (beforeSettingsState) {
+        restoreBeforeSettingsState();
+    } else {
+        document.getElementById("message-content").innerHTML = "行動を選択してください";
+    }
+
     return;
 }
+           if (saveCompleteCursor === 1) {
+    isSaveCompleteMode = false;
 
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+
+    showTitle();
+    return;
+}
+        }
+
+        return;
+    }
+
+  if (isSettingsMode && openedFromTitleScreen && name === "設定") {
+
+
+  if (isSettingsMode && openedFromTitleScreen && name === "設定") {
+    returnToTitleFromMenu();
+    return;
+}
 if (isSettingsMode) {
 
     if (name === "戻る") {
@@ -1393,72 +1548,215 @@ if (isSettingsMode) {
     }
 
     if (name === "決定") {
-
         switch (settingsCursor) {
             case 0:
                 alert("音設定は準備中です😊");
                 break;
             case 1:
-    showButtonHelp();
-    return;
+                showButtonHelp();
+                return;
             case 2:
                 isSettingsMode = false;
                 showEndingList();
                 return;
             case 3:
-    showPlayRecord();
+                showPlayRecord();
+                return;
+           case 4:
+    showDataManage();
     return;
-            case 4:
-                alert("データ管理は次に作ります😊");
-                break;
             case 5:
-    showCredits();
-    return;
+                showCredits();
+                return;
         }
 
         return;
     }
 }
-if (isPlayRecordMode) {
-    if (name === "決定" || name === "戻る") {
-        isPlayRecordMode = false;
-        showSettings();
-    }
-    return;
-}
-if (isButtonHelpMode) {
-if (isCreditsMode) {
-    if (name === "決定" || name === "戻る") {
-        isCreditsMode = false;
-        showSettings();
-    }
-    return;
-}
-    if (name === "決定") {
-        isButtonHelpMode = false;
-        showSettings();
-    }
-    return;
-}
-if (isEndingListMode) {
-    if (name === "決定" || name === "戻る") {
-        isEndingListMode = false;
-        showSettings();
-    }
-    return;
-}
-if (name === "設定") {
-    if (isSettingsMode) {
-        isSettingsMode = false;
-        restoreBeforeSettingsState();
+if (isDataDeleteConfirmMode) {
+
+    if (name === "戻る" || name === "進む") {
+        dataDeleteConfirmCursor = dataDeleteConfirmCursor === 0 ? 1 : 0;
+        showDataDeleteConfirm();
         return;
     }
 
-    saveBeforeSettingsState();
+    if (name === "決定") {
+        if (dataDeleteConfirmCursor === 0) {
+            isDataDeleteConfirmMode = false;
+            isDataManageMode = true;
+            showDataManage();
+            return;
+        }
+
+       if (dataDeleteTarget === 0) {
+    localStorage.removeItem("yutakatch_play_record");
+    alert("プレイ記録をリセットしました😊");
+}
+
+if (dataDeleteTarget === 1) {
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i);
+
+        if (
+            key.startsWith("trophy_seen_") ||
+            key.startsWith("character_seen_") ||
+            key.startsWith("ending_seen_") ||
+            key === "silver_trophy_unlocked" ||
+            key === "gold_trophy_unlocked" ||
+            key === "character_trophy_unlocked" ||
+            key === "all_complete_unlocked"
+        ) {
+            localStorage.removeItem(key);
+        }
+    }
+
+    alert("図鑑データをリセットしました😊");
+}
+if (dataDeleteTarget === 2) {
+    localStorage.removeItem("yutakatch_save");
+    localStorage.removeItem("yutakatch_play_record");
+
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+        const key = localStorage.key(i);
+
+        if (
+            key.startsWith("trophy_seen_") ||
+            key.startsWith("character_seen_") ||
+            key.startsWith("ending_seen_") ||
+            key === "silver_trophy_unlocked" ||
+            key === "gold_trophy_unlocked" ||
+            key === "character_trophy_unlocked" ||
+            key === "all_complete_unlocked"
+        ) {
+            localStorage.removeItem(key);
+        }
+    }
+
+    alert("全データを初期化しました😊");
+}
+isDataDeleteConfirmMode = false;
+isDataManageMode = true;
+showDataManage();
+return;
+    }
+
+    return;
+}
+if (isDataManageMode) {
+
+    if (openedFromTitleScreen && name === "設定") {
+        returnToTitleFromMenu();
+        return;
+    }
+
+    if (name === "戻る") {
+        dataManageCursor--;
+        if (dataManageCursor < 0) dataManageCursor = dataManageMenu.length - 1;
+        showDataManage();
+        return;
+    }
+
+    if (name === "進む") {
+        dataManageCursor++;
+        if (dataManageCursor >= dataManageMenu.length) dataManageCursor = 0;
+        showDataManage();
+        return;
+    }
+
+    if (name === "決定") {
+        if (dataManageCursor === 3) {
+            isDataManageMode = false;
+            showSettings();
+            return;
+        }
+
+       dataDeleteTarget = dataManageCursor;
+dataDeleteConfirmCursor = 0;
+showDataDeleteConfirm();
+return;
+        
+    }
+
+    return;
+}
+if (isPlayRecordMode) {
+
+    if (openedFromTitleScreen && name === "設定") {
+        returnToTitleFromMenu();
+        return;
+    }
+
+    if (name === "進む") {
+        playRecordPage = 1;
+        showPlayRecord();
+        return;
+    }
+
+    if (name === "戻る") {
+        if (playRecordPage === 1) {
+            playRecordPage = 0;
+            showPlayRecord();
+            return;
+        }
+
+        isPlayRecordMode = false;
+        showSettings();
+        return;
+    }
+
+    if (name === "決定") {
+        isPlayRecordMode = false;
+        showSettings();
+        return;
+    }
+
+    return;
+}
+
+if (isCreditsMode || isButtonHelpMode || isEndingListMode) {
+
+    if (openedFromTitleScreen && name === "設定") {
+        returnToTitleFromMenu();
+        return;
+    }
+
+    if (name === "戻る" || name === "決定") {
+        isCreditsMode = false;
+        isButtonHelpMode = false;
+        isEndingListMode = false;
+        showSettings();
+        return;
+    }
+
+    return;
+}if (
+    isZukanMode &&
+    openedFromTitleScreen &&
+    (name === "図鑑" || name === "決定" || name === "戻る")
+) {
+    returnToTitleFromMenu();
+    return;
+}
+if (!isTitleScreen && (name === "設定" || name === "図鑑")) {
+    return;
+}
+
+if (isTitleScreen && name === "設定") {
+    openedFromTitleScreen = true;
     settingsCursor = 0;
     showSettings();
     return;
-}if (isZukanMode) {
+}
+
+if (isTitleScreen && name === "図鑑") {
+    openedFromTitleScreen = true;
+    zukanType = "event";
+    zukanPage = 0;
+    showZukan();
+    return;
+}
+    if (isZukanMode) {
 
     if (name === "図鑑") {
         isCharacterDetailMode = false;
