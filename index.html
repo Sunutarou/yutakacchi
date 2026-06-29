@@ -298,6 +298,7 @@ ukareChoiceMode: false,
     let isTitleScreen = true;
     let isNewGameConfirm = false;
     let titleCursorIndex = 0;
+    let newGameConfirmCursor = 1;
     let isPkChoiceMode = false;   
     let isGymMenu = false;
     let isPrivateMenu = false;
@@ -333,8 +334,11 @@ let isEndingListMode = false;
 let isSettingsMode = false;
 let isButtonHelpMode = false;
 let isCreditsMode = false;
+let isPlayRecordMode = false;
 let creditScrollTimer = null;
 let settingsCursor = 0;
+let beforeSettingsState = null;
+
 
 const settingsMenu = [
     "🎵 音設定",
@@ -376,6 +380,9 @@ const characterBookList = [
 { name: "ナカタニ", profile: "あいのりのヒデばりに中田に憧れている。サッカートークに幼稚園時代サッカーやっていたゆたかママはなんとかついていく。が、オフサイドはまだわからない。", likes: "ファッション、日本酒", phrase: "旅とは人生であり、人生とは旅である" }
 ];
     function startNewGame() {
+const record = getPlayRecord();
+record.playCount = (record.playCount || 0) + 1;
+savePlayRecord(record);
         localStorage.removeItem("yutakatch_save");
         gameState.age = 39; gameState.month = 7; gameState.weekOfMonth = 3; gameState.totalWeek = 0;
         gameState.energy = 50; gameState.stress = 55; gameState.money = 10000; gameState.weight = 78;
@@ -414,7 +421,15 @@ gameState.ukareChoiceMode = false;
         titleCursorIndex = 0;
         renderTitle();
     }
+function renderNewGameConfirm() {
+    let html = "💋 本当に最初から始める？<br>";
+    html += "今のセーブデータは<br>";
+    html += "消えちゃうわよ？💋<br><br>";
+    html += (newGameConfirmCursor === 0) ? "▶ はじめる<br>" : "　はじめる<br>";
+    html += (newGameConfirmCursor === 1) ? "▶ やめておく" : "　やめておく";
 
+    document.getElementById('message-content').innerHTML = html;
+}
     function renderTitle() {
         const savedData = localStorage.getItem("yutakatch_save");
         let html = "<br>";
@@ -733,6 +748,9 @@ if (dotFile) {
 function showEndingClearScreen() {
 if (currentEvent && currentEvent.id && currentEvent.id.startsWith("E")) {
     localStorage.setItem("ending_seen_" + currentEvent.id, "true");
+const record = getPlayRecord();
+record.clearCount = (record.clearCount || 0) + 1;
+savePlayRecord(record);
 }   
 
  document.getElementById('char-image').style.display = 'none';
@@ -776,6 +794,7 @@ gameState.beauty = (gameState.beauty || 0) + (res.beauty || 0);
         gameState.stress = Math.max(0, Math.min(100, gameState.stress));
         
         updateStatus();
+        updatePlayRecord();
         isShowingResult = true;
         
 if (currentEvent.id === "O3") {
@@ -1060,8 +1079,52 @@ return cursor + no + ". " + displayName;
     document.getElementById("char-image").style.display = "none";
     msg.innerHTML = html;
 }
+function saveBeforeSettingsState() {
+    const msg = document.getElementById("message-content");
+    const eventImg = document.getElementById("event-image");
+    const charImg = document.getElementById("char-image");
+
+    beforeSettingsState = {
+        html: msg.innerHTML,
+        fontSize: msg.style.fontSize,
+        lineHeight: msg.style.lineHeight,
+        textAlign: msg.style.textAlign,
+        overflowY: msg.style.overflowY,
+        pointerEvents: msg.style.pointerEvents,
+
+        eventDisplay: eventImg.style.display,
+        eventSrc: eventImg.src,
+
+        charDisplay: charImg.style.display,
+        charSrc: charImg.src
+    };
+}
+
+function restoreBeforeSettingsState() {
+    if (!beforeSettingsState) return;
+
+    const msg = document.getElementById("message-content");
+    const eventImg = document.getElementById("event-image");
+    const charImg = document.getElementById("char-image");
+
+    msg.innerHTML = beforeSettingsState.html;
+    msg.style.fontSize = beforeSettingsState.fontSize;
+    msg.style.lineHeight = beforeSettingsState.lineHeight;
+    msg.style.textAlign = beforeSettingsState.textAlign;
+    msg.style.overflowY = beforeSettingsState.overflowY;
+    msg.style.pointerEvents = beforeSettingsState.pointerEvents;
+
+    eventImg.src = beforeSettingsState.eventSrc;
+    eventImg.style.display = beforeSettingsState.eventDisplay;
+
+    charImg.src = beforeSettingsState.charSrc;
+    charImg.style.display = beforeSettingsState.charDisplay;
+
+    beforeSettingsState = null;
+}
 function showSettings() {
     isSettingsMode = true;
+    
 
     let html = "";
 
@@ -1086,6 +1149,55 @@ function getEndingTitle(id) {
     if (!ending) return id;
 
     return ending.title || ending.name || id;
+}
+function getPlayRecord() {
+    return JSON.parse(localStorage.getItem("yutakatch_play_record") || "{}");
+}
+
+function savePlayRecord(record) {
+    localStorage.setItem("yutakatch_play_record", JSON.stringify(record));
+}
+
+function updatePlayRecord() {
+    const record = getPlayRecord();
+
+    record.maxMoney = Math.max(record.maxMoney || 0, gameState.money);
+    record.minWeight = Math.min(record.minWeight || gameState.weight, gameState.weight);
+
+    savePlayRecord(record);
+}
+
+function showPlayRecord() {
+    isSettingsMode = false;
+    isPlayRecordMode = true;
+
+    updatePlayRecord();
+
+    const record = getPlayRecord();
+
+    const characterCount = characterBookList.filter(chara => isCharacterUnlocked(chara.name)).length;
+    const endingCount = endingList.filter(id => localStorage.getItem("ending_seen_" + id) === "true").length;
+
+    let html = "📊 プレイ記録<br><br>";
+    html += "プレイ回数　" + (record.playCount || 0) + "回<br>";
+    html += "クリア回数　" + (record.clearCount || 0) + "回<br><br>";
+    html += "最高貯金　" + (record.maxMoney || 0).toLocaleString() + "円<br>";
+    html += "最低体重　" + ((record.minWeight || gameState.weight).toFixed(1)) + "kg<br><br>";
+    html += "イベント図鑑　" + getZukanCount() + " / " + TOTAL_ZUKAN_COUNT + "<br>";
+    html += "キャラ図鑑　" + characterCount + " / " + characterBookList.length + "<br>";
+    html += "エンディング　" + endingCount + " / " + endingList.length;
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "12px";
+    msg.style.lineHeight = "1.18";
+    msg.style.textAlign = "left";
+    msg.style.overflowY = "hidden";
+    msg.style.pointerEvents = "none";
+
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+
+    msg.innerHTML = html;
 }
 function showButtonHelp() {
     isSettingsMode = false;
@@ -1199,15 +1311,19 @@ msg.scrollTop = 0;
 
 if (creditScrollTimer) clearInterval(creditScrollTimer);
 
-creditScrollTimer = setInterval(() => {
-    msg.scrollTop += 1;
+setTimeout(() => {
 
-    if (msg.scrollTop >= msg.scrollHeight - msg.clientHeight) {
-        clearInterval(creditScrollTimer);
-        creditScrollTimer = null;
-    }
-}, 80);
-}
+    creditScrollTimer = setInterval(() => {
+        msg.scrollTop += 1;
+
+        if (msg.scrollTop >= msg.scrollHeight - msg.clientHeight) {
+            clearInterval(creditScrollTimer);
+            creditScrollTimer = null;
+        }
+
+    }, 80);
+
+}, 2000);}
 
 
  function showCharacterDetail() {
@@ -1290,8 +1406,8 @@ if (isSettingsMode) {
                 showEndingList();
                 return;
             case 3:
-                alert("プレイ記録は次に作ります😊");
-                break;
+    showPlayRecord();
+    return;
             case 4:
                 alert("データ管理は次に作ります😊");
                 break;
@@ -1302,6 +1418,13 @@ if (isSettingsMode) {
 
         return;
     }
+}
+if (isPlayRecordMode) {
+    if (name === "決定" || name === "戻る") {
+        isPlayRecordMode = false;
+        showSettings();
+    }
+    return;
 }
 if (isButtonHelpMode) {
 if (isCreditsMode) {
@@ -1325,6 +1448,13 @@ if (isEndingListMode) {
     return;
 }
 if (name === "設定") {
+    if (isSettingsMode) {
+        isSettingsMode = false;
+        restoreBeforeSettingsState();
+        return;
+    }
+
+    saveBeforeSettingsState();
     settingsCursor = 0;
     showSettings();
     return;
@@ -1402,10 +1532,19 @@ if (name === "設定") {
         return;
     }
 }        if (isTitleScreen) {
-            if (isNewGameConfirm) {
-                if (name === '決定') startNewGame();
-                else if (name === '戻る') { isNewGameConfirm = false; renderTitle(); }
-            } else {
+           if (isNewGameConfirm) {
+    if (name === '戻る' || name === '進む') {
+        newGameConfirmCursor = newGameConfirmCursor === 0 ? 1 : 0;
+        renderNewGameConfirm();
+    } else if (name === '決定') {
+        if (newGameConfirmCursor === 0) {
+            startNewGame();
+        } else {
+            isNewGameConfirm = false;
+            renderTitle();
+        }
+    }
+}else {
                 if (name === '進む') {
                     if (localStorage.getItem("yutakatch_save")) {
                         titleCursorIndex = (titleCursorIndex === 0) ? 1 : 0;
@@ -1415,7 +1554,9 @@ if (name === "設定") {
                     if (titleCursorIndex === 0) {
                         if (localStorage.getItem("yutakatch_save")) {
                             isNewGameConfirm = true;
-                            document.getElementById('message-content').innerHTML = "💋 本当に最初から始める？<br>今のセーブデータは<br>消えちゃうわよ？🤣<br><br>▶ はじめる<br> やめておく";
+newGameConfirmCursor = 1;
+renderNewGameConfirm();
+                            
                         } else {
                             startNewGame();
                         }
