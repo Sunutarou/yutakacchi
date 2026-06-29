@@ -4,68 +4,47 @@
     <meta charset="UTF-8">
     <title>ゆたかっち 〜シンジュクコイ物語〜</title>
     <style>
-       body {
+   body {
     margin: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     background: #333;
 }
-        
-       #game-container {
+
+#game-container {
     position: relative;
-    width: min(100vw, calc(100vh * 710 / 1186));
-    height: min(100vh, calc(100vw * 1186 / 710));
-    margin: 0 auto;
+    width: 100%;
+    max-width: 450px;
+    aspect-ratio: 9 / 19;
     background-image: url('Yutakamain11.png');
-    background-size: 100% 100%;
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     overflow: hidden;
 }
 
-        .btn { position: absolute; cursor: pointer; border: none; background: transparent; padding: 0; outline: none; }
+.btn { position: absolute; cursor: pointer; border: none; background: transparent; padding: 0; outline: none; }
 
-        /* ボタン座標 */
-        .btn-work { top: 45.4232%; left: 7.11134%; width: 27.3356%; height: 6.68577%; }
-        .btn-gym { top: 45.2653%; left: 37.0012%; width: 26.4466%; height: 6.896%; }
-        .btn-private { top: 45.4232%; left: 65.4466%; width: 27.0015%; height: 6.6322%; }
-        .btn-book { top: 52.6867%; left: 7.11134%; width: 27.3356%; height: 6.79073%; }
-        .btn-save { top: 52.8972%; left: 36.4456%; width: 26.8924%; height: 6.47555%; }
-        .btn-settings { top: 53.0025%; left: 65.7799%; width: 26.446%; height: 6.26376%; }
-        .btn-back { top: 83.4901%; left: 24.0008%; width: 12.1128%; height: 6.42198%; border-radius: 50%; }
-        .btn-next { top: 83.648%; left: 44.0014%; width: 12.4475%; height: 6.12278%; border-radius: 50%; }
-        .btn-ok { top: 83.227%; left: 63.6688%; width: 13.2253%; height: 6.52756%; border-radius: 50%; }
+/* ボタン座標 */
+.btn-work { top: 45.4232%; left: 7.11134%; width: 27.3356%; height: 6.68577%; }
+.btn-gym { top: 45.2653%; left: 37.0012%; width: 26.4466%; height: 6.896%; }
+.btn-private { top: 45.4232%; left: 65.4466%; width: 27.0015%; height: 6.6322%; }
+.btn-book { top: 52.6867%; left: 7.11134%; width: 27.3356%; height: 6.79073%; }
+.btn-save { top: 52.8972%; left: 36.4456%; width: 26.8924%; height: 6.47555%; }
+.btn-settings { top: 53.0025%; left: 65.7799%; width: 26.446%; height: 6.26376%; }
+.btn-back { top: 83.4901%; left: 24.0008%; width: 12.1128%; height: 6.42198%; border-radius: 50%; }
+.btn-next { top: 83.648%; left: 44.0014%; width: 12.4475%; height: 6.12278%; border-radius: 50%; }
+.btn-ok { top: 83.227%; left: 63.6688%; width: 13.2253%; height: 6.52756%; border-radius: 50%; }
 
-        /* ステータス位置 */
-        .stat-row { position: absolute; font-weight: bold; color: #5d4037; pointer-events: none; white-space: nowrap; box-sizing: border-box; }
-      #stat-week {
-    top: 15.8814%;
-    left: 63.6287%;
-    width: 25.33%;
-    height: 8.95%;
-    font-size: 13px;
-    line-height: 1.8;
-    text-align: center;
-}
+/* ステータス位置 */
+.stat-row { position: absolute; font-weight: bold; color: #5d4037; pointer-events: none; white-space: nowrap; box-sizing: border-box; }
 
-.energy-row {
-    top: 25.6432%;
-    left: 68.5592%;
-    font-size: 14px;
-}
-
-.stress-row {
-    top: 32.3939%;
-    left: 65.1580%;
-    font-size: 14px;
-}
-
-.money-row {
-    top: 39.0914%;
-    left: 64.6284%;
-    font-size: 14px;
-}
+#stat-week { top: 20.53%; left: 63.33%; width: 25.33%; height: 8.95%; font-size: 13px; line-height: 1.8; text-align: center; }
+.energy-row { top: 28.95%; left: 68.00%; font-size: 14px; }
+.stress-row { top: 34.84%; left: 66.67%; font-size: 14px; }
+.money-row { top: 40.53%; left: 68.00%; font-size: 14px; }
 .weight-row { top: 43.26%; left: 32.44%; width: 12.22%; height: 2.21%; font-size: 13px; text-align: center; }
         
         /* 画像制御 */
