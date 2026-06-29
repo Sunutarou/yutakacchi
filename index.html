@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
     <meta charset="UTF-8">
     <title>ゆたかっち 〜シンジュクコイ物語〜</title>
     <style>
-   body {
+   
+/* ここを書き換える */
+body {
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    overflow: hidden; /* 画面外のはみ出しを禁止 */
     background: #333;
+    touch-action: manipulation; /* 連打の感度を調整 */
+    -webkit-tap-highlight-color: transparent; /* 連打時の青い枠を消す */
+    width: 100vw;
+    height: 100vh;
 }
 
 #game-container {
     position: absolute; /* 親（body）に対する絶対配置 */
-    width: 450px;       /* 基準サイズを固定 */
-    height: 950px;      /* 9/19の比率に合わせて調整（450 * 19 / 9） */
-    aspect-ratio: 9 / 19;
+    width: 450px;
+    height: 950px; /* 9/19の比率になる数値 */
     background-image: url('Yutakamain11.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     overflow: hidden;
-    /* スケーリングの基準を左上にする */
-    transform-origin: top left;
+    transform-origin: top left; /* 左上を起点に拡大縮小 */
+    touch-action: none; /* iPhoneのズーム動作を完全に無効化 */
 }
+/* ...（他の.btnなどはそのまま残してください）... */
 
 /* bodyのスタイルに追加 */
 body {
@@ -173,6 +177,12 @@ function resizeGame() {
 // 読み込み時とリサイズ時に実行
 window.addEventListener('resize', resizeGame);
 window.onload = resizeGame;
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        btn.click();
+    }, { passive: false });
+});
 
     const openingEvent = {
         id: "OPENING_001",
@@ -2074,5 +2084,6 @@ if (name === '図鑑') {
     updateStatus();
     showTitle();
 </script>
+
 </body>
 </html>
