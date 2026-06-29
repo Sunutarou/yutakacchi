@@ -328,11 +328,40 @@ let characterZukanPage = 0;
 let characterCursorIndex = 0;
 let isCharacterDetailMode = false;
 const CHARACTER_ZUKAN_PER_PAGE = 10;
+
+let isEndingListMode = false;
+let isSettingsMode = false;
+let isButtonHelpMode = false;
+let isCreditsMode = false;
+let creditScrollTimer = null;
+let settingsCursor = 0;
+
+const settingsMenu = [
+    "🎵 音設定",
+    "🎮 ボタン操作",
+    "🏁 エンディング一覧",
+    "📊 プレイ記録",
+    "💾 データ管理",
+    "📖 クレジット"
+];
+
+const endingList = [
+    "E1",
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10"
+];
 const characterBookList = [
 
 { name: "ゆたかママ", profile: "バーニコニコの雇われ店長。この物語の主人公。埼玉県出身だけどシンジュクに帰化し、自称「シンジュクの女」。彼氏とお店の独立が夢。ずっとダイエット中といっている。玉の裏が臭いらしい。ジムでてちてちが日課。", likes: "ケンタッキーと背が大きい短髪ガッチリ男性", phrase: "いつまでもあると思うな髪の毛とニコニコ" },
 { name: "聖奈", profile: "バーニコニコの常連。貧乏OLなのに、ゆたかママが痩せちゃわないように優しさでよくお菓子や食べ物を差し入れしてくる。", likes: "スヌーピー、Tiffany", phrase: "おいしいもの食べいこー" },
-{ name: "なお", profile: "みらいラウンジとアシェランテの敏腕オーナー。沖縄との2拠点生活。シンジュクにいる時は、バーニコニコによく来る。", likes: "ベルサーチ", phrase: "毛を抜きなさい" },
+{ name: "なお", profile: "みらいラウンジとアシェランテの敏腕オーナー。沖縄との2拠点生活。シンジュクにいる時は、バーニコニコによく来る。", likes: "ベルサーチ", phrase: "毛を抜きなさい。ノマカメやめな！" },
 { name: "こころ", profile: "ラキュンのオーナー。オーナーなので偉いから平日は部下を働かせ、自分はバーニコニコで飲んでいる。それが部下の反感を買っているとかいないとか。たまにコスプレしている。", likes: "Dior", phrase: "ご馳走様でーす！" },
 { name: "ゆかりママ", profile: "パーピュアのオーナー。ゆたかママの「シンジュクのお母さん」。暖かくゆたかママを見守っている。お店が休みの日はバーニコニコへよく飲みに来る。", likes: "ガチムチ髭マッチョ", phrase: "あら、いらっしゃい" },
 { name: "青リンゴ", profile: "ダンディー風なバーニコニコの土曜スタッフ。ゆたかママの両親世代なのに、「しゃべってないで皿洗って！」「手を動かして！」とよく怒られている。陰でゆたかママの悪口を言ってストレス発散している。でもたまに客としてお店に現れる。結婚は数回して子供もたくさんいるとかいないとか。現在の妻、ナツコとは不仲説があり、新しい恋を探しているもよう。", likes: "女と柏レイソル", phrase: "おじさんさ～" },
@@ -702,7 +731,11 @@ if (dotFile) {
 }
     }
 function showEndingClearScreen() {
-    document.getElementById('char-image').style.display = 'none';
+if (currentEvent && currentEvent.id && currentEvent.id.startsWith("E")) {
+    localStorage.setItem("ending_seen_" + currentEvent.id, "true");
+}   
+
+ document.getElementById('char-image').style.display = 'none';
 
     const img = document.getElementById('event-image');
     img.src = "images/Yutaka.end.png";
@@ -960,6 +993,22 @@ function showZukan() {
             return no + ".？？？？？";
         }
     }).join("<br>");
+if (zukanPage === totalPages - 1) {
+    html += "<br><br>";
+    html += "🏆 トロフィー<br>";
+    html += localStorage.getItem("silver_trophy_unlocked")
+        ? "🥈 シルバーゆたか<br>"
+        : "🥈 ？？？？？<br>";
+    html += localStorage.getItem("gold_trophy_unlocked")
+        ? "🥇 ゴールドゆたか<br>"
+        : "🥇 ？？？？？<br>";
+    html += localStorage.getItem("character_trophy_unlocked")
+        ? "👤 キャラコンプリート<br>"
+        : "👤 ？？？？？<br>";
+    html += localStorage.getItem("all_complete_unlocked")
+        ? "👑 ALL COMPLETE<br>"
+        : "👑 ？？？？？<br>";
+}
 
     html += "<br>🔵前　🔴次　🟢閉";
 
@@ -990,12 +1039,7 @@ function showCharacterZukan() {
     let html = "👤 キャラ図鑑";
     html += "　　Page " + (characterZukanPage + 1) + " / " + totalPages + "<br><br>";
 
-    if (characterZukanPage === 0) {
-        html += "🏆 トロフィー<br>";
-        html += localStorage.getItem("silver_trophy_unlocked") ? "🥈 シルバーゆたか<br>" : "🥈 ？？？？？<br>";
-        html += localStorage.getItem("gold_trophy_unlocked") ? "🥇 ゴールドゆたか<br><br>" : "🥇 ？？？？？<br><br>";
-    }
-
+   
     html += pageCharacters.map((chara, i) => {
         const realIndex = start + i;
         const no = realIndex + 1;
@@ -1005,7 +1049,6 @@ return cursor + no + ". " + displayName;
     }).join("<br>");
 
     html += "<br>🔵前　🔴次　🟢詳細<br>図鑑ボタン：イベント図鑑へ";
-
     const msg = document.getElementById("message-content");
     msg.style.fontSize = "11px";
     msg.style.lineHeight = "1.12";
@@ -1017,6 +1060,155 @@ return cursor + no + ". " + displayName;
     document.getElementById("char-image").style.display = "none";
     msg.innerHTML = html;
 }
+function showSettings() {
+    isSettingsMode = true;
+
+    let html = "";
+
+    settingsMenu.forEach((item, index) => {
+        html += (index === settingsCursor ? "▶ " : "　");
+        html += item + "<br><br>";
+    });
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "13px";
+    msg.style.lineHeight = "1.15";
+    msg.style.textAlign = "left";
+    msg.style.overflowY = "hidden";
+
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+
+    msg.innerHTML = html;
+}
+function getEndingTitle(id) {
+    const ending = workEvents.find(e => e.id === id);
+    if (!ending) return id;
+
+    return ending.title || ending.name || id;
+}
+function showButtonHelp() {
+    isSettingsMode = false;
+    isButtonHelpMode = true;
+
+    let html = "🎮 ボタン操作<br><br>";
+    html += "🔵 左ボタン<br>";
+    html += "戻る / カーソル上<br><br>";
+    html += "🔴 中央ボタン<br>";
+    html += "進む / カーソル下<br><br>";
+    html += "🟢 右ボタン<br>";
+    html += "決定 / 会話送り";
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "12px";
+    msg.style.lineHeight = "1.18";
+    msg.style.textAlign = "left";
+    msg.style.overflowY = "hidden";
+
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+
+    msg.innerHTML = html;
+}
+function showEndingList() {
+    isEndingListMode = true;
+
+    let html = "🏁 エンディング一覧<br><br>";
+
+    endingList.forEach((id, index) => {
+        const no = String(index + 1).padStart(2, "0");
+        const seen = localStorage.getItem("ending_seen_" + id) === "true";
+        const title = seen ? getEndingTitle(id) : "？？？？？";
+
+        html += no + ". " + title + "<br>";
+    });
+
+  
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "12px";
+    msg.style.lineHeight = "1.1";
+    msg.style.textAlign = "left";
+    msg.style.overflowY = "hidden";
+    msg.style.pointerEvents = "none";
+
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+    msg.innerHTML = html;
+}
+
+
+function showCredits() {
+    isSettingsMode = false;
+    isCreditsMode = true;
+
+    let html = "";
+    html += "🎮 ゆたかっち<br>";
+    html += "～シンジュクコイ物語～<br><br>";
+
+    html += "Created to celebrate<br><br>";
+    html += "Yutaka Mama's<br>";
+    html += "39th Birthday🎂<br><br>";
+
+    html += "July 18, 2026<br><br>";
+
+    html += "Planning & Development<br><br>";
+    html += "Sunutarou & Sena<br>";
+    html += "────────────────<br><br>";
+
+    html += "Special Thanks<br><br>";
+    html += "Bar ニコニコ<br><br>";
+
+    html += "ゆたかママ<br>";
+    html += "なお<br>";
+    html += "こころ<br>";
+    html += "ゆかりママ<br>";
+    html += "青リンゴ<br>";
+    html += "むぎ<br>";
+    html += "よしみ<br>";
+    html += "くさみ<br><br>";
+
+    html += "────────────────<br><br>";
+
+    html += "Programming Support<br><br>";
+
+    html += "ChatGPT<br><br>";
+
+    html += "Gemini<br><br>";
+
+    html += "────────────────<br><br>";
+
+html += "Thank you<br>";
+html += "for Playing!<br><br>";
+
+html += "See you again<br>";
+html += "at Bar Niconico! 🍸";
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "11px";
+    msg.style.lineHeight = "1.1";
+    msg.style.textAlign = "center";
+    msg.style.overflowY = "hidden";
+    msg.style.pointerEvents = "none";
+
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+
+    msg.innerHTML = html;
+msg.scrollTop = 0;
+
+if (creditScrollTimer) clearInterval(creditScrollTimer);
+
+creditScrollTimer = setInterval(() => {
+    msg.scrollTop += 1;
+
+    if (msg.scrollTop >= msg.scrollHeight - msg.clientHeight) {
+        clearInterval(creditScrollTimer);
+        creditScrollTimer = null;
+    }
+}, 80);
+}
+
 
  function showCharacterDetail() {
     isCharacterDetailMode = true;
@@ -1063,11 +1255,80 @@ const dotFile = characterDotMap[chara.name];
         document.getElementById('stat-weight').innerText = gameState.weight.toFixed(1) + 'kg';
     }
 
-    function action(name) {
+   function action(name) {
 if (isTrophyShowing) {
     return;
 }
-if (isZukanMode) {
+
+if (isSettingsMode) {
+
+    if (name === "戻る") {
+        settingsCursor--;
+        if (settingsCursor < 0) settingsCursor = settingsMenu.length - 1;
+        showSettings();
+        return;
+    }
+
+    if (name === "進む") {
+        settingsCursor++;
+        if (settingsCursor >= settingsMenu.length) settingsCursor = 0;
+        showSettings();
+        return;
+    }
+
+    if (name === "決定") {
+
+        switch (settingsCursor) {
+            case 0:
+                alert("音設定は準備中です😊");
+                break;
+            case 1:
+    showButtonHelp();
+    return;
+            case 2:
+                isSettingsMode = false;
+                showEndingList();
+                return;
+            case 3:
+                alert("プレイ記録は次に作ります😊");
+                break;
+            case 4:
+                alert("データ管理は次に作ります😊");
+                break;
+            case 5:
+    showCredits();
+    return;
+        }
+
+        return;
+    }
+}
+if (isButtonHelpMode) {
+if (isCreditsMode) {
+    if (name === "決定" || name === "戻る") {
+        isCreditsMode = false;
+        showSettings();
+    }
+    return;
+}
+    if (name === "決定") {
+        isButtonHelpMode = false;
+        showSettings();
+    }
+    return;
+}
+if (isEndingListMode) {
+    if (name === "決定" || name === "戻る") {
+        isEndingListMode = false;
+        showSettings();
+    }
+    return;
+}
+if (name === "設定") {
+    settingsCursor = 0;
+    showSettings();
+    return;
+}if (isZukanMode) {
 
     if (name === "図鑑") {
         isCharacterDetailMode = false;
