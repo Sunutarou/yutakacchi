@@ -14,10 +14,9 @@
         
         #game-container {
     position: relative;
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    aspect-ratio: auto;
+    width: min(100vw, calc(100vh * 710 / 1536));
+    height: min(100vh, calc(100vw * 1536 / 710));
+    margin: 0 auto;
     background-image: url('Yutakamain11.png');
     background-size: 100% 100%;
     background-position: center;
