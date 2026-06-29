@@ -338,13 +338,6 @@ let isPlayRecordMode = false;
 let playRecordPage = 0;
 let isDataManageMode = false;
 let dataManageCursor = 0;
-let isDataDeleteConfirmMode = false;
-let dataDeleteConfirmCursor = 0;
-let dataDeleteTarget = "";
-
-let isSaveCompleteMode = false;
-let saveCompleteCursor = 0;
-
 let creditScrollTimer = null;
 let settingsCursor = 0;
 let beforeSettingsState = null;
@@ -361,11 +354,13 @@ const settingsMenu = [
     "📖 クレジット"
 ];
 const dataManageMenu = [
-    "📊 プレイ記録リセット",
-    "📖 図鑑リセット",
-    "💥 全データ初期化",
+    "💾 セーブデータ削除",
+    "📊 プレイ記録削除",
+    "📖 図鑑データ削除",
+    "💥 全データ削除",
     "↩ 戻る"
 ];
+
 const endingList = [
     "E1",
     "E2",
@@ -470,18 +465,9 @@ function renderNewGameConfirm() {
     }
 
     function saveGame() {
-    localStorage.setItem("yutakatch_save", JSON.stringify(gameState));
-    saveBeforeSettingsState();
-    isSaveCompleteMode = true;
-    saveCompleteCursor = 0;
-
-    let html = "セーブしました！<br><br>";
-    html += "▶ ゲームを続ける<br><br>";
-    html += "　タイトルへ戻る<br><br>";
-    html += "🔵/🔴選択　🟢決定";
-
-    document.getElementById('message-content').innerHTML = html;
-}
+        localStorage.setItem("yutakatch_save", JSON.stringify(gameState));
+        document.getElementById('message-content').innerText = "セーブしました。";
+    }
 
     function loadGame() {
         const savedData = localStorage.getItem("yutakatch_save");
@@ -1249,26 +1235,6 @@ function showDataManage() {
 
     msg.innerHTML = html;
 }
-function showDataDeleteConfirm() {
-    isDataManageMode = false;
-    isDataDeleteConfirmMode = true;
-
-    let html = "⚠ 本当にリセットしますか？<br><br>";
-
-    html += (dataDeleteConfirmCursor === 0 ? "▶ やめる" : "　やめる");
-    html += "<br><br>";
-    html += (dataDeleteConfirmCursor === 1 ? "▶ リセットする" : "　リセットする");
-
-    const msg = document.getElementById("message-content");
-    msg.style.fontSize = "12px";
-    msg.style.lineHeight = "1.2";
-    msg.style.textAlign = "left";
-
-    document.getElementById("event-image").style.display = "none";
-    document.getElementById("char-image").style.display = "none";
-
-    msg.innerHTML = html;
-}
 function showPlayRecord() {
     isSettingsMode = false;
     isPlayRecordMode = true;
@@ -1482,51 +1448,6 @@ const dotFile = characterDotMap[chara.name];
         document.getElementById('stat-weight').innerText = gameState.weight.toFixed(1) + 'kg';
     }
 function action(name) {
-    if (isSaveCompleteMode) {
-
-        if (name === "戻る" || name === "進む") {
-            saveCompleteCursor = saveCompleteCursor === 0 ? 1 : 0;
-
-            let html = "セーブしました！<br><br>";
-            html += (saveCompleteCursor === 0 ? "▶ ゲームを続ける" : "　ゲームを続ける");
-            html += "<br><br>";
-            html += (saveCompleteCursor === 1 ? "▶ タイトルへ戻る" : "　タイトルへ戻る");
-            html += "<br><br>";
-            html += "🔵/🔴選択　🟢決定";
-
-            document.getElementById("message-content").innerHTML = html;
-            return;
-        }
-
-        if (name === "決定") {
-            if (saveCompleteCursor === 0) {
-    isSaveCompleteMode = false;
-
-    if (beforeSettingsState) {
-        restoreBeforeSettingsState();
-    } else {
-        document.getElementById("message-content").innerHTML = "行動を選択してください";
-    }
-
-    return;
-}
-           if (saveCompleteCursor === 1) {
-    isSaveCompleteMode = false;
-
-    document.getElementById("event-image").style.display = "none";
-    document.getElementById("char-image").style.display = "none";
-
-    showTitle();
-    return;
-}
-        }
-
-        return;
-    }
-
-  if (isSettingsMode && openedFromTitleScreen && name === "設定") {
-
-
   if (isSettingsMode && openedFromTitleScreen && name === "設定") {
     returnToTitleFromMenu();
     return;
@@ -1573,76 +1494,7 @@ if (isSettingsMode) {
         return;
     }
 }
-if (isDataDeleteConfirmMode) {
 
-    if (name === "戻る" || name === "進む") {
-        dataDeleteConfirmCursor = dataDeleteConfirmCursor === 0 ? 1 : 0;
-        showDataDeleteConfirm();
-        return;
-    }
-
-    if (name === "決定") {
-        if (dataDeleteConfirmCursor === 0) {
-            isDataDeleteConfirmMode = false;
-            isDataManageMode = true;
-            showDataManage();
-            return;
-        }
-
-       if (dataDeleteTarget === 0) {
-    localStorage.removeItem("yutakatch_play_record");
-    alert("プレイ記録をリセットしました😊");
-}
-
-if (dataDeleteTarget === 1) {
-    for (let i = localStorage.length - 1; i >= 0; i--) {
-        const key = localStorage.key(i);
-
-        if (
-            key.startsWith("trophy_seen_") ||
-            key.startsWith("character_seen_") ||
-            key.startsWith("ending_seen_") ||
-            key === "silver_trophy_unlocked" ||
-            key === "gold_trophy_unlocked" ||
-            key === "character_trophy_unlocked" ||
-            key === "all_complete_unlocked"
-        ) {
-            localStorage.removeItem(key);
-        }
-    }
-
-    alert("図鑑データをリセットしました😊");
-}
-if (dataDeleteTarget === 2) {
-    localStorage.removeItem("yutakatch_save");
-    localStorage.removeItem("yutakatch_play_record");
-
-    for (let i = localStorage.length - 1; i >= 0; i--) {
-        const key = localStorage.key(i);
-
-        if (
-            key.startsWith("trophy_seen_") ||
-            key.startsWith("character_seen_") ||
-            key.startsWith("ending_seen_") ||
-            key === "silver_trophy_unlocked" ||
-            key === "gold_trophy_unlocked" ||
-            key === "character_trophy_unlocked" ||
-            key === "all_complete_unlocked"
-        ) {
-            localStorage.removeItem(key);
-        }
-    }
-
-    alert("全データを初期化しました😊");
-}
-isDataDeleteConfirmMode = false;
-isDataManageMode = true;
-showDataManage();
-return;
-    }
-
-    return;
-}
 if (isDataManageMode) {
 
     if (openedFromTitleScreen && name === "設定") {
@@ -1665,17 +1517,14 @@ if (isDataManageMode) {
     }
 
     if (name === "決定") {
-        if (dataManageCursor === 3) {
+        if (dataManageCursor === 4) {
             isDataManageMode = false;
             showSettings();
             return;
         }
 
-       dataDeleteTarget = dataManageCursor;
-dataDeleteConfirmCursor = 0;
-showDataDeleteConfirm();
-return;
-        
+        alert("削除処理は次に作ります😊");
+        return;
     }
 
     return;
