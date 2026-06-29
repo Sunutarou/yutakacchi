@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">   
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ゆたかっち 〜シンジュクコイ物語〜</title>
     <style>
-   html {
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-}
    body {
     margin: 0;
     display: flex;
@@ -19,17 +15,25 @@
 }
 
 #game-container {
-    position: relative;
-    width: 100%;
-    max-width: 450px;
+    position: absolute; /* 親（body）に対する絶対配置 */
+    width: 450px;       /* 基準サイズを固定 */
+    height: 950px;      /* 9/19の比率に合わせて調整（450 * 19 / 9） */
     aspect-ratio: 9 / 19;
     background-image: url('Yutakamain11.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     overflow: hidden;
+    /* スケーリングの基準を左上にする */
+    transform-origin: top left;
 }
 
+/* bodyのスタイルに追加 */
+body {
+    margin: 0;
+    overflow: hidden; /* はみ出し防止 */
+    background: #333;
+}
 .btn { position: absolute; cursor: pointer; border: none; background: transparent; padding: 0; outline: none; }
 
 /* ボタン座標 */
@@ -149,6 +153,27 @@
 <script src="characters.js"></script>
 <script src="events.js"></script>
 <script>
+function resizeGame() {
+    const container = document.getElementById('game-container');
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    // 画面の比率とゲームの比率を比較して倍率を決定
+    const scale = Math.min(width / 450, height / 950);
+    
+    container.style.transform = `scale(${scale})`;
+    
+    // 中央寄せの計算
+    const scaledWidth = 450 * scale;
+    const scaledHeight = 950 * scale;
+    container.style.left = (width - scaledWidth) / 2 + 'px';
+    container.style.top = (height - scaledHeight) / 2 + 'px';
+}
+
+// 読み込み時とリサイズ時に実行
+window.addEventListener('resize', resizeGame);
+window.onload = resizeGame;
+
     const openingEvent = {
         id: "OPENING_001",
         steps: [
@@ -2048,22 +2073,6 @@ if (name === '図鑑') {
     }
     updateStatus();
     showTitle();
-
-function fitGameToScreen() {
-    const game = document.getElementById("game-container");
-    const baseW = 450;
-    const baseH = 950;
-    const scale = Math.min(window.innerWidth / baseW, window.innerHeight / baseH);
-
-    game.style.width = baseW + "px";
-    game.style.height = baseH + "px";
-    game.style.transformOrigin = "top center";
-    game.style.transform = "scale(" + scale + ")";
-}
-
-window.addEventListener("load", fitGameToScreen);
-window.addEventListener("resize", fitGameToScreen);
-
 </script>
 </body>
 </html>
