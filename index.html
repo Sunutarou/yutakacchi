@@ -330,8 +330,8 @@ let zukanType = "event";
 let characterZukanPage = 0;
 let characterCursorIndex = 0;
 let isCharacterDetailMode = false;
+let isCharacterReturnSelected = false;
 const CHARACTER_ZUKAN_PER_PAGE = 10;
-
 let isEndingListMode = false;
 let isSettingsMode = false;
 let isButtonHelpMode = false;
@@ -1122,12 +1122,12 @@ function showCharacterZukan() {
     html += pageCharacters.map((chara, i) => {
         const realIndex = start + i;
         const no = realIndex + 1;
-        const cursor = realIndex === characterCursorIndex ? "▶" : "　";
+        const cursor = (!isCharacterReturnSelected && realIndex === characterCursorIndex) ? "▶" : "　";
         const displayName = isCharacterUnlocked(chara.name) ? chara.name : "？？？？？";
 return cursor + no + ". " + displayName;
     }).join("<br>");
 
-    html += "";
+   html += "<br><br>" + (isCharacterReturnSelected ? "▶ 戻る" : "　戻る");
     const msg = document.getElementById("message-content");
     msg.style.fontSize = "11px";
     msg.style.lineHeight = "1.12";
@@ -1766,7 +1766,7 @@ if (isCreditsMode || isButtonHelpMode || isEndingListMode) {
 }if (
     isZukanMode &&
     openedFromTitleScreen &&
-    (name === "図鑑" || name === "決定" || name === "戻る")
+    name === "設定"
 ) {
     returnToTitleFromMenu();
     return;
@@ -1898,29 +1898,60 @@ if (isZukanMenuMode) {
         return;
     }
 
-    if (zukanType === "character") {
+   if (zukanType === "character") {
         if (isCharacterDetailMode) {
             if (name === "決定" || name === "戻る") {
+                isCharacterDetailMode = false;
                 showCharacterZukan();
             }
             return;
         }
 
+        const pageStart = characterZukanPage * CHARACTER_ZUKAN_PER_PAGE;
+        const pageEnd = Math.min(pageStart + CHARACTER_ZUKAN_PER_PAGE - 1, characterBookList.length - 1);
+
         if (name === "戻る") {
-            characterCursorIndex--;
-            if (characterCursorIndex < 0) characterCursorIndex = characterBookList.length - 1;
+            if (isCharacterReturnSelected) {
+                isCharacterReturnSelected = false;
+                characterCursorIndex = pageEnd;
+            } else if (characterCursorIndex === pageStart) {
+                isCharacterReturnSelected = true;
+            } else {
+                characterCursorIndex--;
+            }
+
             showCharacterZukan();
             return;
         }
 
         if (name === "進む") {
-            characterCursorIndex++;
-            if (characterCursorIndex >= characterBookList.length) characterCursorIndex = 0;
+            if (isCharacterReturnSelected) {
+                isCharacterReturnSelected = false;
+
+                if (pageEnd < characterBookList.length - 1) {
+                    characterCursorIndex = pageEnd + 1;
+                } else {
+                    characterCursorIndex = 0;
+                }
+            } else if (characterCursorIndex === pageEnd) {
+                isCharacterReturnSelected = true;
+            } else {
+                characterCursorIndex++;
+            }
+
             showCharacterZukan();
             return;
         }
 
         if (name === "決定") {
+            if (isCharacterReturnSelected) {
+                isCharacterReturnSelected = false;
+                isZukanMode = false;
+                zukanMenuCursor = 1;
+                showZukanMenu();
+                return;
+            }
+
             showCharacterDetail();
             return;
         }
