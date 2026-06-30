@@ -938,7 +938,7 @@ function getZukanCount() {
     return count;
 }
 
-const TOTAL_ZUKAN_COUNT = 101;
+const TOTAL_ZUKAN_COUNT = 102;
 function getZukanNameById(id) {
     const extraZukan = {
         pkSuccess: "🧤 ブッフォン賞ゲット",
@@ -1776,6 +1776,7 @@ if (!isTitleScreen && name === "設定") {
 }
 
 if (!isTitleScreen && name === "図鑑") {
+    saveBeforeSettingsState();
     openedFromTitleScreen = false;
     zukanMenuCursor = 0;
     showZukanMenu();
@@ -1829,54 +1830,17 @@ if (isZukanMenuMode) {
             return;
         }
 
-        if (zukanMenuCursor === 2) {
-            isZukanMenuMode = false;
-            showTitle();
-            return;
-        }
+       if (zukanMenuCursor === 2) {
+    isZukanMenuMode = false;
+
+    if (openedFromTitleScreen) {
+        showTitle();
+    } else {
+        restoreBeforeSettingsState();
     }
 
     return;
 }
-if (isZukanMenuMode) {
-
-    if (name === "戻る") {
-        zukanMenuCursor--;
-        if (zukanMenuCursor < 0) zukanMenuCursor = 2;
-        showZukanMenu();
-        return;
-    }
-
-    if (name === "進む") {
-        zukanMenuCursor++;
-        if (zukanMenuCursor > 2) zukanMenuCursor = 0;
-        showZukanMenu();
-        return;
-    }
-
-    if (name === "決定") {
-
-        if (zukanMenuCursor === 0) {
-            isZukanMenuMode = false;
-            zukanType = "event";
-            zukanPage = 0;
-            showZukan();
-            return;
-        }
-
-        if (zukanMenuCursor === 1) {
-            isZukanMenuMode = false;
-            zukanType = "character";
-            characterCursorIndex = 0;
-            showCharacterZukan();
-            return;
-        }
-
-        if (zukanMenuCursor === 2) {
-            isZukanMenuMode = false;
-            showTitle();
-            return;
-        }
     }
 
     return;
