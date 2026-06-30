@@ -206,7 +206,7 @@ document.querySelectorAll('.btn').forEach(btn => {
             { speaker: "ゆたかママ", text: "「わたしは、独立する！<br>自分のお店を持つ！」" },
             { text: "これが新宿版ゆたかの独立宣言。<br>Jeffersonに対抗したわけじゃないわよ。" },
             { text: "これは、ゆたかママの2年間の<br>シンジュクコイ物語である。" },
-            { text: "1ターン1週間、2年間で独立資金を貯めるのが目標です。<br>500万円以上で埼玉にて独立、1000万円以上でシンジュクにて独立です。<br>1ターンに仕事、ジム、プライベートをこなし、充実した2年間を過ごしましょう😊<br>もちろん恋愛も♥️" },
+            { text: "1ターン1週間、2年間で独立資金を貯めるのが目標です。<br>500万円以上で埼玉にて独立、750万円以上でシンジュクにて独立です。<br>1ターンに仕事、ジム、プライベートをこなし、充実した2年間を過ごしましょう😊<br>もちろん恋愛も♥️" },
 { text: "下の丸ボタンは<br>🔵 左：戻る<br>🔴 中央：進む<br>🟢 右：決定<br>だからね♥️" }        ],
         effects: { money: 0, energy: 0, stress: 0, weight: 0 }
     };
@@ -226,7 +226,7 @@ document.querySelectorAll('.btn').forEach(btn => {
             { speaker: "ゆたかママ", text: "「しかも帰宅してから全部食べる気もする、、🤣」" },
             { speaker: "ゆたかママ", text: "「この前、シュークリームに練乳注入して食べた気がしてきた。。。」" },
             { image: "Yutaka.ichigomiruku.png", speaker: "ゆたかママ", text: "「そりゃ太るわね🤣」" },
-            { text: "【システム説明】<br>ゆたかママは毎週少しずつ太ります。<br><br>毎週終了時<br>体重 +0.2kg<br><br>ストレス70以上<br>体重 +0.7kg<br><br>ストレス90以上<br>体重 +1.4kg" },
+            { text: "【システム説明】<br>ゆたかママは毎週少しずつ太ります。<br>毎週終了時<br>体重 +0.2kg<br>ストレス70以上 体重 +0.7kg<br>ストレス90以上 体重 +1.4kg" },
             { speaker: "ゆたかママ", text: "「やっぱりジム行かなきゃダメか🤣」" },
             { speaker: "ゆたかママ", text: "「人生甘くないわね」" }
         ]
@@ -321,8 +321,10 @@ ukareChoiceMode: false,
     let bonusMoney = 0;
     let isGameFinished = false;
     let isTrophyShowing = false;
-    let isZukanMode = false;
-    let zukanPage = 0;
+    let isZukanMenuMode = false;
+let zukanMenuCursor = 0;
+let isZukanMode = false;
+let zukanPage = 0;
     const ZUKAN_PER_PAGE = 10;
 let zukanType = "event";
 let characterZukanPage = 0;
@@ -546,7 +548,7 @@ if (gameState.totalWeek >= 104) {
 function startEnding() {
     let endingId = "E10";
 
-    if (gameState.money >= 10000000) {
+    if (gameState.money >= 7500000) {
         if (gameState.canMarry && gameState.loveTarget === "コタニ") {
             endingId = "E3";
         } else if (gameState.canMarry && gameState.loveTarget === "オオタニ" && gameState.weight < 70) {
@@ -649,7 +651,7 @@ let displayText = step.text;
 if (step.text && step.text.includes("ゲット")) {
     const trophyKey = "trophy_seen_" + event.id;
 
-    if (localStorage.getItem(trophyKey)) {
+    if (!localStorage.getItem(trophyKey)) {
         displayText = "🆕 " + step.text;
     }
 }
@@ -990,6 +992,38 @@ if (
     return true;
 }
 
+function showZukanMenu() {
+    isZukanMenuMode = true;
+    isZukanMode = false;
+    isCharacterDetailMode = false;
+
+    const menu = [
+        "イベント図鑑",
+        "キャラ図鑑",
+        "戻る"
+    ];
+
+    let html = "📖 図鑑<br><br>";
+
+    html += menu.map((item, index) => {
+        const cursor = index === zukanMenuCursor ? "▶ " : "　";
+        return cursor + item;
+    }).join("<br>");
+
+    html += "";
+
+    const msg = document.getElementById("message-content");
+    msg.style.fontSize = "18px";
+    msg.style.lineHeight = "1.5";
+    msg.style.textAlign = "left";
+    msg.style.overflowY = "hidden";
+    msg.style.pointerEvents = "none";
+
+    document.getElementById("event-image").style.display = "none";
+    document.getElementById("char-image").style.display = "none";
+
+    msg.innerHTML = html;
+}
 function showZukan() {
     isZukanMode = true;
 
@@ -1055,7 +1089,7 @@ if (zukanPage === totalPages - 1) {
         : "👑 ？？？？？<br>";
 }
 
-    html += "<br>🔵前　🔴次　🟢閉";
+    html += "";
 
     const msg = document.getElementById("message-content");
     msg.style.fontSize = "11px";
@@ -1093,7 +1127,7 @@ function showCharacterZukan() {
 return cursor + no + ". " + displayName;
     }).join("<br>");
 
-    html += "<br>🔵前　🔴次　🟢詳細<br>図鑑ボタン：イベント図鑑へ";
+    html += "";
     const msg = document.getElementById("message-content");
     msg.style.fontSize = "11px";
     msg.style.lineHeight = "1.12";
@@ -1737,7 +1771,14 @@ if (isCreditsMode || isButtonHelpMode || isEndingListMode) {
     returnToTitleFromMenu();
     return;
 }
-if (!isTitleScreen && (name === "設定" || name === "図鑑")) {
+if (!isTitleScreen && name === "設定") {
+    return;
+}
+
+if (!isTitleScreen && name === "図鑑") {
+    openedFromTitleScreen = false;
+    zukanMenuCursor = 0;
+    showZukanMenu();
     return;
 }
 
@@ -1750,9 +1791,94 @@ if (isTitleScreen && name === "設定") {
 
 if (isTitleScreen && name === "図鑑") {
     openedFromTitleScreen = true;
-    zukanType = "event";
-    zukanPage = 0;
-    showZukan();
+    zukanMenuCursor = 0;
+    showZukanMenu();
+    return;
+}
+if (isZukanMenuMode) {
+
+    if (name === "戻る") {
+        zukanMenuCursor--;
+        if (zukanMenuCursor < 0) zukanMenuCursor = 2;
+        showZukanMenu();
+        return;
+    }
+
+    if (name === "進む") {
+        zukanMenuCursor++;
+        if (zukanMenuCursor > 2) zukanMenuCursor = 0;
+        showZukanMenu();
+        return;
+    }
+
+    if (name === "決定") {
+
+        if (zukanMenuCursor === 0) {
+            isZukanMenuMode = false;
+            zukanType = "event";
+            zukanPage = 0;
+            showZukan();
+            return;
+        }
+
+        if (zukanMenuCursor === 1) {
+            isZukanMenuMode = false;
+            zukanType = "character";
+            characterCursorIndex = 0;
+            showCharacterZukan();
+            return;
+        }
+
+        if (zukanMenuCursor === 2) {
+            isZukanMenuMode = false;
+            showTitle();
+            return;
+        }
+    }
+
+    return;
+}
+if (isZukanMenuMode) {
+
+    if (name === "戻る") {
+        zukanMenuCursor--;
+        if (zukanMenuCursor < 0) zukanMenuCursor = 2;
+        showZukanMenu();
+        return;
+    }
+
+    if (name === "進む") {
+        zukanMenuCursor++;
+        if (zukanMenuCursor > 2) zukanMenuCursor = 0;
+        showZukanMenu();
+        return;
+    }
+
+    if (name === "決定") {
+
+        if (zukanMenuCursor === 0) {
+            isZukanMenuMode = false;
+            zukanType = "event";
+            zukanPage = 0;
+            showZukan();
+            return;
+        }
+
+        if (zukanMenuCursor === 1) {
+            isZukanMenuMode = false;
+            zukanType = "character";
+            characterCursorIndex = 0;
+            showCharacterZukan();
+            return;
+        }
+
+        if (zukanMenuCursor === 2) {
+            isZukanMenuMode = false;
+            showTitle();
+            return;
+        }
+    }
+
     return;
 }
     if (isZukanMode) {
@@ -1813,21 +1939,15 @@ if (isTitleScreen && name === "図鑑") {
     }
 
     if (name === "決定") {
-        isZukanMode = false;
-        zukanType = "event";
-        isCharacterDetailMode = false;
+    isZukanMode = false;
+    isCharacterDetailMode = false;
 
-        const msg = document.getElementById("message-content");
-        msg.style.fontSize = "18px";
-        msg.style.lineHeight = "1.45";
-        msg.style.textAlign = "center";
-        msg.style.overflowY = "hidden";
-        msg.style.pointerEvents = "none";
+    document.getElementById("char-image").style.display = "none";
 
-        document.getElementById("char-image").style.display = "none";
-        msg.innerHTML = "行動を選択してください";
-        return;
-    }
+    zukanMenuCursor = (zukanType === "character") ? 1 : 0;
+    showZukanMenu();
+    return;
+}
 }        if (isTitleScreen) {
            if (isNewGameConfirm) {
     if (name === '戻る' || name === '進む') {
@@ -2348,7 +2468,7 @@ if (document.getElementById('message-content').innerHTML.indexOf("GO!!") === -1)
                             muscleTrainingCount +
                             "回でした。<br><br>" +
                             "決定で次へ";
-                    }, 7000);
+                    }, 8000);
                 } else {
                     muscleTrainingCount++;
                 }
