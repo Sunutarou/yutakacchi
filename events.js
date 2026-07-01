@@ -9,7 +9,7 @@ var workEvents = window.workEvents = [
         steps: [
             { speaker: "ゆかりママ", text: "ゆたかくん、元気？" },
             { text: "ゆかりママが来た。" },
-            { text: "「いっぱい飲みなさい。」と、生ビールをたくさんくれた。" },
+            { text: "「いっぱい飲みなさい。」と、生ビールを<br>たくさんくれた。" },
             { text: "さすがわたしのシンジュクのお母さん。" },
    { text: "図鑑登録" },
         { text: "💎 シンジュクの母ゆかりママゲット！" }
@@ -252,7 +252,7 @@ var workEvents = window.workEvents = [
     title: "青リンゴ来店",
     rate: 3,
     steps: [
-        { image: "Ringo01.jpg", text: "プライベートリンゴが来た。" },
+        { image: "Ringo1.jpg", text: "プライベートリンゴが来た。" },
         { speaker: "青リンゴ", text: "「おじさん飲みにきちゃった。」" },
         { speaker: "青リンゴ", text: "「今日は客だよ！接待してね！！」" },
         { speaker: "ゆたかママ", text: "「今日はお客さんなのね🤣」" },
@@ -906,14 +906,13 @@ steps: [
 { text: "✨ スポットライト点灯 ✨" },
 { text: "💃 くさみ が あらわれた！" },
 { speaker: "くさみ", text: "「玉之裏臭実（たまのうら くさみ）よ💋」" },
-{ text: "🎵 音楽スタート" },
-{ text: "ドット絵のくさみが踊り始める。<br>てちてち<br>↓<br>くるっ<br>↓<br>てちてち<br>↓<br>ポーズ✨" },
+{ speaker: "くさみ", text: "「それじゃ、いくわよ💋」" },
+{ type: "kusamiDance" },
 { speaker: "聖奈", text: "「くさみーーー！！🤣」" },
-{ speaker: "こころ", text: "「待ってましたーーー🤣」" },
-{ speaker: "青リンゴ", text: "「ママ何やってんの🤣」" },
-{ speaker: "くさみ", text: "「今日は周年だから特別よ💋」" },
-{ speaker: "ゆかりママ", text: "「ゆたかくん、どこいった？」" },
-{ text: "全員<br>「かんぱーーーい！！🍻」" },
+{ speaker: "こころ", text: "「かわいーーー！！🤣」" },
+{ speaker: "青リンゴ", text: "「ブラボーーーー！！👏」" },
+{ speaker: "聖奈", text: "「長友！？🤣」" },
+{ speaker: "ゆかりママ", text: "「ゆたかくん、どこ行った？」" },{ text: "全員<br>「かんぱーーーい！！🍻」" },
 { text: "仕事だけど楽しかった。" },
 { text: "図鑑登録" },
 { text: "💃 くさみ降臨ゲット" },
@@ -1158,7 +1157,7 @@ steps: [
 { text: "ガッ" },
 { speaker: "ゆたかママ", text: "「・・・」" },
 { speaker: "ゆたかママ", text: "「ドア狭くなった？」" },
-{ image: "Yutaka.95kg.dot" },
+{ image: "Yutaka.95kg.dot.png" },
 { speaker: "聖奈", text: "「なってない🤣」" },
 { speaker: "ゆたかママ", text: "「家のドアも狭くなったのよね？」" },
 { speaker: "こころ", text: "「絶対なってない🤣」" },
@@ -1461,7 +1460,7 @@ weight: 0
         energy: -5,
         stress: 0,
         money: 0,
-        weight: 0
+        weight: -0.1
     }
 },
 
@@ -2802,7 +2801,7 @@ effects: {
 
         { speaker: "ゆたかママ", text: "「行くー！🤣」" },
 
-        { image: "Yutaka.yakiniku.jpg", text: "🥩 焼肉屋に到着。" },
+        { text: "🥩 焼肉屋に到着。" },
 
         { speaker: "聖奈", text: "「今日は私がお祝いするね😊」" },
 
@@ -2811,6 +2810,8 @@ effects: {
         { speaker: "聖奈", text: "「誕生日だから😊」" },
 
         { text: "🥩🥩🥩" },
+
+    { image: "Yutaka.yakiniku.jpg", text: "やっぱ肉よね～😋" },
 
         { speaker: "ゆたかママ", text: "「うまーーーい😋」" },
 
@@ -2851,6 +2852,9 @@ effects: {
         { speaker: "聖奈", text: "「はやっw」" },
 
         { text: "🍔🍔🍔" },
+
+ { image: "Yutaka.burger.jpg", text: "やっぱバーキンといったらバーガーキングよね😋" },
+
 
         { text: "結局、ハンバーガーも食べた。" },
 
@@ -3681,7 +3685,8 @@ failSteps: [
     title: "二股発覚",
     rate: 0,
     steps: [
-        { text: "彼氏がいるのに、他の男と遊んでいるのがバレた。" },
+         { text: "やばい、、、😱" }, 
+　　　　{ text: "彼氏がいるのに、他の男と遊んでいるのがバレた。" },
         { text: "彼氏<br>「ゆたかくん…。」" },
         { text: "彼氏<br>「他の人と遊んでたんだね。」" },
         { text: "彼氏<br>「そんなチャラい人とはもう無理。」" },
