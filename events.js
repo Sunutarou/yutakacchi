@@ -401,7 +401,7 @@ var workEvents = window.workEvents = [
             money: 50000,
             energy: -20,
             stress: 20,
-            weight: -1
+            weight: -2
         }
     },
     {
@@ -453,7 +453,7 @@ var workEvents = window.workEvents = [
             money: 30000,
             energy: 20,
             stress: 20,
-            weight: 0
+            weight: -1
         }
     },
     {
@@ -715,7 +715,7 @@ var workEvents = window.workEvents = [
             money: 0,
             energy: -10,
             stress: 10,
-            weight: 0
+            weight: -1.5
         }
     },
     {
@@ -755,7 +755,7 @@ var workEvents = window.workEvents = [
             money: 40000,
             energy: -20,
             stress: 20,
-            weight: -0.5
+            weight: -1.5
         }
     },
     {
@@ -1481,7 +1481,7 @@ weight: 0
 
 {
     id: "G2c",
-    title: "筋トレ50-69回",
+    title: "筋トレ50-59回",
     steps: [
   
         { speaker: "ゆたかママ", text: "「今日は結構がんばったわ🤣」" },
@@ -1498,7 +1498,7 @@ weight: 0
 
 {
     id: "G2d",
-    title: "筋トレ70-89回",
+    title: "筋トレ60-69回",
     steps: [
     
         { speaker: "ゆたかママ", text: "「わたし今日イケてる🤣 ムキムキになっちゃうわ」" },
@@ -1509,13 +1509,13 @@ weight: 0
         energy: -25,
         stress: 0,
         money: 0,
-        weight: -2
+        weight: -3
     }
 },
 
 {
     id: "G2e",
-    title: "筋トレ90回以上",
+    title: "筋トレ70回以上",
     steps: [
       
         { speaker: "ゆたかママ", text: "「今日のわたし、サイコー🤣」" },
@@ -1528,7 +1528,7 @@ weight: 0
         energy: -30,
         stress: 0,
         money: 0,
-        weight: -3
+        weight: -5
     }
 },
 
