@@ -115,6 +115,31 @@ body {
     }
 }
 
+
+@keyframes kusamiDance {
+    0% {
+        transform: translateX(0px) translateY(0px) rotate(0deg);
+    }
+    25% {
+        transform: translateX(-2px) translateY(-1px) rotate(-2deg);
+    }
+    50% {
+        transform: translateX(2px) translateY(0px) rotate(2deg);
+    }
+    75% {
+        transform: translateX(-1px) translateY(-1px) rotate(-1deg);
+    }
+    100% {
+        transform: translateX(0px) translateY(0px) rotate(0deg);
+    }
+}
+.kusami-dance {
+    animation: kusamiDance 0.5s infinite;
+    transform-origin: center center;
+}
+
+
+
         /* テキスト表示エリア */
         #message-content {
   position: absolute; top: 62.42%; left: 6.44%; width: 85.11%; height: 18.32%;
@@ -226,7 +251,7 @@ document.querySelectorAll('.btn').forEach(btn => {
             { speaker: "ゆたかママ", text: "「しかも帰宅してから全部食べる気もする、、🤣」" },
             { speaker: "ゆたかママ", text: "「この前、シュークリームに練乳注入して食べた気がしてきた。。。」" },
             { image: "Yutaka.ichigomiruku.png", speaker: "ゆたかママ", text: "「そりゃ太るわね🤣」" },
-            { text: "【システム説明】<br>ゆたかママは毎週少しずつ太ります。<br>毎週終了時<br>体重 +0.2kg<br>ストレス70以上 体重 +0.7kg<br>ストレス90以上 体重 +1.4kg" },
+            { text: "【システム説明】<br>ゆたかママは毎週少しずつ太ります。<br>毎週終了時<br>体重 +0.2kg<br>ストレス70以上 体重 +0.3kg<br>ストレス90以上 体重 +0.5kg" },
             { speaker: "ゆたかママ", text: "「やっぱりジム行かなきゃダメか🤣」" },
             { speaker: "ゆたかママ", text: "「人生甘くないわね」" }
         ]
@@ -352,6 +377,45 @@ let settingsCursor = 0;
 let beforeSettingsState = null;
 let openedFromTitleScreen = false;
 
+let kusamiDanceTimer = null;
+let kusamiDanceIndex = 0;
+
+function stopKusamiDance() {
+    if (kusamiDanceTimer) {
+        clearInterval(kusamiDanceTimer);
+        kusamiDanceTimer = null;
+    }
+}
+
+function updateKusamiDanceImage() {
+    const charImg = document.getElementById("char-image");
+
+    if (kusamiDanceIndex === 0) {
+        charImg.src = "images/Kusami.left.png";
+    } else if (kusamiDanceIndex === 1) {
+        charImg.src = "images/Kusami.dot.png";
+    } else if (kusamiDanceIndex === 2) {
+        charImg.src = "images/Kusami.right.png";
+    } else {
+        charImg.src = "images/Kusami.dot.png";
+    }
+}
+
+function startKusamiDance() {
+    stopKusamiDance();
+
+    kusamiDanceIndex = 0;
+    updateKusamiDanceImage();
+
+    kusamiDanceTimer = setInterval(() => {
+        kusamiDanceIndex++;
+        if (kusamiDanceIndex > 3) {
+            kusamiDanceIndex = 0;
+        }
+        updateKusamiDanceImage();
+    }, 300);
+}
+
 
 
 const settingsMenu = [
@@ -386,12 +450,12 @@ const characterBookList = [
 { name: "聖奈", profile: "バーニコニコの常連。貧乏OLなのに、ゆたかママが痩せちゃわないように優しさでよくお菓子や食べ物を差し入れしてくる。", likes: "スヌーピー、Tiffany", phrase: "おいしいもの食べいこー" },
 { name: "なお", profile: "みらいラウンジとアシェランテの敏腕オーナー。沖縄との2拠点生活。シンジュクにいる時は、バーニコニコによく来る。", likes: "ベルサーチ", phrase: "毛を抜きなさい。ノマカメやめな！" },
 { name: "こころ", profile: "ラキュンのオーナー。オーナーなので偉いから平日は部下を働かせ、自分はバーニコニコで飲んでいる。それが部下の反感を買っているとかいないとか。たまにコスプレしている。", likes: "Dior", phrase: "ご馳走様でーす！" },
-{ name: "ゆかりママ", profile: "パーピュアのオーナー。ゆたかママの「シンジュクのお母さん」。暖かくゆたかママを見守っている。お店が休みの日はバーニコニコへよく飲みに来る。", likes: "ガチムチ髭マッチョ", phrase: "あら、いらっしゃい" },
+{ name: "ゆかりママ", profile: "パーピュアのオーナー。ゆたかママの「シンジュクのお母さん」。暖かくゆたかママを見守っている。お店が休みの日はバーニコニコへよく飲みに来る。若い時は雑誌の表紙を飾ったことも。", likes: "ガチムチ髭マッチョ", phrase: "あら、いらっしゃい" },
 { name: "青リンゴ", profile: "ダンディー風なバーニコニコの土曜スタッフ。ゆたかママの両親世代なのに、「しゃべってないで皿洗って！」「手を動かして！」とよく怒られている。陰でゆたかママの悪口を言ってストレス発散している。でもたまに客としてお店に現れる。結婚は数回して子供もたくさんいるとかいないとか。現在の妻、ナツコとは不仲説があり、新しい恋を探しているもよう。", likes: "女と柏レイソル", phrase: "おじさんさ～" },
 { name: "むぎ", profile: "みらいラウンジ常連。名前の由来はビール🍺。たまにバーニコニコにも遊びにくる。DJイベントにもたくさん参加している人気DJ。", likes: "ビール、DJ", phrase: "ビール下さい" },
 { name: "スヌタロウ", profile: "バーニコニコのお客さんで聖奈のいとこ。いとこだけあって、ゆたかママの健康を心配して（？）差し入れもってくる。たまにゆたかママとシンバシに飲みに行く。", likes: "サッカー、アーセナル", phrase: "PKやろう！" },
 { name: "よしみ姉さん", profile: "以前ゆたかママとバーニコニコで働いていたが、独立。現在は、四谷三丁目よしみ座のオーナーママ。もとダンサーであり、キレキレダンスが得意。", likes: "キラキラ✨", phrase: "それそれ、あらっ" },
-{ name: "くさみ", profile: "バーニコニコのイベント時のみ現れる人気キャスト。なぜかその時はゆたかママがどこかに行ってしまう。", likes: "男とお金", phrase: "玉の裏が臭み～" },
+{ name: "くさみ", profile: "バーニコニコのイベント時のみ現れる人気キャスト。なぜかその時はゆたかママがどこかに行ってしまう。七不思議の1つ。", likes: "男とお金", phrase: "玉の裏が臭み～" },
 { name: "青リンゴママ", profile: "ゆたかママの逃亡によりバーニコニコを継承。シンジュクの名物ママへ。新人スタッフ福原へ今までの恨みを晴らすかのように厳しい当たり。", likes: "新人福原いじめ", phrase: "ほら、手を動かす！" },
 { name: "新人スタッフ福原くん", profile: "バーニコニコをしばらく休んだが、心機一転、新人からやり直し。青リンゴと立場逆転してしまう。こき使われて痩せはじめたらしい。", likes: "ビール", phrase: "心機一転がんばります" },
 { name: "コタニ", profile: "ガチムチ？ぽっちゃり？なゲイ。いいやつ。サラリーマンのため、ワイシャツ姿がよく似合う。しゃべるとオネエ。シンバシでよく飲んでいる。", likes: "お酒、ジュノス", phrase: "せいやちゃん" },
@@ -500,8 +564,8 @@ function renderNewGameConfirm() {
     }
 
     function getWeeklyNaturalWeightGain() {
-        if (gameState.stress >= 90) return 1.4;
-        if (gameState.stress >= 70) return 0.7;
+        if (gameState.stress >= 90) return 0.5;
+        if (gameState.stress >= 70) return 0.3;
         return 0.2;
     }
 
@@ -578,14 +642,14 @@ function startEnding() {
     function checkWeeklyActionsComplete() {
         if (weeklyActions['仕事'] && weeklyActions['ジム'] && weeklyActions['プライベート']) {
             isReadyToAdvanceWeek = true;
-            document.getElementById('message-content').innerText = "全ての行動が完了しました。決定で次の週へ進みます。";
+            document.getElementById('message-content').innerHTML = "全ての行動が完了しました。<br>決定で次の週へ進みます。";
         }
     }
 
     function applyStep(event, index) {
         if (index >= event.steps.length) {
             if (event.id === "OPENING_001") {
-                currentEvent = null; document.getElementById('message-content').innerText = "仕事、ジム、プライベートを各1回ずつ完了してください。";
+                currentEvent = null; document.getElementById('message-content').inner = "HTML、ジム、プライベートを各1回ずつ<br>完了してください。";
             } else if (event.id === "L5a") {
     currentEvent = workEvents.find(e => e.id === "L5");
     currentStepIndex = 0;
@@ -742,8 +806,23 @@ if (step.type === "ukareChoice") {
     gameState.ukareChoiceMode = true;
     return;
 }
-        const img = document.getElementById('event-image');
-        const charImg = document.getElementById('char-image');
+
+if (step.type === "kusamiDance") {
+    document.getElementById('event-image').style.display = 'none';
+
+    const charImg = document.getElementById('char-image');
+    charImg.classList.add("kusami-dance");
+    charImg.style.display = 'block';
+
+    startKusamiDance();
+
+    document.getElementById('message-content').innerHTML =
+        "✨♪ くさみダンスタイム ♪✨";
+
+    step.isDancingNow = true;
+
+    return;
+}        const img = document.getElementById('event-image');        const charImg = document.getElementById('char-image');
         const textDisplay = document.getElementById('message-content');
 
         if (step.image || step.speaker) {
@@ -756,17 +835,29 @@ if (step.type === "ukareChoice") {
 }
 
 if (step.image) {
+    stopKusamiDance();
+
     img.src = "images/" + step.image;
     img.style.display = 'block';
 } else if (displaySpeaker) {
-const dotFile = characterDotMap[displaySpeaker];
-if (dotFile) {
-    charImg.src = "images/" + dotFile;
-    charImg.style.display = 'block';
-}
-}
+    const dotFile = characterDotMap[displaySpeaker];
+    if (dotFile) {
+        stopKusamiDance();
 
-       if (displaySpeaker) {
+        charImg.classList.remove("kusami-dance");
+        charImg.src = "images/" + dotFile;
+        charImg.style.display = 'block';
+
+        if (
+            currentEvent &&
+            (currentEvent.id === "W26" || currentEvent.id === "W27") &&
+            displaySpeaker === "くさみ"
+        ) {
+            charImg.classList.add("kusami-dance");
+            startKusamiDance();
+        }
+    }
+}       if (displaySpeaker) {
     const emoji = characterEmojiMap[displaySpeaker] || "";
     textDisplay.innerHTML = `<b>${emoji} ${displaySpeaker}</b><br>${displayText}`;
 } else {
@@ -805,7 +896,7 @@ savePlayRecord(record);
         document.getElementById('char-image').style.display = 'none';
         const res = currentEvent.effects;
         const totalMoney = res.money + bonusMoney;
-        let resultHtml = `結果<br>お金: ${totalMoney > 0 ? '+' : ''}${totalMoney.toLocaleString()}<br>元気: ${res.energy > 0 ? '+' : ''}${res.energy}<br>ストレス: ${res.stress > 0 ? '+' : ''}${res.stress}`;
+       let resultHtml = `結果<br>お金: ${totalMoney > 0 ? '+' : ''}${totalMoney.toLocaleString()}<br>元気: ${res.energy > 0 ? '+' : ''}${res.energy}<br>ストレス: ${res.stress > 0 ? '+' : ''}${res.stress}<br>体重: ${res.weight > 0 ? '+' : ''}${res.weight.toFixed(1)}kg`;
 
 if (res.beauty !== undefined) {
     resultHtml += `<br>美容: ${res.beauty > 0 ? '+' : ''}${res.beauty}`;
@@ -1565,6 +1656,11 @@ function action(name) {
     return;
 }
 if (isSettingsMode) {
+    if (!openedFromTitleScreen && name === "設定") {
+        isSettingsMode = false;
+        restoreBeforeSettingsState();
+        return;
+    }
 
     if (name === "戻る") {
         settingsCursor--;
@@ -1772,11 +1868,14 @@ if (isCreditsMode || isButtonHelpMode || isEndingListMode) {
     return;
 }
 if (!isTitleScreen && name === "設定") {
+    saveBeforeSettingsState();
+    openedFromTitleScreen = false;
+    settingsCursor = 0;
+    showSettings();
     return;
 }
 
-if (!isTitleScreen && name === "図鑑") {
-    saveBeforeSettingsState();
+if (!isTitleScreen && name === "図鑑") {    saveBeforeSettingsState();
     openedFromTitleScreen = false;
     zukanMenuCursor = 0;
     showZukanMenu();
@@ -2083,9 +2182,11 @@ if (gameState.loveTarget === "ナカタニ") {
 
     if (isCorrect) {
         gameState.loveStage += 1;
-if (loveEventId === "L1f" || loveEventId === "L2f") {
-    gameState.canMarry = true;
-}
+
+        if (loveEventId === "L1f" || loveEventId === "L2f") {
+            gameState.canMarry = true;
+        }
+
         let successText = currentEvent.successText || "「気が合うね😊」";
 
         currentEvent = {
@@ -2094,42 +2195,50 @@ if (loveEventId === "L1f" || loveEventId === "L2f") {
                 { speaker: gameState.loveTarget, text: successText },
                 { text: "デートは成功したみたい😊うふふ♥️" }
             ],
-                       effects: currentEvent.effects
+            effects: currentEvent.effects
         };
     } else {
         if (gameState.loveTarget === "コタニ") {
             gameState.kotaniBroken = true;
         }
-if (gameState.loveTarget === "ナカタニ") {
-    gameState.nakataniBroken = true;
-}
-        
-if (["L1a", "L1b", "L1c", "L2a", "L2b", "L2c"].includes(loveEventId)) {
-    currentEvent = workEvents.find(e => e.id === "L4");
-    weeklyActions["プライベート"] = true;
-    currentStepIndex = 0;
-    applyStep(currentEvent, currentStepIndex);
-    return;
-}
-currentEvent = {
-            id: "LOVE_FAIL",
-           steps: (currentEvent.failStepsByChoice && currentEvent.failStepsByChoice[name]) || currentEvent.failSteps || [
-    { speaker: gameState.loveTarget, text: "「なんでやねん！」" },
-    { text: "今後" + gameState.loveTarget + "からのナイモン連絡がくることはなかった。。" },
-    { text: "デート失敗💩" }
-],
-            effects: {
-                money: 0,
-                energy: -10,
-                stress: 20,
-                weight: 2
-            }
-        };
+
+        if (gameState.loveTarget === "ナカタニ") {
+            gameState.nakataniBroken = true;
+        }
+
+        const failSteps =
+            (currentEvent.failStepsByChoice && currentEvent.failStepsByChoice[name]) ||
+            currentEvent.failSteps ||
+            [
+                { speaker: gameState.loveTarget, text: "「なんでやねん！」" },
+                { text: "今後" + gameState.loveTarget + "からのナイモン連絡がくることはなかった。" },
+                { text: "デート失敗💩" }
+            ];
+
+        if (["L1a", "L1b", "L1c", "L2a", "L2b", "L2c"].includes(loveEventId)) {
+            const breakEvent = workEvents.find(e => e.id === "L4");
+
+            currentEvent = {
+                id: "LOVE_FAIL_TO_L4",
+                steps: failSteps.concat(breakEvent.steps),
+                effects: breakEvent.effects
+            };
+        } else {
+            currentEvent = {
+                id: "LOVE_FAIL",
+                steps: failSteps,
+                effects: {
+                    money: 0,
+                    energy: -10,
+                    stress: 20,
+                    weight: 2
+                }
+            };
+        }
     }
 
     weeklyActions['プライベート'] = true;
- 
-currentStepIndex = 0;
+    currentStepIndex = 0;
     applyStep(currentEvent, currentStepIndex);
     return;
 }
@@ -2875,8 +2984,23 @@ if (name === '図鑑') {
                 "🔵 戻る → デートする<br>" +
                 "🔴 進む → 仲間と遊ぶ<br>" +
                 "🟢 決定 → バイトする";
-        } else if (name === '決定' || name === '進む') {
+       } else if (name === '決定' || name === '進む') {
             if (currentEvent) {
+                const step = currentEvent.steps[currentStepIndex];
+
+                if (step && step.type === "kusamiDance" && step.isDancingNow) {
+                    const charImg = document.getElementById("char-image");
+
+                    stopKusamiDance();
+                    charImg.src = "images/Kusami.right.png";
+                    charImg.classList.remove("kusami-dance");
+
+                    document.getElementById("message-content").innerHTML = "👏👏👏👏👏";
+
+                    step.isDancingNow = false;
+                    return;
+                }
+
                 currentStepIndex++;
                 applyStep(currentEvent, currentStepIndex);
             } else if (isReadyToAdvanceWeek) {
