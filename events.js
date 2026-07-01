@@ -1352,7 +1352,7 @@ weight: 0
         money: -1000,
         energy: -10,
         stress: -5,
-        weight: -1
+        weight: -1.5
     }
 },
 {
@@ -1446,7 +1446,7 @@ weight: 0
         energy: 10,
         stress: -10,
         money: -1000,
-        weight: 1
+        weight: -1.5
     }
 },
 
@@ -1492,7 +1492,7 @@ weight: 0
         energy: -20,
         stress: 0,
         money: 0,
-        weight: -1
+        weight: -1.5
     }
 },
 
@@ -1509,7 +1509,7 @@ weight: 0
         energy: -25,
         stress: 0,
         money: 0,
-        weight: -1.5
+        weight: -2
     }
 },
 
@@ -1528,7 +1528,7 @@ weight: 0
         energy: -30,
         stress: 0,
         money: 0,
-        weight: -2
+        weight: -3
     }
 },
 
@@ -1558,7 +1558,7 @@ weight: 0
         energy: 15,
         stress: -15,
         money: -1000,
-        weight: -1
+        weight: -3
     }
 },
 
