@@ -512,7 +512,7 @@ var workEvents = window.workEvents = [
             money: 20000,
             energy: -30,
             stress: 15,
-            weight: -0.5
+            weight: -1.5
         }
     },
     {
@@ -1099,7 +1099,7 @@ weight: 3
         { text: "バサバサ！" },
         { image: "Yutaka.tanuki.jpg" },
         { speaker: "ゆたかママ", text: "「このまま日光まで飛んでいこう✈」" },
-        { image: "Yutaka.nikko.dot" },
+        { image: "Yutaka.nikko.dot.png" },
         { text: "♨️ 温泉到着" },
         { speaker: "ゆたかママ", text: "「生き返る～♨」" },
         { speaker: "ゆたかママ", text: "「玉の裏の臭いもとれる～。」" },
@@ -1118,7 +1118,7 @@ weight: 3
         { text: "なぜか聖奈がイトコのスヌタロウになっていた。" },
         { text: "その後。" },
         { text: "🐰 金のうさぎ" },
-        { image: "Yutaka.nikko2.dot" },
+        { image: "Yutaka.nikko2.dot.png" },
         { speaker: "ゆたかママ", text: "「かわいい♡」" },
         { speaker: "ゆたかママ", text: "「癒される♡」" },
         { speaker: "ゆたかママ", text: "「みんなでお揃いの金ウサギキーホルダー買おう？」" },
@@ -1411,9 +1411,9 @@ weight: 0
         { speaker: "ゆたかママ", text: "「奥さんかしら？」" },
         { text: "でもちょっと赤リンゴさんとは違う？？" },
         { text: "🍏 青リンゴ<br>💕<br>👩 女性" },
-        { text: "手をつないでいる。" },
+ { image: "Yutaka.gymringo.dot.png", text: "手をつないでいる。" },
         { speaker: "ゆたかママ", text: "「やっぱ違うじゃない！」" },
-        { image: "Yutaka.gymringo.dot.png", text: "翌日" },
+        { text: "翌日" },
         { text: "🍏 青リンゴ来店" },
         { speaker: "ゆたかママ", text: "「昨日見たわよ🤣」" },
         { speaker: "青リンゴ", text: "「何を？」" },
@@ -2079,7 +2079,7 @@ effects: {
     steps: [
         { text: "今日はDJイベントTTRICKへいった。" },
 
-        { image: "Mugi.dot", text: "むぎちゃんがDJしてた。" },
+        { image: "Mugi.dot.png", text: "むぎちゃんがDJしてた。" },
 
         { image: "DJ KJ.dot.png", text: "DJ KJもまわしてた。" },
 
@@ -2317,7 +2317,7 @@ effects: {
 
         { speaker: "ゆたかママ", text: "「ん！？👀」" },
 
-        { text: "🍏 青リンゴ発見！" },
+        { image: "Ringo1.jpg", text: "🍏 青リンゴ発見！" },
 
         { speaker: "ゆたかママ", text: "「えっ！？」" },
 
@@ -3583,7 +3583,25 @@ failSteps: [
     title: "ラキュンランドデート",
     rate: 0,
     steps: [
-        { image: "Yutaka.lacuneland.dot.png", text: "今日はオオタニとディズニーランドデート。<br>暑かったら1時間で帰っちゃうぞ。<br>とか思ったら、間違えてラキュンランドに着いちゃった。<br>ボッタクられそうな予感。。" }, { text: "図鑑登録" },
+        { image: "Yutaka.lacuneland.dot.png", text: "今日はオオタニとディズニーランドデート。<br>暑かったら1時間で帰っちゃうぞ。<br>とか思ったら、間違えてラキュンランドに着いちゃった。<br>ボッタクられそうな予感。。" }, 
+  { text: "人気アトラクションは120分待ちだった。" },
+    { speaker: "ゆたかママ", text: "「ながっ🤣」" },
+    { speaker: "オオタニ", text: "「こういう待ち時間もデートの醍醐味だよ😄」" },
+    { speaker: "ゆたかママ", text: "「アタシ、お腹すいてきた🤣」" },
+    { speaker: "オオタニ", text: "「また食べるの？😅」" },
+    { speaker: "ゆたかママ", text: "「歩いたからゼロカロリーよ✨」" },
+    { speaker: "オオタニ", text: "「それは違うかな🤣」" },
+    { speaker: "オオタニ", text: "「でもね。」" },
+    { speaker: "オオタニ", text: "「ゆたかくんには元気で長生きしてほしいんだ。」" },
+    { speaker: "ゆたかママ", text: "「え？😅」" },
+    { speaker: "オオタニ", text: "「72kgを切れたら、大事な話がある。」" },
+    { speaker: "ゆたかママ", text: "「えーー！なにそれ🤣」" },
+    { speaker: "オオタニ", text: "「今は秘密😝」" },
+    { speaker: "オオタニ", text: "「身体の管理できない人はだめだよ。」" },
+　　{ speaker: "ゆたかママ", text: "「あ、はい。。💦」" },
+　  { speaker: "ゆたかママ", text: "「72kg、、、😱結婚条件かしらｗ覚えておこう😱」" },
+
+{ text: "図鑑登録" },
         { text: "🏰 ラキュンランドゲット！" },
         { speaker: "オオタニ", text: "「ゆたかくんの好きなサッカーチームって何だっけ？」" },
         { type: "loveChoice", text: "なんて答える？<br><br>🔵 戻る → アビスパ福岡<br>🔴 進む → 大宮アルディージャ<br>🟢 決定 → 柏レイソル" }
