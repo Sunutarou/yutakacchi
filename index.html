@@ -225,7 +225,7 @@ document.querySelectorAll('.btn').forEach(btn => {
             { text: "今日は、バーニコニコの雇われ店長で<br>あるゆたかママの39回目の誕生日。<br>バースデーイベントは大好評に終わった。<br>Barニコニコの常連みんなから祝われて39歳になったゆたかママ。" },
             { text: "幸せそうに見えるけど、<br>お金もない。<br>恋人もいない。<br>髪の毛もいない。<br>そして体重は78kg。<br>60kg台前半だった若いころの面影はない。。" },
             { text: "でも夢はある。<br>いつか自分の店を持ちたい。" },
-            { text: "20歳になる前から新宿二丁目のゲイバーで<br>働きだし、途中でゲイバーを飛んで、<br>昼の職業いわゆる昼職へ。<br>OLやアバレルを転々とした。" },
+            { text: "20歳になる前から新宿二丁目のゲイバーで<br>働きだし、途中でゲイバーを飛んで、<br>昼の職業いわゆる昼職へ。<br>OLやアパレルを転々とした。" },
             { text: "丸の内OLだってやったんだからね！<br>でもまた数年前に新宿二丁目に<br>舞い戻ってきた。" },
             { text: "いつしか自分の店をという意気込みは、<br>忙しい毎日で忘れつつあった。<br>しかし、もう39歳。<br>40代を目前に、わたしは決意を新たにした。" },
             { speaker: "ゆたかママ", text: "「わたしは、独立する！<br>自分のお店を持つ！」" },
@@ -896,7 +896,11 @@ savePlayRecord(record);
         document.getElementById('char-image').style.display = 'none';
         const res = currentEvent.effects;
         const totalMoney = res.money + bonusMoney;
-       let resultHtml = `結果<br>お金: ${totalMoney > 0 ? '+' : ''}${totalMoney.toLocaleString()}<br>元気: ${res.energy > 0 ? '+' : ''}${res.energy}<br>ストレス: ${res.stress > 0 ? '+' : ''}${res.stress}<br>体重: ${res.weight > 0 ? '+' : ''}${res.weight.toFixed(1)}kg`;
+       let resultHtml = `結果<br>お金: ${totalMoney > 0 ? '+' : ''}${totalMoney.toLocaleString()}<br>元気: ${res.energy > 0 ? '+' : ''}${res.energy}<br>ストレス: ${res.stress > 0 ? '+' : ''}${res.stress}`;
+
+if (res.weight !== 0) {
+    resultHtml += `<br>体重: ${res.weight > 0 ? '+' : ''}${res.weight.toFixed(1)}kg`;
+}
 
 if (res.beauty !== undefined) {
     resultHtml += `<br>美容: ${res.beauty > 0 ? '+' : ''}${res.beauty}`;
