@@ -614,7 +614,7 @@ var workEvents = window.workEvents = [
         title: "むりちゃん",
         rate: 1,
         steps: [
-            { image: "Mugi.dou.png", text: "むぎちゃんが来た。" },
+            { image: "Mugi.dot.png", text: "むぎちゃんが来た。" },
             { speaker: "むぎちゃん", text: "「ビールください🍺」" },
             { speaker: "ゆたかママ", text: "「もう飲んでるでしょ🤣」" },
             { speaker: "むぎちゃん", text: "「もう一杯🍺」" },
@@ -800,12 +800,20 @@ var workEvents = window.workEvents = [
         steps: [
             { text: "ゆたかママ40歳バースデー！" },
             { speaker: "聖奈", text: "「ゆたかママ、おめでとー！ケーキだよ！」" },
-            { speaker: "なお", text: "「ゆたかママ、おめでとー！シャンパン入れちゃおー🍾」" },
-            { speaker: "こころ", text: "「ゆたかママ、おめでとー！シャンパン入れちゃおー🍾」" },
+            { speaker: "なお", text: "「おめでとー！シャンパン入れちゃおー🍾」" },
+            { speaker: "こころ", text: "「おめでとー！シャンパン入れちゃおー🍾」" },
             { speaker: "ゆかりママ", text: "「ゆたかくん、40歳？」" },
             { speaker: "ゆかりママ", text: "「まだまだ若いわね。」" },
+            { speaker: "ゆたかママ", text: "「40代突入しちゃいましたよ😱」" },
+　　　　　 { speaker: "ゆかりママ", text: "「ここからよ！」" },
+            { speaker: "ゆたかママ", text: "「なんか言葉が重いわ😱」" },
+            { speaker: "青リンゴ", text: "「ママ、40歳なんてまだヒヨコだよ！」" },
+            { speaker: "青リンゴ", text: "「おじさん、60超えてからもう数えてないもんｗ」" },
+  　　　　　{ speaker: "こころ", text: "「こわー。。。😱」" },
             { speaker: "青リンゴ", text: "「ママ、おじさんもシャンパン入れちゃおうかな」" },
-            { speaker: "ゆたかママ", text: "「あんたは従業員でしょ！皿洗って！」" },
+            { speaker: "ゆたかママ", text: "「ありがとー！」" },
+            { speaker: "ゆたかママ", text: "「って、あんたは従業員でしょ！<br>皿洗って！」" },
+            { image: "Yutaka.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
             { speaker: "全員", text: "「かんぱーーーい！！🍾」" },
             { image: "Yutaka.hbd.png", speaker: "ゆたかママ", text: "「ありがとう。うれしいー！」" },
             { text: "みんなで盛り上がった。" },
@@ -852,9 +860,10 @@ var workEvents = window.workEvents = [
             { speaker: "ゆかりママ", text: "「41歳なんてまだまだ子供よ。」" },
             { speaker: "青リンゴ", text: "「おじさんもシャンパン入れちゃおうかな🍾」" },
             { speaker: "ゆたかママ", text: "「あんたは従業員でしょ！って今日はお客側だったわね！」" },
-            { speaker: "久美", text: "「ゆたか、ママもきちゃったわ。バリ風のいいお店じゃない！お父さんも連れてくればよかったわ」" },
+            { speaker: "久美", text: "「ゆたか、ママもきちゃったわ。<br>バリ風のいいお店じゃない！<br>お父さんも連れてくればよかったわ」" },
             { speaker: "久美", text: "「おばさんもシャンパン入れちゃおうかな🍾」" },
-            { speaker: "ゆたかママ", text: "「あんたは入れなくていいわ！ってかなんで来たのよｗ」" },
+            { speaker: "ゆたかママ", text: "「あんたは入れなくていいわ！<br>ってかなんで来たのよｗ」" },
+　　　　　 { image: "Yutaka.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
             { speaker: "全員", text: "「かんぱーーーい！！🍻」" },
             { image: "Yutaka.hbd41.png", text: "みんなで盛り上がった。" },
             { text: "仕事だけど楽しかった。" },
@@ -865,6 +874,7 @@ var workEvents = window.workEvents = [
             { text: "【70kg以下特別イベント】" },
             { speaker: "聖奈", text: "「バースデーでしっかり70kg切ってるなんてすごいね！」" },
             { speaker: "聖奈", text: "「シャンパン入れます！🍾」" },
+　　　　　 { image: "Yutaka.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
             { speaker: "全員", text: "「かんぱーーーーい！！🍾」" },
             { text: "図鑑登録" },
             { text: "🍾 41歳バースデーシャンパンゲット" }
@@ -898,6 +908,7 @@ steps: [
 { speaker: "ゆかりママ", text: "「3周年なんて、なかなかやるわね！えらい！」" },
 { speaker: "こころ", text: "「シャンパンくださーい🍾」" },
 { speaker: "ゆたかママ", text: "「いいんですかー？😊」" },
+ { image: "Yutaka.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
 { speaker: "ゆたかママ", text: "「いつまでもあると思うな親とニコニコ🤣」" },
 { speaker: "全員", text: "「かんぱーーーい！！🍾」" },
 { speaker: "青リンゴ", text: "「おじさんは、皿洗い頑張るよー！」" },
@@ -926,6 +937,7 @@ steps: [
     { speaker: "聖奈", text: "「70kg切ってるじゃん！」" },
     { speaker: "こころ", text: "「頑張ったねー！」" },
     { speaker: "聖奈", text: "「シャンパン入れちゃおうかな🍾」" },
+ { image: "Kusami.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
     { speaker: "全員", text: "「かんぱーーーーい！！🍾」" },
     { text: "図鑑登録" },
     { text: "🍾 3周年シャンパンゲット" }
@@ -966,6 +978,7 @@ effects: {
         { speaker: "青リンゴ", text: "「もう（毛）ないじゃん、なんちゃって🤣」" },
         { speaker: "ゆたかママ", text: "「なんか言った？皿洗い？」" },
         { speaker: "青リンゴ", text: "「いえ。」" },
+ 　　　{ image: "Kusami.kanpai.png", speaker: "くさみ", text: "「それでは😄」" },
         { speaker: "全員", text: "「かんぱーーーい！！🍾」" },
         { text: "周年イベント進行中。<br>くさみが踊っている。<br>青リンゴは、ボーっとくさみの踊りを眺めていた。" },
 { text: "🍏 青リンゴ<br>🧽" },
@@ -1000,6 +1013,7 @@ effects: {
         { speaker: "聖奈", text: "「ちゃんと70kg切ってるじゃん！」" },
         { speaker: "こころ", text: "「また痩せてるー！どうしちゃったのゆたかママー！」" },
         { speaker: "聖奈", text: "「えらみー！しょうがないからシャンパン入れちゃう🍾」" },
+　　　 { image: "Kusami.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
         { speaker: "全員", text: "「かんぱーーーーい！！🍾」" },
         { text: "図鑑登録" },
         { text: "🍾 4周年シャンパンゲット" }
@@ -1686,7 +1700,7 @@ weight: 0
         { text: "いっぱい飲んでいた。" },
         { speaker: "ゴテツ", text: "「アンタたち、明日仕事でしょ？ｗ」" },
         { speaker: "スヌタロウ", text: "「やだーー、働きたくないーーー。」" },
-        { speaker: "ゆたかママ", text: "「スヌタロウ帰るよ！」" },
+        { speaker: "ゆたかママ", text: "「ほら！スヌタロウ帰るよ！」" },
         { text: "今日は楽しかった。" },
         { text: "図鑑登録" },
         { text: "⚓ コテツゲット" }
@@ -2217,7 +2231,7 @@ effects: {
 
         { text: "お水をあげた。" },
 
-        { speaker: "くさみ", text: "「ありがとう、ゆたか🌳」" },
+        { text: "「ありがとう、ゆたか🌳」" },
 
         { speaker: "ゆたかママ", text: "「・・・？」" },
 
@@ -2264,7 +2278,9 @@ effects: {
 
         { image: "Yutaka.maeba.dot.png", text: "🦷" },
 
-        { speaker: "ゆたかママ", text: "「ぎゃあああああ🤣」" },
+        { image: "Yutaka.maeba.dot.png", text: "!?" },
+  
+      { speaker: "ゆたかママ", text: "「ぎゃあああああ🤣」" },
 
         { text: "前歯の差し歯が取れた😱😱😱" },
 
