@@ -596,7 +596,7 @@ var workEvents = window.workEvents = [
         title: "むぎ来店",
         rate: 3,
         steps: [
-            { image: "Mugi.dot", text: "むぎちゃんが来た。" },
+            { image: "Mugi.dot.png", text: "むぎちゃんが来た。" },
             { text: "ビールくれた。" },
             { text: "図鑑登録" },
             { text: "🍺 むぎちゃんゲット" }
@@ -613,7 +613,7 @@ var workEvents = window.workEvents = [
         title: "むりちゃん",
         rate: 1,
         steps: [
-            { image: "Mugimuri.png", text: "むぎちゃんが来た。" },
+            { image: "Mugimuri.jpg", text: "むぎちゃんが来た。" },
             { speaker: "むぎちゃん", text: "「ビールください🍺」" },
             { speaker: "ゆたかママ", text: "「もう飲んでるでしょ🤣」" },
             { speaker: "むぎちゃん", text: "「もう一杯🍺」" },
@@ -2950,6 +2950,79 @@ effects: {
         weight: 0.5
     }
 },
+{
+    id: "F26",
+    title: "ゆたかスタンプ誕生",
+    rate: 1,
+    oneTime: true,
+    steps: [
+        { text: "聖奈とこころとみらいラウンジへ飲みに来た。" },
+        { speaker: "聖奈", text: "「ゆたかママさー。」" },
+        { speaker: "ゆたかママ", text: "「なによ？」" },
+        { speaker: "聖奈", text: "「LINEスタンプ作ろうよ！」" },
+        { speaker: "ゆたかママ", text: "「えーー🤣」<br>「売れないでしょｗ」" },
+        { speaker: "こころ", text: "「絶対おもしろいって😄」" },
+        { speaker: "なお", text: "「売れるよ！」" },
+        { speaker: "ゆたかママ", text: "「えー😅」" },
+        { speaker: "こころ", text: "「ゆたかママ、女装界隈で人気じゃん！ゲイだけどｗ」" },
+        { speaker: "聖奈", text: "「わたし作るから！」" },
+        { speaker: "ゆたかママ", text: "「ほんと？😝」" },
+        { speaker: "聖奈", text: "「まず40個考えて！」" },
+        { speaker: "ゆたかママ", text: "「40個！？🤣」<br>「そんなにある？」" },
+        { speaker: "なお", text: "「いつも言ってること全部書けばいいじゃない。」" },
+        { speaker: "こころ", text: "「玉の裏が臭み～とか🤣」" },
+        { speaker: "ゆたかママ", text: "「それ誰が使うのよ🤣」" },
+        { text: "数週間後…" },
+        { image: "Yutaka.stamp.png", speaker: "聖奈", text: "「できたーー！✨」" },
+        { speaker: "ゆたかママ", text: "「すごーい👏」" },
+        { speaker: "なお", text: "「ちゃんと審査通るかな？」" },
+        { speaker: "こころ", text: "「売れたら焼肉ね。ご馳走さまでーす！」" },
+        { speaker: "ゆたかママ", text: "「じゃあ100万セット売れるわね🤣」" },
+        { speaker: "全員", text: "「無理無理🤣🤣🤣」" },
+        { text: "図鑑登録" },
+        { text: "💚 ゆたかスタンプゲット！" }
+    ],
+    effects: {
+        money: -5000,
+        energy: 20,
+        stress: -20,
+        weight: 0
+    }
+},
+{
+    id: "F27",
+    title: "ゆたかママトレカ",
+    rate: 1,
+    oneTime: true,
+    steps: [
+        { text: "今日は、こころとスヌタロウと飲みに行った。" },
+        { speaker: "スヌタロウ", text: "「ゆたかママ。」" },
+        { speaker: "ゆたかママ", text: "「なによ？」" },
+        { speaker: "スヌタロウ", text: "「前にさ、トレカ欲しいって言ってたよね？」" },
+        { speaker: "ゆたかママ", text: "「言った言った😝」" },
+        { speaker: "スヌタロウ", text: "「暇だったから作っといたよ。」" },
+        { image: "Yutaka.card.png", speaker: "ゆたかママ", text: "「えーーーー！🤣」" },
+        { speaker: "ゆたかママ", text: "「なにこれ！すごーーい！😲」" },
+        { speaker: "スヌタロウ", text: "「本物っぽくしてみた😎」" },
+        { speaker: "ゆたかママ", text: "「めっちゃいいじゃん😄」" },
+        { speaker: "こころ", text: "「えーー！いいなー！」" },
+        { speaker: "こころ", text: "「それちょうだい🤣」" },
+        { speaker: "ゆたかママ", text: "「ダメよ🤣」" },
+        { speaker: "ゆたかママ", text: "「お店で売ろうかしらｗ」" },
+        { speaker: "こころ", text: "「誰が買うのよ🤣」" },
+        { speaker: "スヌタロウ", text: "「ゆたかママファンって意外といるもんね！」<br>「コンプリート目指す人もいるかもよ😏」" },
+        { speaker: "全員", text: "「🤣🤣🤣」" },
+        { text: "図鑑登録" },
+        { text: "🃏 ゆたかママトレカゲット！" }
+    ],
+    effects: {
+        money: -5000,
+        energy: 20,
+        stress: -20,
+        weight: 0
+    }
+},
+
 {
     id: "F15",
     title: "悪魔こころ誕生日",
