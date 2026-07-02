@@ -1405,7 +1405,8 @@ weight: 0
         { speaker: "ゆたかママ", text: "「今日もてちてち歩くわよ」" },
         { text: "てちてち<br>てちてち" },
         { text: "ふと窓の外を見た。" },
-        { text: "🍏 青リンゴ が いた。" },
+ { image: "Yutaka.gymringo.dot.png", text: "👀!?" },
+        { text: "🍏 青リンゴ がいた。" },
         { speaker: "ゆたかママ", text: "「あれ？青リンゴさん！」" },
         { text: "隣には若い女性がいる。" },
         { speaker: "ゆたかママ", text: "「奥さんかしら？」" },
@@ -2973,7 +2974,7 @@ effects: {
         { speaker: "こころ", text: "「玉の裏が臭み～とか🤣」" },
         { speaker: "ゆたかママ", text: "「それ誰が使うのよ🤣」" },
         { text: "数週間後…" },
-        { image: "Yutaka.stamp.png", speaker: "聖奈", text: "「できたーー！✨」" },
+        { image: "Yutaka.stamp.jpg", speaker: "聖奈", text: "「できたーー！✨」" },
         { speaker: "ゆたかママ", text: "「すごーい👏」" },
         { speaker: "なお", text: "「ちゃんと審査通るかな？」" },
         { speaker: "こころ", text: "「売れたら焼肉ね。ご馳走さまでーす！」" },
@@ -3012,6 +3013,8 @@ effects: {
         { speaker: "こころ", text: "「誰が買うのよ🤣」" },
         { speaker: "スヌタロウ", text: "「ゆたかママファンって意外といるもんね！」<br>「コンプリート目指す人もいるかもよ😏」" },
         { speaker: "全員", text: "「🤣🤣🤣」" },
+ { image: "Yutaka.card.png", speaker: "ゆたかママ", text: "「🤣」" },
+
         { text: "図鑑登録" },
         { text: "🃏 ゆたかママトレカゲット！" }
     ],
