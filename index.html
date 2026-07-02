@@ -446,10 +446,10 @@ const endingList = [
 ];
 const characterBookList = [
 
-{ name: "ゆたかママ", profile: "バーニコニコの雇われ店長。この物語の主人公。埼玉県出身だけどシンジュクに帰化し、自称「シンジュクの女」。彼氏とお店の独立が夢。ずっとダイエット中といっている。玉の裏が臭いらしい。ジムでてちてちが日課。", likes: "ケンタッキーと背が大きい短髪ガッチリ男性", phrase: "いつまでもあると思うな髪の毛とニコニコ" },
-{ name: "聖奈", profile: "バーニコニコの常連。貧乏OLなのに、ゆたかママが痩せちゃわないように優しさでよくお菓子や食べ物を差し入れしてくる。", likes: "スヌーピー、Tiffany", phrase: "おいしいもの食べいこー" },
+{ name: "ゆたかママ", profile: "バーニコニコの雇われ店長。この物語の主人公。ゲイなのに女装界隈で大人気。人気のためスタンプにもなっている。埼玉県出身だけどシンジュクに帰化し、自称「シンジュクの女」。彼氏ゲットとお店の独立が夢。ずっとダイエット中といっている。玉の裏が臭いのが悩み。ジムでてちてちが日課。", likes: "ケンタッキーと背が大きい短髪ガッチリ男性", phrase: "いつまでもあると思うな髪の毛とニコニコ" },
+{ name: "聖奈", profile: "バーニコニコの常連。貧乏OLなのに、ゆたかママが痩せちゃわないようにと優しさでよくお菓子や食べ物を差し入れしてくる。人見知りだけど仲良くなると懐くタイプ。スヌーピー40匹くらいと生活中。", likes: "スヌーピー、Tiffany", phrase: "おいしいもの食べいこー" },
 { name: "なお", profile: "みらいラウンジとアシェランテの敏腕オーナー。沖縄との2拠点生活。シンジュクにいる時は、バーニコニコによく来る。", likes: "ベルサーチ", phrase: "毛を抜きなさい。ノマカメやめな！" },
-{ name: "こころ", profile: "ラキュンのオーナー。オーナーなので偉いから平日は部下を働かせ、自分はバーニコニコで飲んでいる。それが部下の反感を買っているとかいないとか。たまにコスプレしている。", likes: "Dior", phrase: "ご馳走様でーす！" },
+{ name: "こころ", profile: "ラキュンのオーナー。オーナーなので偉いから平日は部下を働かせ、自分はバーニコニコで飲んでいる。それが部下の反感を買っているとかいないとか。たまにコスプレしている。メイクサロンの元店長。怖い女装の人という説と実は心優しい女の子という説があり。", likes: "Dior、山田君", phrase: "ぷぷぷ、ご馳走様でーす！" },
 { name: "ゆかりママ", profile: "パーピュアのオーナー。ゆたかママの「シンジュクのお母さん」。暖かくゆたかママを見守っている。お店が休みの日はバーニコニコへよく飲みに来る。若い時は雑誌の表紙を飾ったことも。", likes: "ガチムチ髭マッチョ", phrase: "あら、いらっしゃい" },
 { name: "青リンゴ", profile: "ダンディー風なバーニコニコの土曜スタッフ。ゆたかママの両親世代なのに、「しゃべってないで皿洗って！」「手を動かして！」とよく怒られている。陰でゆたかママの悪口を言ってストレス発散している。でもたまに客としてお店に現れる。結婚は数回して子供もたくさんいるとかいないとか。現在の妻、ナツコとは不仲説があり、新しい恋を探しているもよう。", likes: "女と柏レイソル", phrase: "おじさんさ～" },
 { name: "むぎ", profile: "みらいラウンジ常連。名前の由来はビール🍺。たまにバーニコニコにも遊びにくる。DJイベントにもたくさん参加している人気DJ。", likes: "ビール、DJ", phrase: "ビール下さい" },
@@ -525,16 +525,28 @@ function renderNewGameConfirm() {
         document.getElementById('message-content').innerHTML = html;
     }
 
-    function pickRandomEvent(events) {
-        const totalRate = events.reduce((sum, e) => sum + e.rate, 0);
-        let rand = Math.random() * totalRate;
-        for (const event of events) {
-            rand -= event.rate;
-            if (rand <= 0) return event;
-        }
-        return events[0];
+    function filterOneTimeEvents(events) {
+    return events.filter(event => {
+        if (!event.oneTime) return true;
+        return localStorage.getItem("one_time_seen_" + event.id) !== "true";
+    });
+}
+
+function pickRandomEvent(events) {
+    const filteredEvents = filterOneTimeEvents(events);
+
+    if (filteredEvents.length === 0) return null;
+
+    const totalRate = filteredEvents.reduce((sum, e) => sum + e.rate, 0);
+    let rand = Math.random() * totalRate;
+
+    for (const event of filteredEvents) {
+        rand -= event.rate;
+        if (rand <= 0) return event;
     }
 
+    return filteredEvents[0];
+}
     function saveGame() {
     localStorage.setItem("yutakatch_save", JSON.stringify(gameState));
     saveBeforeSettingsState();
@@ -894,6 +906,11 @@ savePlayRecord(record);
     function showResult() {
         document.getElementById('event-image').style.display = 'none';
         document.getElementById('char-image').style.display = 'none';
+
+        if (currentEvent && currentEvent.oneTime) {
+            localStorage.setItem("one_time_seen_" + currentEvent.id, "true");
+        }
+
         const res = currentEvent.effects;
         const totalMoney = res.money + bonusMoney;
        let resultHtml = `結果<br>お金: ${totalMoney > 0 ? '+' : ''}${totalMoney.toLocaleString()}<br>元気: ${res.energy > 0 ? '+' : ''}${res.energy}<br>ストレス: ${res.stress > 0 ? '+' : ''}${res.stress}`;
@@ -1033,7 +1050,7 @@ function getZukanCount() {
     return count;
 }
 
-const TOTAL_ZUKAN_COUNT = 102;
+const TOTAL_ZUKAN_COUNT = 104;
 function getZukanNameById(id) {
     const extraZukan = {
         pkSuccess: "🧤 ブッフォン賞ゲット",
@@ -1979,20 +1996,21 @@ if (name === "図鑑") {
 
     return;
 }
-    if (isZukanMode) {
+  if (isZukanMode) {
 
     if (name === "図鑑") {
+        isZukanMode = false;
         isCharacterDetailMode = false;
+        zukanType = "event";
 
-        if (zukanType === "event") {
-            zukanType = "character";
-            characterCursorIndex = 0;
-            showCharacterZukan();
+        document.getElementById("char-image").style.display = "none";
+
+        if (openedFromTitleScreen) {
+            showTitle();
         } else {
-            zukanType = "event";
-            zukanPage = 0;
-            showZukan();
+            restoreBeforeSettingsState();
         }
+
         return;
     }
 
