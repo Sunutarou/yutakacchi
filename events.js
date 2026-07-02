@@ -2812,7 +2812,7 @@ effects: {
 
         { text: "🥩🥩🥩" },
 
-    { image: "Yutaka.yakiniku.jpg", text: "やっぱ肉よね～😋" },
+    { image: "yutaka.yakiniku.jpg", text: "やっぱ肉よね～😋" },
 
         { speaker: "ゆたかママ", text: "「うまーーーい😋」" },
 
@@ -3137,7 +3137,7 @@ effects: {
         money: 15000,
         energy: 10,
         stress: -10,
-        weight: 2
+        weight: 1.5
     }
 },
 {
@@ -3182,7 +3182,7 @@ effects: {
         money: 20000,
         energy: -10,
         stress: 5,
-        weight: -1
+        weight: -1.5
     }
 },
 {
@@ -3262,7 +3262,7 @@ effects: {
         money: 12000,
         energy: -15,
         stress: 5,
-        weight: 0
+        weight: 0.5
     }
 },
 {
@@ -3281,7 +3281,7 @@ effects: {
         money: 8000,
         energy: -5,
         stress: 0,
-        weight: 0
+        weight: -0.5
     }
 },
 {
@@ -3345,7 +3345,7 @@ effects: {
         money: 15000,
         energy: -10,
         stress: 5,
-        weight: 0
+        weight: -1.5
     }
 },
 {
@@ -3368,7 +3368,7 @@ effects: {
         money: 8000,
         energy: -30,
         stress: 30,
-        weight: 0
+        weight: -1
     }
 },
 {
