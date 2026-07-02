@@ -1611,7 +1611,26 @@ const dotFile = characterDotMap[chara.name];
         document.getElementById('stat-weight').innerText = gameState.weight.toFixed(1) + 'kg';
     }
 function action(name) {
-    if (isSaveCompleteMode) {
+if (isSettingsMode && name === "設定") {
+    isSettingsMode = false;
+
+    if (openedFromTitleScreen) {
+        showTitle();
+    } else {
+        restoreBeforeSettingsState();
+    }
+
+    return;
+}
+
+if (
+    isSettingsMode &&
+    name !== "戻る" &&
+    name !== "進む" &&
+    name !== "決定"
+) {
+    return;
+}    if (isSaveCompleteMode) {
 
         if (name === "戻る" || name === "進む") {
             saveCompleteCursor = saveCompleteCursor === 0 ? 1 : 0;
@@ -1879,13 +1898,13 @@ if (!isTitleScreen && name === "設定") {
     return;
 }
 
-if (!isTitleScreen && name === "図鑑") {    saveBeforeSettingsState();
+if (!isTitleScreen && name === "図鑑" && !isZukanMenuMode && !isZukanMode) {
+    saveBeforeSettingsState();
     openedFromTitleScreen = false;
     zukanMenuCursor = 0;
     showZukanMenu();
     return;
 }
-
 if (isTitleScreen && name === "設定") {
     openedFromTitleScreen = true;
     settingsCursor = 0;
@@ -1900,6 +1919,18 @@ if (isTitleScreen && name === "図鑑") {
     return;
 }
 if (isZukanMenuMode) {
+if (name === "図鑑") {
+
+    isZukanMenuMode = false;
+
+    if (openedFromTitleScreen) {
+        showTitle();
+    } else {
+        restoreBeforeSettingsState();
+    }
+
+    return;
+}
 
     if (name === "戻る") {
         zukanMenuCursor--;
