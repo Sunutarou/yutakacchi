@@ -860,14 +860,7 @@ if (step.image) {
         charImg.src = "images/" + dotFile;
         charImg.style.display = 'block';
 
-        if (
-            currentEvent &&
-            (currentEvent.id === "W26" || currentEvent.id === "W27") &&
-            displaySpeaker === "くさみ"
-        ) {
-            charImg.classList.add("kusami-dance");
-            startKusamiDance();
-        }
+        
     }
 }       if (displaySpeaker) {
     const emoji = characterEmojiMap[displaySpeaker] || "";
