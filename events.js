@@ -43,11 +43,12 @@ var workEvents = window.workEvents = [
         { speaker: "ゆたかママ", text: "「文字大きくしたら？」" },
         { speaker: "ゆかりママ", text: "「してるわよ💢」" },
         { speaker: "ゆかりママ", text: "「失礼ね！」" },
+ 　　　{ speaker: "ゆかりママ", text: "「舐めてんじゃないわよ！」" },
         { speaker: "ゆかりママ", text: "「ほら、お酒はやく飲んで！」" },
         { speaker: "ゆたかママ", text: "「ごめんなさい🤣」" },
         { text: "こわい、こわい。<br>今度虫眼鏡を用意しておこう。" },
         { text: "図鑑登録" },
-        { text: "🧐 みにくいゆかりママゲット！" }
+        { text: "🧐 舐めてんじゃないわよbyゆかりママゲット！" }
     ],
     effects: {
         money: 50000,
@@ -136,6 +137,10 @@ var workEvents = window.workEvents = [
             { text: "なおが来た。" },
             { speaker: "なお", text: "「また来ちゃった。」" },
             { text: "女子トークで盛り上がった。" },
+            { text: "ノマカメで写真撮ろうとしたら、、、" },
+　　　　　 { speaker: "なお", text: "「ノマカメやめな！」" },
+            { text: "怒られたｗ" },
+
  { text: "図鑑登録" },
         { text: "💄 なおゲット！" }
         ],
@@ -146,7 +151,7 @@ var workEvents = window.workEvents = [
         title: "こころ来店",
         rate: 7,
         steps: [
-            { speaker: "こころ", text: "「ゆたかママも飲みなよー。」" },
+            { speaker: "こころ", text: "「ゆたかママも飲みなよー。ぷぷぷ。」" },
             { text: "こころが来た。" },
             { text: "「ゆたかママも飲みなよー。」" },
             { text: "仕事の愚痴をたくさん聞いてあげた。" },
@@ -185,6 +190,7 @@ var workEvents = window.workEvents = [
             { speaker: "こころ", text: "「ゆたかママ、仕事終わったらモモタイ行こう！」" },
             { speaker: "ゆたかママ", text: "「なんでよ！？」" },
             { speaker: "ゆたかママ", text: "「夜中食べたら太るのよ。」" },
+　　　　　 { speaker: "こころ", text: "「ぷぷぷｗ」" },
             { image: "Kokoro.momo.png", text: "🍜 結局 モモタイ到着" },
             { speaker: "こころ", text: "「とりあえず食べよ。」" },
             { text: "🍜🍜🍜" },
@@ -741,6 +747,10 @@ var workEvents = window.workEvents = [
             { speaker: "青リンゴ", text: "「ママー！」" },
             { speaker: "ゆたかママ", text: "「あんた、喋ってないで皿洗って！！😡」" },
             { speaker: "青リンゴ", text: "「えぇ～💦」" },
+            { speaker: "青リンゴ", text: "「皿洗ってるっつーの、ハゲ！」" },
+ 　　　　　 { speaker: "ゆたかママ", text: "「なんか言った？😡」" },
+            { speaker: "青リンゴ", text: "「いいえ、なにも💦」" },
+
             { text: "数分後。" },
             { speaker: "青リンゴ", text: "「ママー！聞いてー！」" },
             { speaker: "ゆたかママ", text: "「皿！！💢」" },
@@ -813,6 +823,9 @@ var workEvents = window.workEvents = [
             { speaker: "青リンゴ", text: "「ママ、おじさんもシャンパン入れちゃおうかな」" },
             { speaker: "ゆたかママ", text: "「ありがとー！」" },
             { speaker: "ゆたかママ", text: "「って、あんたは従業員でしょ！<br>皿洗って！」" },
+　　　　　　{ speaker: "青リンゴ", text: "「皿洗ってるっつーの！」" },
+　　　　　　{ speaker: "ゆたかママ", text: "「なんか言った？😡」" },
+　　　　　　{ speaker: "青リンゴ", text: "「いいえ💦」" },
             { image: "Yutaka.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
             { speaker: "全員", text: "「かんぱーーーい！！🍾」" },
             { image: "Yutaka.hbd.png", speaker: "ゆたかママ", text: "「ありがとう。うれしいー！」" },
@@ -822,10 +835,11 @@ var workEvents = window.workEvents = [
             { text: "🎂 40歳ケーキゲット" },
             { type: "bonusCheck", bonusId: "W24" },
 
-            { text: "【70kg以下特別イベント】" },
+            { text: "【70kg以下特別イベント発生✨】" },
             { speaker: "聖奈", text: "「ちゃんとバースデーにむけて70kg切ってすごいね！」" },
             { speaker: "聖奈", text: "「約束通り、シャンパン入れます！🍾」" },
             { speaker: "ゆたかママ", text: "「わーい！ありがとう！」" },
+           { image: "Yutaka.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
             { speaker: "全員", text: "「かんぱーーーーい！！🍾」" },
             { text: "図鑑登録" },
             { text: "🍾 40歳バースデーシャンパンゲット" }
@@ -860,6 +874,8 @@ var workEvents = window.workEvents = [
             { speaker: "ゆかりママ", text: "「41歳なんてまだまだ子供よ。」" },
             { speaker: "青リンゴ", text: "「おじさんもシャンパン入れちゃおうかな🍾」" },
             { speaker: "ゆたかママ", text: "「あんたは従業員でしょ！って今日はお客側だったわね！」" },
+　　　　   { speaker: "青リンゴ", text: "「今日は皿洗わないよ～♪」" },
+　　　　　 { speaker: "ゆたかママ", text: "「なんかムカつくわねｗ」" },
             { speaker: "久美", text: "「ゆたか、ママもきちゃったわ。<br>バリ風のいいお店じゃない！<br>お父さんも連れてくればよかったわ」" },
             { speaker: "久美", text: "「おばさんもシャンパン入れちゃおうかな🍾」" },
             { speaker: "ゆたかママ", text: "「あんたは入れなくていいわ！<br>ってかなんで来たのよｗ」" },
@@ -871,7 +887,7 @@ var workEvents = window.workEvents = [
             { text: "🎂 41歳ケーキゲット" },
             { type: "bonusCheck", bonusId: "W25" },
 
-            { text: "【70kg以下特別イベント】" },
+            { text: "【70kg以下特別イベント発生✨】" },
             { speaker: "聖奈", text: "「バースデーでしっかり70kg切ってるなんてすごいね！」" },
             { speaker: "聖奈", text: "「シャンパン入れます！🍾」" },
 　　　　　 { image: "Yutaka.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
@@ -987,14 +1003,16 @@ effects: {
 { speaker: "くさみ", text: "「ボーっとする暇あるなら皿洗って！」" },
 { text: "青リンゴ<br>Σ(･ω･ﾉ)ﾉ！" },
 { speaker: "青リンゴ", text: "「あ。。はい😅」" },
+{ speaker: "青リンゴ", text: "「ったく、皿洗ってるっつーの！」" },
 { text: "しばらくして。" },
 { text: "ガシャーン！！" },
 { text: "🍽️💥" },
 { text: "店内<br>「・・・」" },
+{ speaker: "青リンゴ", text: "「あ、、、😅」" },
 { speaker: "くさみ", text: "「何してんのよ💢」" },
 { speaker: "青リンゴ", text: "「割れました🤣」" },
 { speaker: "くさみ", text: "「見ればわかるわ💢」" },
-{ speaker: "青リンゴ", text: "「す、みません🙇‍♂️」" },
+{ speaker: "青リンゴ", text: "「す、すみません🙇‍♂️」" },
 { speaker: "くさみ", text: "「忙しい時に何してんのよ！」" },
 { speaker: "青リンゴ", text: "「皿洗ってました～」" },
 { speaker: "くさみ", text: "「それは知ってる！そういう問題じゃない！」" },
@@ -1719,7 +1737,7 @@ weight: 0
     title: "聖奈とご飯",
     rate: 9,
     steps: [
-        { image: "Yutaka.sena.jpg", text: "今日はセナコとおいしいご飯を食べに行った。" },
+        { image: "Yutaka.sena.jpg", text: "セナコが美味しいもの食べに行こー<br>っていうから<br>今日はセナコとおいしいご飯を食べに行った。" },
 
         { text: "いっぱい食べた。" },
 
