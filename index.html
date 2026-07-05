@@ -231,11 +231,52 @@ document.querySelectorAll('.btn').forEach(btn => {
             { speaker: "ゆたかママ", text: "「わたしは、独立する！<br>自分のお店を持つ！」" },
             { text: "これが新宿版ゆたかの独立宣言。<br>Jeffersonに対抗したわけじゃないわよ。" },
             { text: "これは、ゆたかママの2年間の<br>シンジュクコイ物語である。" },
-            { text: "1ターン1週間、2年間で独立資金を貯めるのが目標です。<br>500万円以上で埼玉にて独立、750万円以上でシンジュクにて独立です。<br>1ターンに仕事、ジム、プライベートをこなし、充実した2年間を過ごしましょう😊<br>もちろん恋愛も♥️" },
+           {
+    text: () => {
+        if (gameState.difficulty === "easy") {
+            return "1ターン1週間、2年間で独立資金を貯めるのが目標です。<br>250万円以上で埼玉にて独立、375万円以上でシンジュクにて独立です。<br>1ターンに仕事、ジム、プライベートをこなし、充実した2年間を過ごしましょう😊<br>もちろん恋愛も♥️";
+        } else {
+            return "1ターン1週間、2年間で独立資金を貯めるのが目標です。<br>500万円以上で埼玉にて独立、750万円以上でシンジュクにて独立です。<br>1ターンに仕事、ジム、プライベートをこなし、充実した2年間を過ごしましょう😊<br>もちろん恋愛も♥️";
+        }
+    }
+},
 { text: "下の丸ボタンは<br>🔵 左：戻る<br>🔴 中央：進む<br>🟢 右：決定<br>だからね♥️" }        ],
         effects: { money: 0, energy: 0, stress: 0, weight: 0 }
     };
-
+    const easyModeEvent = {
+        id: "EASY_OPENING_001",
+        steps: [
+            { speaker: "ゆたかママ", text: "「え？🤣」" },
+            { speaker: "ゆたかママ", text: "「あんたEasyではじめるの？」" },
+            { speaker: "ゆたかママ", text: "「人生そんなに甘くないわよ！」" },
+            { speaker: "ゆたかママ", text: "「でも、ゲームだし、しょうがないわねぇ。」" },
+            { speaker: "ゆたかママ", text: "「39歳にもなるとね。」" },
+            { speaker: "ゆたかママ", text: "「人生ラクしたくなる時もあるわよ🤣」" },
+            { speaker: "ゆたかママ", text: "「今回は特別よ♥️」" },
+            { speaker: "ゆたかママ", text: "「独立資金を半分にしてあげる！」" },
+            { speaker: "こころ", text: "「えー！ずるーい🤣」" },
+            { speaker: "ゆたかママ", text: "「そのかわり！」" },
+            { speaker: "ゆたかママ", text: "「わたしに感謝しなさい😏」" },
+            { speaker: "聖奈", text: "「これならエンディング見やすくなるね😊」" },
+            { speaker: "青リンゴ", text: "「おじさん60過ぎてるからラクしたい👀」" },
+            { speaker: "ゆたかママ", text: "「アンタは皿洗ってなさい！」" },
+　　　　　 { speaker: "青リンゴ", text: "「え～、ひどい～😢」" },
+           { speaker: "なお", text: "「Easyでもサボったら太るわよ。」" },
+{ speaker: "ゆたかママ", text: "「あたし、70kgってことでどう？🤣」" },
+{ speaker: "青リンゴ", text: "「ずーずーしくない？👀」" },
+{ speaker: "ゆたかママ", text: "「お願い♥️ イージーな人生歩みたいのよ🤣」" },
+{ speaker: "こころ", text: "「うけるー！ずるいー🤣<br>詐称だ～！」" },
+{ speaker: "聖奈", text: "「痩せてるゆたかママとか心配～😊<br>誰かわからないかもｗ」" },
+{ speaker: "青リンゴ", text: "「詐欺師！」" },
+{ speaker: "ゆたかママ", text: "「なんか言った？」" },
+{ speaker: "青リンゴ", text: "「いいえ、なんにも、、💦<br>ちゃんと皿洗っておりますｗ」" },
+{ speaker: "ゆたかママ", text: "「じゃあ今日から70kgってことで😝」" },
+{ speaker: "なお", text: "「しょうがないわね🤣」" },
+{ speaker: "こころ", text: "「ぷぷぷ」" },
+{ speaker: "ゆたかママ", text: "「じゃあゲームスタート😘」" }
+        ],
+        effects: { money: 0, energy: 0, stress: 0, weight: 0 }
+    };
     const naturalWeightSystemEvent = {
         id: "SYS_NaturalWeight_001",
         steps: [
@@ -294,6 +335,7 @@ document.querySelectorAll('.btn').forEach(btn => {
     let gameState = {
 age: 39, month: 7, weekOfMonth: 3, totalWeek: 0,
 energy: 50, stress: 55, money: 10000, weight: 78,
+difficulty: "normal",
 hasSeenNaturalWeightEvent: false,
 hasSeenOpening: false,
 hasSeen95kgWarning: false,
@@ -324,6 +366,7 @@ ukareChoiceMode: false,
     let isNewGameConfirm = false;
     let titleCursorIndex = 0;
     let newGameConfirmCursor = 1;
+    let selectedNewGameDifficulty = "normal";
     let isPkChoiceMode = false;   
     let isGymMenu = false;
     let isPrivateMenu = false;
@@ -462,13 +505,22 @@ const characterBookList = [
 { name: "オオタニ", profile: "長身、イケメン、かっちり体型でゆたかママの理想。お金も1000億ほど持っており、文句なし。ただし相手にも最低限の努力、体型維持を求める。", likes: "野球、筋トレ", phrase: "憧れるのはやめましょう" },
 { name: "ナカタニ", profile: "あいのりのヒデばりに中田に憧れている。サッカートークに幼稚園時代サッカーやっていたゆたかママはなんとかついていく。が、オフサイドはまだわからない。", likes: "ファッション、日本酒", phrase: "旅とは人生であり、人生とは旅である" }
 ];
-    function startNewGame() {
+    function startNewGame(difficulty = "normal") {
 const record = getPlayRecord();
 record.playCount = (record.playCount || 0) + 1;
+if (difficulty === "easy") {
+    record.easyPlayCount = (record.easyPlayCount || 0) + 1;
+} else {
+    record.normalPlayCount = (record.normalPlayCount || 0) + 1;
+}
 savePlayRecord(record);
         localStorage.removeItem("yutakatch_save");
         gameState.age = 39; gameState.month = 7; gameState.weekOfMonth = 3; gameState.totalWeek = 0;
-        gameState.energy = 50; gameState.stress = 55; gameState.money = 10000; gameState.weight = 78;
+        gameState.energy = 50;
+gameState.stress = 55;
+gameState.money = 10000;
+gameState.weight = (difficulty === "easy") ? 70 : 78;
+        gameState.difficulty = difficulty;
         gameState.hasSeenNaturalWeightEvent = false;
 gameState.hasSeenOpening = false;
 gameState.hasSeen95kgWarning = false;
@@ -491,7 +543,11 @@ gameState.ukareChoiceMode = false;
         currentEvent = null; currentStepIndex = -1; isShowingResult = false; isReadyToAdvanceWeek = false;
         isGameFinished = false;
         gameState.hasSeenOpening = true;
-        currentEvent = openingEvent;
+        if (difficulty === "easy") {
+            currentEvent = easyModeEvent;
+        } else {
+            currentEvent = openingEvent;
+        }
         currentStepIndex = 0;
         bonusMoney = 0;
         applyStep(currentEvent, currentStepIndex);
@@ -513,15 +569,19 @@ function renderNewGameConfirm() {
 
     document.getElementById('message-content').innerHTML = html;
 }
-    function renderTitle() {
+       function renderTitle() {
         const savedData = localStorage.getItem("yutakatch_save");
+
         let html = "<br>";
-        html += (titleCursorIndex === 0) ? "▶ 💖 はじめから<br>" : " 💖 はじめから<br>";
+        html += (titleCursorIndex === 0) ? "▶ 💖 はじめから（通常ゆたかママ）<br>" : "　💖 はじめから（通常ゆたかママ）<br>";
+        html += (titleCursorIndex === 1) ? "▶ 💗 はじめから（Easyゆたかママ）<br>" : "　💗 はじめから（Easyゆたかママ）<br>";
+
         if (savedData) {
-            html += (titleCursorIndex === 1) ? "▶ 💋 つづきから" : " 💋 つづきから";
+            html += (titleCursorIndex === 2) ? "▶ 💋 つづきから" : "　💋 つづきから";
         } else {
             html += "<br>セーブデータがありません";
         }
+
         document.getElementById('message-content').innerHTML = html;
     }
 
@@ -624,8 +684,10 @@ if (gameState.totalWeek >= 104) {
 function startEnding() {
     let endingId = "E10";
 
-    if (gameState.money >= 7500000) {
-        if (gameState.canMarry && gameState.loveTarget === "コタニ") {
+    const saitamaGoal = gameState.difficulty === "easy" ? 2500000 : 5000000;
+    const shinjukuGoal = gameState.difficulty === "easy" ? 3750000 : 7500000;
+
+    if (gameState.money >= shinjukuGoal) {        if (gameState.canMarry && gameState.loveTarget === "コタニ") {
             endingId = "E3";
         } else if (gameState.canMarry && gameState.loveTarget === "オオタニ" && gameState.weight < 70) {
             endingId = "E5";
@@ -634,7 +696,7 @@ function startEnding() {
         } else {
             endingId = "E1";
         }
-    } else if (gameState.money >= 5000000) {
+    } else if (gameState.money >= saitamaGoal) {
         if (gameState.canMarry && gameState.loveTarget === "コタニ") {
             endingId = "E4";
         } else if (gameState.canMarry && gameState.loveTarget === "オオタニ" && gameState.weight < 70) {
@@ -660,8 +722,12 @@ function startEnding() {
 
     function applyStep(event, index) {
         if (index >= event.steps.length) {
-            if (event.id === "OPENING_001") {
-                currentEvent = null; document.getElementById('message-content').inner = "HTML、ジム、プライベートを各1回ずつ<br>完了してください。";
+                       if (event.id === "EASY_OPENING_001") {
+                currentEvent = openingEvent;
+                currentStepIndex = 0;
+                applyStep(currentEvent, currentStepIndex);
+            } else if (event.id === "OPENING_001") {
+                currentEvent = null; document.getElementById('message-content').innerHTML = "仕事、ジム、プライベートを各1回ずつ<br>完了してください。";
             } else if (event.id === "L5a") {
     currentEvent = workEvents.find(e => e.id === "L5");
     currentStepIndex = 0;
@@ -724,7 +790,10 @@ if (step.text === "図鑑登録") {
     return;
 }let displaySpeaker = step.speaker;
 let displayText = step.text;
-if (step.text && step.text.includes("ゲット")) {
+if (typeof displayText === "function") {
+    displayText = displayText();
+}
+if (step.text && typeof step.text !== "function" && step.text.includes("ゲット")) {
     const trophyKey = "trophy_seen_" + event.id;
 
     if (!localStorage.getItem(trophyKey)) {
@@ -874,6 +943,13 @@ if (currentEvent && currentEvent.id && currentEvent.id.startsWith("E")) {
     localStorage.setItem("ending_seen_" + currentEvent.id, "true");
 const record = getPlayRecord();
 record.clearCount = (record.clearCount || 0) + 1;
+
+if (gameState.difficulty === "easy") {
+    record.easyClearCount = (record.easyClearCount || 0) + 1;
+} else {
+    record.normalClearCount = (record.normalClearCount || 0) + 1;
+}
+
 savePlayRecord(record);
 }   
 
@@ -1356,7 +1432,9 @@ function updatePlayRecord() {
     record.maxWeek = Math.max(record.maxWeek || 0, gameState.totalWeek);
     record.maxStress = Math.max(record.maxStress || 0, gameState.stress);
 
-    if (gameState.money >= 5000000) {
+    const goal = gameState.difficulty === "easy" ? 2500000 : 5000000;
+
+if (gameState.money >= goal) {
         record.independenceReadyCount = Math.max(record.independenceReadyCount || 0, 1);
     }
 
@@ -1423,7 +1501,11 @@ function showPlayRecord() {
 
     if (playRecordPage === 0) {
         html += "プレイ回数　" + (record.playCount || 0) + "回<br>";
-        html += "クリア回数　" + (record.clearCount || 0) + "回<br><br>";
+        html += "通常開始　" + (record.normalPlayCount || 0) + "回<br>";
+        html += "Easy開始　" + (record.easyPlayCount || 0) + "回<br>";
+        html += "クリア回数　" + (record.clearCount || 0) + "回<br>";
+        html += "通常クリア　" + (record.normalClearCount || 0) + "回<br>";
+        html += "Easyクリア　" + (record.easyClearCount || 0) + "回<br><br>";
         html += "最高貯金　" + (record.maxMoney || 0).toLocaleString() + "円<br>";
         html += "最高週数　" + (record.maxWeek || 0) + "週<br>";
         html += "独立達成　" + ((record.independenceReadyCount || 0) > 0 ? "達成" : "未達") + "<br><br>";
@@ -2108,35 +2190,43 @@ if (name === "図鑑") {
         newGameConfirmCursor = newGameConfirmCursor === 0 ? 1 : 0;
         renderNewGameConfirm();
     } else if (name === '決定') {
-        if (newGameConfirmCursor === 0) {
-            startNewGame();
+                if (newGameConfirmCursor === 0) {
+            startNewGame(selectedNewGameDifficulty);
         } else {
             isNewGameConfirm = false;
             renderTitle();
         }
     }
 }else {
-                if (name === '進む') {
-                    if (localStorage.getItem("yutakatch_save")) {
-                        titleCursorIndex = (titleCursorIndex === 0) ? 1 : 0;
-                        renderTitle();
+                if (name === '進む' || name === '戻る') {
+                    const savedData = localStorage.getItem("yutakatch_save");
+                    const maxCursor = savedData ? 2 : 1;
+
+                    if (name === '進む') {
+                        titleCursorIndex++;
+                        if (titleCursorIndex > maxCursor) titleCursorIndex = 0;
+                    } else {
+                        titleCursorIndex--;
+                        if (titleCursorIndex < 0) titleCursorIndex = maxCursor;
                     }
+
+                    renderTitle();
                 } else if (name === '決定') {
-                    if (titleCursorIndex === 0) {
+                    if (titleCursorIndex === 0 || titleCursorIndex === 1) {
+                        selectedNewGameDifficulty = titleCursorIndex === 1 ? "easy" : "normal";
+
                         if (localStorage.getItem("yutakatch_save")) {
                             isNewGameConfirm = true;
-newGameConfirmCursor = 1;
-renderNewGameConfirm();
-                            
+                            newGameConfirmCursor = 1;
+                            renderNewGameConfirm();
                         } else {
-                            startNewGame();
+                            startNewGame(selectedNewGameDifficulty);
                         }
                     } else {
                         loadGame();
                     }
                 }
-            }
-            return;
+            }            return;
         }
 
        if (isGameFinished) {
