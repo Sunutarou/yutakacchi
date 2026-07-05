@@ -7,6 +7,7 @@ var workEvents = window.workEvents = [
         title: "ゆかりママ来店",
         rate: 3,
         steps: [
+  { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { speaker: "ゆかりママ", text: "ゆたかくん、元気？" },
             { text: "ゆかりママが来た。" },
             { text: "「いっぱい飲みなさい。」と、生ビールを<br>たくさんくれた。" },
@@ -21,6 +22,7 @@ var workEvents = window.workEvents = [
     title: "ゆかりママ来店",
     rate: 2,
     steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
         { text: "ゆかりママが来た。" },
         { speaker: "ゆたかママ", text: "「あら、ゆかりママ、いらっしゃい！」" },
         { speaker: "ゆかりママ", text: "「ゆたかくん、元気？」" },
@@ -61,6 +63,7 @@ var workEvents = window.workEvents = [
         title: "聖奈来店",
         rate: 10,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { speaker: "聖奈", text: "「やっほー。ゆたかママ元気？」" },
             { text: "聖奈が来た。" },
             { text: "「栄養つけないと」と、お菓子を差し入れしてくれた。" },
@@ -76,6 +79,7 @@ var workEvents = window.workEvents = [
         title: "聖奈来店",
         rate: 2,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { image: "Sena2.jpg", speaker: "聖奈", text: "「ゆたかママー！」" },
             { speaker: "ゆたかママ", text: "「どうしたの？」" },
             { speaker: "聖奈", text: "「栄養つけないと😊」" },
@@ -101,6 +105,7 @@ var workEvents = window.workEvents = [
         title: "スヌタロウ来店",
         rate: 5,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { speaker: "スヌタロウ", text: "「こんにちはー。」" },
             { text: "19時の開店直後にそーっと、スヌタロウが入ってきた。" },
             { text: "「ゆたかママが痩せちゃうとみんな困るから」と、焼き鳥を差し入れしてくれた。" },
@@ -116,6 +121,7 @@ var workEvents = window.workEvents = [
         title: "スヌタロウPK",
         rate: 1,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { speaker: "スヌタロウ", text: "「ゆたかママー！⚽」" },
             { speaker: "ゆたかママ", text: "「どうしたの🤣」" },
             { speaker: "スヌタロウ", text: "「PKやろう⚽」" },
@@ -134,6 +140,7 @@ var workEvents = window.workEvents = [
         title: "なお来店",
         rate: 10,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { text: "なおが来た。" },
             { speaker: "なお", text: "「また来ちゃった。」" },
             { text: "女子トークで盛り上がった。" },
@@ -151,6 +158,7 @@ var workEvents = window.workEvents = [
         title: "こころ来店",
         rate: 7,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { speaker: "こころ", text: "「ゆたかママも飲みなよー。ぷぷぷ。」" },
             { text: "こころが来た。" },
             { text: "「ゆたかママも飲みなよー。」" },
@@ -170,6 +178,7 @@ var workEvents = window.workEvents = [
         title: "こころの愚痴大会",
         rate: 1,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { image: "Kokoro4.jpg", text: "こころが来た。" },
             { speaker: "こころ", text: "「ゆたかママー！」" },
             { speaker: "ゆたかママ", text: "「こころちゃん、いらっしゃい。」" },
@@ -218,6 +227,7 @@ var workEvents = window.workEvents = [
         title: "よしみ姉さん来店",
         rate: 1.5,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { image: "Yoshimi.dot" },
             { speaker: "よしみ姉さん", text: "「あら！」" },
             { speaker: "よしみ姉さん", text: "「こうかしら！」" },
@@ -238,6 +248,7 @@ var workEvents = window.workEvents = [
         title: "ダンシングよしみ",
         rate: 0.5,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { text: "よしみ姉さんが来た。" },
             { speaker: "よしみ姉さん", text: "「それそれー！」" },　　　
             { text: "🎤💃" },
@@ -258,6 +269,7 @@ var workEvents = window.workEvents = [
     title: "青リンゴ来店",
     rate: 3,
     steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
         { image: "Ringo1.jpg", text: "プライベートリンゴが来た。" },
         { speaker: "青リンゴ", text: "「おじさん飲みにきちゃった。」" },
         { speaker: "青リンゴ", text: "「今日は客だよ！接待してね！！」" },
@@ -297,6 +309,7 @@ var workEvents = window.workEvents = [
         title: "大繁盛",
         rate: 3,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { text: "今日はなぜか大繁盛だった。" },
             { text: "儲かったけど疲れたわ。。" },
             { text: "わたしも人気出てきたわねｗ" },
@@ -316,6 +329,7 @@ var workEvents = window.workEvents = [
         title: "普通",
         rate: 16,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { text: "今日はいたって普通だった。" }
         ],
         effects: {
@@ -330,6 +344,7 @@ var workEvents = window.workEvents = [
         title: "いい感じ",
         rate: 10.5,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { text: "今日はいい感じのお客さんだった。" }
         ],
         effects: {
@@ -344,6 +359,7 @@ var workEvents = window.workEvents = [
         title: "変なお客さん",
         rate: 7.5,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { text: "今日は変なお客さんだった。" },
             { text: "疲れたなぁ。" }
         ],
@@ -359,6 +375,7 @@ var workEvents = window.workEvents = [
         title: "社長風なお客さん",
         rate: 2,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { text: "今日は社長風なお客さんだった。" },
             { text: "ちょっとわがままだった。" },
             { text: "シャンパン入れてくれたからいっか。" }
@@ -467,6 +484,7 @@ var workEvents = window.workEvents = [
         title: "台湾人の元カレ",
         rate: 0.5,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { text: "営業中。" },
             { text: "🚪" },
             { text: "カランコロン" },
@@ -507,6 +525,7 @@ var workEvents = window.workEvents = [
         title: "シャー事件",
         rate: 2,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { text: "今日はまあまあ繁盛だった。" },
             { text: "忙しくてシャーしちゃった。シャー。" },
             { text: "コーダシャーミー💩" },
@@ -526,6 +545,7 @@ var workEvents = window.workEvents = [
         title: "ノーゲス",
         rate: 1,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { text: "営業開始。" },
             { speaker: "ゆたかママ", text: "「今日も忙しいかしら～。」" },
             { text: "・・・" },
@@ -576,6 +596,7 @@ var workEvents = window.workEvents = [
         title: "イケメンマッチョ団体",
         rate: 1,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { image: "Yutaka.maccho.jpg", text: "💪 イケメンマッチョ団体来店" },
             { text: "今日はイケメンマッチョの団体が来店した。" },
             { speaker: "ゆたかママ", text: "「なにこの筋肉祭り😍」" },
@@ -603,6 +624,7 @@ var workEvents = window.workEvents = [
         title: "むぎ来店",
         rate: 3,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { image: "Mugi.dot.png", text: "むぎちゃんが来た。" },
             { text: "ビールくれた。" },
             { text: "図鑑登録" },
@@ -620,6 +642,7 @@ var workEvents = window.workEvents = [
         title: "むりちゃん",
         rate: 1,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { image: "Mugi.dot.png", text: "むぎちゃんが来た。" },
             { speaker: "むぎちゃん", text: "「ビールください🍺」" },
             { speaker: "ゆたかママ", text: "「もう飲んでるでしょ🤣」" },
@@ -731,6 +754,7 @@ var workEvents = window.workEvents = [
         title: "フードラッシュ",
         rate: 2,
         steps: [
+ { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
             { text: "5人組のお客さんが来店した。" },
             { speaker: "客①", text: "「麻婆豆腐！」" },
             { speaker: "客②", text: "「ナポリタン！」" },
@@ -1166,7 +1190,7 @@ weight: 3
         { text: "♨️ 金のウサギキーホルダーゲット" }
     ],
     effects: {
-        energy: 50,
+        energy: 100,
         stress: -25,
         money: -30000,
         weight: 2
