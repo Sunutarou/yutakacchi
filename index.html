@@ -2286,6 +2286,11 @@ if (gameState.confessionChoiceMode) {
  if (gameState.loveTarget === "コタニ") {
     gameState.kotaniBroken = true;
 }
+
+if (gameState.loveTarget === "オオタニ") {
+    gameState.ootaniBroken = true;
+}
+
 if (gameState.loveTarget === "ナカタニ") {
     gameState.nakataniBroken = true;
 }
@@ -2347,13 +2352,15 @@ if (gameState.loveTarget === "ナカタニ") {
             effects: currentEvent.effects
         };
     } else {
-        if (gameState.loveTarget === "コタニ") {
-            gameState.kotaniBroken = true;
-        }
-
-        if (gameState.loveTarget === "ナカタニ") {
-            gameState.nakataniBroken = true;
-        }
+       if (gameState.loveTarget === "コタニ") {
+    gameState.kotaniBroken = true;
+}
+if (gameState.loveTarget === "オオタニ") {
+    gameState.ootaniBroken = true;
+}
+if (gameState.loveTarget === "ナカタニ") {
+    gameState.nakataniBroken = true;
+}
 
         const failSteps =
             (currentEvent.failStepsByChoice && currentEvent.failStepsByChoice[name]) ||
