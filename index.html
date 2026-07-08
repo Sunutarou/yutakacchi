@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -372,7 +373,8 @@ ukareChoiceMode: false,
     let isPrivateMenu = false;
     let isBaitoMenu = false;
 　  let isLoveMenu = false;
-    let isRacuneChoiceMode = false;
+    let isNoLoveMode = false;
+let isRacuneChoiceMode = false;
     let isRacuneJankenMode = false;
     let isRacuneAmidaMode = false;
     let isDevilChoiceMode = false; 
@@ -689,7 +691,7 @@ function startEnding() {
 
     if (gameState.money >= shinjukuGoal) {        if (gameState.canMarry && gameState.loveTarget === "コタニ") {
             endingId = "E3";
-        } else if (gameState.canMarry && gameState.loveTarget === "オオタニ" && gameState.weight < 70) {
+        } else if (gameState.canMarry && gameState.loveTarget === "オオタニ" && gameState.weight < 72) {
             endingId = "E5";
         } else if (gameState.canMarry && gameState.loveTarget === "ナカタニ") {
             endingId = "E7";
@@ -1014,7 +1016,7 @@ if (currentEvent.id === "G1c") {
     gameState.gymInjuryWeeks = 2;
 }
 if (currentEvent.id === "B2c") {
-    gameState.gymInjuryWeeks = 4;
+    gameState.gymInjuryWeeks = 3;
 }
        
  if (
@@ -2742,7 +2744,14 @@ if (document.getElementById('message-content').innerHTML.indexOf("GO!!") === -1)
 
             return;
         }
-        if (isLoveMenu) {
+if (isNoLoveMode) {
+    if (name === '決定') {
+        isNoLoveMode = false;
+        isPrivateMenu = true;
+        action('プライベート');
+    }
+    return;
+}        if (isLoveMenu) {
             if (name !== '戻る' && name !== '進む' && name !== '決定') return;
 
             isLoveMenu = false;
@@ -2767,7 +2776,14 @@ if (document.getElementById('message-content').innerHTML.indexOf("GO!!") === -1)
         "その相手とはデートできません。<br>連絡先消したしｗ<br>別の相手を選んでね。<br><br>" +
         "🔵 戻る → コタニ" + (gameState.kotaniBroken ? "（終了）" : "") + "<br>" +
         "🔴 進む → オオタニ" + (gameState.ootaniBroken ? "（終了）" : "") + "<br>" +
-        "🟢 決定 → " + (gameState.kotaniBroken && !gameState.nakataniBroken ? "ナカタニ" : "まだ選べません");
+       "🟢 決定 → " +
+(
+    !gameState.kotaniBroken
+        ? "まだ選べません"
+        : gameState.nakataniBroken
+            ? "ナカタニ（終了）"
+            : "ナカタニ"
+);
     return;
 }
 if (gameState.isDating && target !== gameState.loveTarget) {
@@ -2969,7 +2985,17 @@ if (target === "ナカタニ") {
         return;
     }
 
-    isLoveMenu = true;
+   if (gameState.kotaniBroken && gameState.ootaniBroken && gameState.nakataniBroken) {
+    isNoLoveMode = true;
+
+    document.getElementById('message-content').innerHTML =
+        "わがままばっか言ってるから<br>恋愛できる相手がもういません。<br><br>" +
+        "ゆたかママ、仕事に生きよう🤣<br><br>" +
+         "🟢 決定で戻る";
+    return;
+}
+
+isLoveMenu = true;
 
                 let loveMenuText =
                     "デートする相手を選んでください<br><br>" +
@@ -3168,7 +3194,7 @@ if (name === '図鑑') {
     return;
 } else if (weeklyActions['仕事'] && weeklyActions['ジム'] && weeklyActions['プライベート']) {
                     isReadyToAdvanceWeek = true;
-                    document.getElementById('message-content').innerText = "全ての行動が完了しました。決定で次の週へ進みます。";
+                    document.getElementById('message-content').innerHTML = "全ての行動が完了しました。<br>決定で次の週へ進みます。";
                 } else {
                     document.getElementById('message-content').innerText = "行動を選択してください";
                 }
