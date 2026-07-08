@@ -196,7 +196,7 @@ var workEvents = window.workEvents = [
             { text: "1時間後" },
             { speaker: "ゆたかママ", text: "「まだあるの！？😅」" },
             { speaker: "こころ", text: "「まだ話し足りないｗ」" },
-            { speaker: "こころ", text: "「ゆたかママ、仕事終わったらモモタイ行こう！」" },
+            { speaker: "こころ", text: "「ゆたかママ、仕事終わったら<br>モモタイ行こう！」" },
             { speaker: "ゆたかママ", text: "「なんでよ！？」" },
             { speaker: "ゆたかママ", text: "「夜中食べたら太るのよ。」" },
 　　　　　 { speaker: "こころ", text: "「ぷぷぷｗ」" },
@@ -228,7 +228,7 @@ var workEvents = window.workEvents = [
         rate: 1.5,
         steps: [
  { image: "Yutaka.barniconico.dot.png", text: "仕事。" },
-            { image: "Yoshimi.dot" },
+           
             { speaker: "よしみ姉さん", text: "「あら！」" },
             { speaker: "よしみ姉さん", text: "「こうかしら！」" },
             { text: "よしみ姉さんが来た。" },
@@ -802,10 +802,10 @@ var workEvents = window.workEvents = [
         triggerWeeks: [6, 58],
         steps: [
             { image: "Yutaka.carry.jpg", text: "カレーライスの女ナイト。" },
-            { text: "毎月最終土曜日に行われる、バーニコニコの恒例イベント。" },
+            { text: "毎月最終土曜日に行われる、<br>バーニコニコの恒例イベント。" },
             { text: "ずっとソニンの音楽が流れている。" },
-            { speaker: "ゆたかママ", text: "「最初はいいけど、ソニン聴きすぎておかしくなるわ。」" },
-            { speaker: "ゆたかママ", text: "「次の日のお通しにまわせばいいんだけど、余ったカレーいっぱい食べちゃうのよね～。」" },
+            { speaker: "ゆたかママ", text: "「最初はいいけど、ソニン聴きすぎて<br>おかしくなるわ。」" },
+            { speaker: "ゆたかママ", text: "「次の日のお通しにまわせばいいんだけど、<br>余ったカレーいっぱい食べちゃうのよね～。」" },
             { text: "🍛🍛🍛" },
             { text: "図鑑登録" },
             { text: "💿 ソニンのCDゲット" }
@@ -852,6 +852,8 @@ var workEvents = window.workEvents = [
 　　　　　　{ speaker: "青リンゴ", text: "「いいえ💦」" },
             { image: "Yutaka.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
             { speaker: "全員", text: "「かんぱーーーい！！🍾」" },
+ { image: "40th.kanpai.png", text: "「おめでとー😄」" },
+　{ speaker: "ゆたかママ", text: "「わーい。」" },
             { image: "Yutaka.hbd.png", speaker: "ゆたかママ", text: "「ありがとう。うれしいー！」" },
             { text: "みんなで盛り上がった。" },
             { text: "仕事だけど楽しかった。" },
@@ -905,6 +907,8 @@ var workEvents = window.workEvents = [
             { speaker: "ゆたかママ", text: "「あんたは入れなくていいわ！<br>ってかなんで来たのよｗ」" },
 　　　　　 { image: "Yutaka.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
             { speaker: "全員", text: "「かんぱーーーい！！🍻」" },
+ { image: "40th.kanpai.png", text: "「おめでとー😄」" },
+ { speaker: "ゆたかママ", text: "「ありがとう😄」" },
             { image: "Yutaka.hbd41.png", text: "みんなで盛り上がった。" },
             { text: "仕事だけど楽しかった。" },
             { text: "図鑑登録" },
@@ -951,6 +955,7 @@ steps: [
  { image: "Yutaka.kanpai.png", speaker: "ゆたかママ", text: "「それでは😄」" },
 { speaker: "ゆたかママ", text: "「いつまでもあると思うな親とニコニコ🤣」" },
 { speaker: "全員", text: "「かんぱーーーい！！🍾」" },
+ { image: "40th.kanpai.png", text: "「おめでとー😄」" },
 { speaker: "青リンゴ", text: "「おじさんは、皿洗い頑張るよー！」" },
 { text: "周年イベントも終盤。<br>店内は大盛り上がり。" },
 { speaker: "なお", text: "「みんなー！」" },
@@ -1020,6 +1025,7 @@ effects: {
         { speaker: "青リンゴ", text: "「いえ。」" },
  　　　{ image: "Kusami.kanpai.png", speaker: "くさみ", text: "「それでは😄」" },
         { speaker: "全員", text: "「かんぱーーーい！！🍾」" },
+　　　{ image: "kusami.kanpai2.png", text: "かんぱーい！" },
         { type: "kusamiDance" },
         { text: "周年イベント進行中。<br>くさみが踊っている。<br>青リンゴは、ボーっとくさみの踊りを眺めていた。" },
 { text: "🍏 青リンゴ<br>🧽" },
@@ -1445,6 +1451,7 @@ weight: 0
         { speaker: "ゆたかママ", text: "「やさしい🤣」" },
         { text: "少し痛かった。" },
         { text: "でも少し嬉しかった。" },
+{ speaker: "ゆたかママ", text: "「2週間くらいジム行けなそうね🤣」" },
         { text: "図鑑登録" },
         { text: "🦴 イケメン見て不名誉負傷ゲット" }
     ],
@@ -1765,7 +1772,7 @@ weight: 0
 
         { text: "いっぱい食べた。" },
 
-        { text: "ご飯食べた後なのに、少し歩いたせいか、バーガーキングに吸い込まれちゃった笑" },
+        { text: "ご飯食べた後なのに、少し歩いたせいか、<br>バーガーキングに吸い込まれちゃった笑" },
 
         { text: "なんでだろう～？" },
 
@@ -3273,6 +3280,7 @@ effects: {
         { speaker: "ゆたかママ", text: "「首やったかも🤣」" },
         { text: "病院へ行った。" },
         { text: "首なくなったかと思った。" },
+{ speaker: "ゆたかママ", text: "「3週間くらいジム行けなそうね🤣」" },
         { image: "Yutaka.kubifusho.dot.png" },
         { text: "図鑑登録" },
         { text: "🦴 首負傷ゲット！" }
@@ -3439,7 +3447,7 @@ effects: {
     rate: 0,
     steps: [
         { image: "Yutaka.kenta.dot.png", text: "今日はコタニとケンタッキーへ行った。<br>初デートでケンタは初めてだわ🤣<br>でもそのセンス、、、素敵かも。<br>ちょっと小食ぶってみたけど、もっと食べたかった😝" },
-        { speaker: "コタニ", text: "「ゆたかくん、今日はありがとう。たのしかった。」" },
+        { speaker: "コタニ", text: "「ゆたかくん、今日はありがとう。<br>たのしかった。」" },
         { speaker: "コタニ", text: "「ところでケンタ好き？」" },
         { type: "loveChoice", text: "なんて答える？<br><br>🔵 戻る → 大好き♥️<br>🔴 進む → 普通" }
     ],
@@ -3463,7 +3471,7 @@ failSteps: [
     rate: 0,
     steps: [
         { image: "Yutaka.yakinikuao.dot.png", text: "今日は2回目のデート。<br>焼肉デート。やっぱ肉よね～。<br>なんか店の名前が変だったけどw" },
-        { speaker: "コタニ", text: "「ゆたかくん、今日はありがとう。たのしかった。」" },
+        { speaker: "コタニ", text: "「ゆたかくん、今日はありがとう。<br>たのしかった。」" },
         { speaker: "コタニ", text: "「ところで、肉は何が好き？」" },
         { type: "loveChoice", text: "なんて答える？<br><br>🔵 戻る → タン塩<br>🔴 進む → カルビ" }
     ],
@@ -3527,9 +3535,9 @@ failSteps: [
     rate: 0,
     steps: [
         { image: "Yutaka.eiga.dot.png", text: "前回は3回目のデートで映画。<br>プラダを着た悪魔、楽しかったわ。<br>だれがナイジェルじゃ！わたしはアンディよ。<br>とか思っていたら、<br>コタニから、、" },
-        { speaker: "コタニ", text: "「ゆたかくん、この前は映画ありがとう。楽しかったよ。」" },
+        { speaker: "コタニ", text: "「ゆたかくん、この前は映画ありがとう。<br>楽しかったよ。」" },
         { speaker: "コタニ", text: "「君とはいろいろ合うみたいだ。」" },
-        { speaker: "コタニ", text: "「ゆたかくんはかわいいし、素敵。付き合ってくれないか」" },
+        { speaker: "コタニ", text: "「ゆたかくんはかわいいし、素敵。<br>付き合ってくれないか」" },
         { type: "confessionChoice", text: "なんて答える？<br><br>🔵 戻る → はい<br>🔴 進む → ごめんなさい" }
     ],
     effects: {
@@ -3545,7 +3553,7 @@ failSteps: [
     rate: 0,
     steps: [
         { image: "Yutaka.iekenta.dot.png", text: "今日はコタニの家でデート。<br>テーブルの上にはケンタが並んでいる。<br>付き合ってから初めてのおうちデートだ。" },
-        { speaker: "コタニ", text: "「ゆたかくんのおばあちゃん、どこ出身だっけ？」" },
+        { speaker: "コタニ", text: "「ゆたかくんのおばあちゃん、<br>どこ出身だっけ？」" },
         { type: "loveChoice", text: "なんて答える？<br><br>🔵 戻る → 山形<br>🔴 進む → 福島" }
     ],
     successText: "「そうよね！山形よね。」",
@@ -3572,7 +3580,7 @@ failSteps: [
         { speaker: "コタニ", text: "「ゆたかママのママ、久美の好物は？」" },
         { type: "loveChoice", text: "なんて答える？<br><br>🔵 戻る → 梅酒<br>🔴 進む → 焼酎" }
     ],
-    successText: "「そうよね～😊」<br>「今度、西大宮で梅酒のもうね！🤣」",
+    successText: "「そうよね～😊<br>今度、西大宮で梅酒のもうね！🤣」",
     failSteps: [
         { speaker: "コタニ", text: "「ゆたかママレベルまだまだだな」" },
         { speaker: "コタニ", text: "「梅酒自作してるじゃん！」" },
@@ -3599,7 +3607,7 @@ failSteps: [
     successText: "「いいですね！」<br>「僕も筋トレ好きなんです。」<br>意気投合した。<br>焼肉もおいしかったし、たのしかった。",
     failSteps: [
         { speaker: "オオタニ", text: "「そうなんですね。」" },
-        { text: "その後、オオタニからデートの誘いが来ることはなかった。" },
+        { text: "その後、オオタニから<br>デートの誘いが来ることはなかった。" },
         { text: "デート失敗💩" }
     ],
     effects: {
@@ -3621,7 +3629,7 @@ failSteps: [
     successText: "「いいですね！」<br>「僕もジャンヌダルク好きなんです。」",
     failSteps: [
         { speaker: "オオタニ", text: "「そうなんですね！」" },
-        { text: "その後、オオタニからデートの誘いが来ることはなかった。" },
+        { text: "その後、オオタニから<br>デートの誘いが来ることはなかった。" },
         { text: "デート失敗💩" }
     ],
     effects: {
@@ -3636,17 +3644,17 @@ failSteps: [
     title: "3回目デート",
     rate: 0,
     steps: [
-        { image: "Yutaka.sunuyamadome.dot.png", text: "今日はオオタニとスヌヤマドームデート。<br>スヌタロウのパパがスポンサーらしいわ。<br>デート、まだ緊張するな～。<br>もちろん野球みたわよ。<br>今日も売り子さんからビールいっぱい買っちゃった🍺<br>ドーム内にケンタもあったから、トイレ行くふりしていっぱい食べちゃったのは秘密。" },
+        { image: "Yutaka.sunuyamadome.dot.png", text: "今日はオオタニとスヌヤマドームデート。<br>スヌタロウのパパがスポンサーらしいわ。<br>もちろん野球みたわよ。<br>今日も売り子さんからビールいっぱい<br>買っちゃった🍺<br>ドーム内にケンタもあったから、トイレ行くふりしていっぱい食べちゃったのは秘密。" },
   { text: "図鑑登録" },
     { text: "⚾ スヌヤマドームゲット！" },
-        { speaker: "オオタニ", text: "「Boyfriend2に出てくる人で、だれの顔が好きですか？」" },
+        { speaker: "オオタニ", text: "「Boyfriend2に出てくる人で、<br>だれの顔が好きですか？」" },
         { type: "loveChoice", text: "なんて答える？<br><br>🔵 戻る → HIROYA<br>🔴 進む → JOBU<br>🟢 決定 → HUWEI" }
     ],
     correctChoice: "進む",
     successText: "「いいですね！」<br>「僕もJOBUが一番好きなんです。」<br>顔だけならJOBUよね～、母ちゃん面白いし。<br>でもKAZUYUKIもナイスガイよね。<br>ちなみに1のKAZUTOの店はもちろん行ったわ。",
     failSteps: [
         { speaker: "オオタニ", text: "「そうなんですね！」" },
-        { text: "その後、オオタニからデートの誘いが来ることはなかった。" },
+        { text: "その後、オオタニから<br>デートの誘いが来ることはなかった。" },
         { text: "デート失敗💩" }
     ],
     effects: {
@@ -3662,7 +3670,7 @@ failSteps: [
     rate: 0,
     steps: [
         { text: "この前は3回目のデートでスヌヤマドームだった。<br>野球は乙女だから野球興味なかったけど、<br>ビール🍺とケンタ🍗たくさんで楽しかった。<br>とか思っていたら、オオタニから、、" },
-        { speaker: "オオタニ", text: "「ゆたかくん、この前はありがとう。楽しかった！」" },
+        { speaker: "オオタニ", text: "「ゆたかくん、この前はありがとう。<br>楽しかった！」" },
         { speaker: "オオタニ", text: "「ゆたかくんはかわいいし、おもしろいし、一緒にいて楽しいな☺」" },
         { speaker: "オオタニ", text: "「よかったら僕と付き合ってくれないかな？」" },
         { type: "confessionChoice", text: "なんて答える？<br><br>🔵 戻る → はい<br>🔴 進む → ごめんなさい" }
@@ -3698,13 +3706,13 @@ failSteps: [
         "進む": [
             { speaker: "オオタニ", text: "「そうなんですね！」" },
             { text: "ラーメン屋っぽい？💢" },
-            { text: "その後、オオタニからデートの誘いが来ることはなかった。" },
+            { text: "その後、オオタニから<br>デートの誘いが来ることはなかった。" },
             { text: "デート失敗💩" }
         ],
         "決定": [
             { speaker: "オオタニ", text: "「そうなんですね！」" },
             { text: "看護師は途中で辞めたのよｗ" },
-            { text: "その後、オオタニからデートの誘いが来ることはなかった。" },
+            { text: "その後、オオタニから<br>デートの誘いが来ることはなかった。" },
             { text: "デート失敗💩" }
         ]
     },
