@@ -610,7 +610,13 @@ function pickRandomEvent(events) {
     return filteredEvents[0];
 }
     function saveGame() {
+    try {
     localStorage.setItem("yutakatch_save", JSON.stringify(gameState));
+    localStorage.setItem("yutakatch_save_backup", JSON.stringify(gameState));
+} catch (e) {
+    alert("セーブに失敗しました");
+    return;
+}
     saveBeforeSettingsState();
     isSaveCompleteMode = true;
     saveCompleteCursor = 0;
@@ -624,7 +630,11 @@ function pickRandomEvent(events) {
 }
 
     function loadGame() {
-        const savedData = localStorage.getItem("yutakatch_save");
+      let savedData = localStorage.getItem("yutakatch_save");
+
+if (!savedData) {
+    savedData = localStorage.getItem("yutakatch_save_backup");
+}
         if (!savedData) return;
         const loadedState = JSON.parse(savedData);
         Object.assign(gameState, loadedState);
@@ -2201,7 +2211,7 @@ if (name === "図鑑") {
     }
 }else {
                 if (name === '進む' || name === '戻る') {
-                    const savedData = localStorage.getItem("yutakatch_save");
+                   const savedData = localStorage.getItem("yutakatch_save") || localStorage.getItem("yutakatch_save_backup");
                     const maxCursor = savedData ? 2 : 1;
 
                     if (name === '進む') {
