@@ -683,6 +683,12 @@ if (gameState.totalWeek >= 104) {
         weeklyActions['仕事'] = false; weeklyActions['ジム'] = false; weeklyActions['プライベート'] = false;
         isReadyToAdvanceWeek = false;
 
+if (gameState.weight < 50) {
+    currentEvent = under50kgEvent;
+    currentStepIndex = 0;
+    applyStep(currentEvent, currentStepIndex);
+    return;
+}
         if (gameState.totalWeek >= 4 && !gameState.hasSeenNaturalWeightEvent) {
             gameState.hasSeenNaturalWeightEvent = true;
             currentEvent = naturalWeightSystemEvent;
